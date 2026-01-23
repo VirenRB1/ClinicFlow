@@ -4,7 +4,7 @@
 1. Viren Ravji Bhanderi - 7976692
 2. Najma Mohamed - 7934223
 3. Gurwinder Khandal - 7909492
-4.
+4. Hoang Phuc - 7900499
 5.
 
 ### To be deleted - What needs to be done for the vision statement
