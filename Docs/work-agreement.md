@@ -14,7 +14,7 @@
 | Viren Bhanderi | 3RD YEAR | Viren |
 | Israel Ijiekhuamen | 3rd YEAR | Israel |
 | Gurwinder Khandal | 3rd Year | Gurwinder |
-| Najma Mohammed | 3rd Year | Najma |
+| Najma Mohamed | 3rd Year | Najma |
 | Hoang Phuc | 3rd Year | Phuc |
 
 ---
@@ -142,8 +142,9 @@ As a team, we have discussed the responsible and ethical use of Generative AI to
 - Over-reliance may lead to members underestimating deadlines
 
 **How our team will ensure transparency, accountability, and shared understanding of AI-assisted work:**
-- When a group member wishes to use AI, a discussion with the group will be had to determine whether AI use is necessary in that context
-- AI work will not be used unless all members can understand it
+- Communicating honestly on use of AI in our work.
+- Limited use of AI in terms of whole code and instead use it for ideas and debugging.
+- Understanding of the responses given and using it applicably
 
 ---
 
