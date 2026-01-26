@@ -54,7 +54,7 @@ Roles may rotate unless otherwise specified.
 | Project Coordinator | Organizes meetings, tracks deadlines | Israel |
 | Technical Lead | Oversees technical decisions and code quality | |
 | Documentation Lead | Maintains README/docs | |
-| GitLab Manager | Manages repo structure, merges, issues | Viren |
+| GitLab Manager | Manages repo structure, merges, issues |  |
 | Quality Checker | Reviews work before submission | Viren |
 
 If responsibilities are shared or rotated, describe how below:
@@ -84,7 +84,6 @@ After 2 missed meetings and no Progress for 3 consecutive days
 **Meeting platform/location:** EITC E2 310  
 
 **Meeting norms (check all that apply):**
-
 - ☐ Agenda shared in advance  
 - ☐ Start/end on time  
 - ☐ Cameras on (if online)  
