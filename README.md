@@ -1,5 +1,7 @@
 # GROUP 14 PROJECT - Physician's Office System
 
+Please find our group work agreement at the link below
+[Group-Work-Agreement.md](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/tree/main/Docs)
 ## Group Members
 1. Viren Ravji Bhanderi - 7976692
 2. Najma Mohamed - 7934223
