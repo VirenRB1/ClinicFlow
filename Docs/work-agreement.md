@@ -39,7 +39,9 @@ Each team member lists their personal goals for this project.
 |---|---|
 | Israel | Learn how to code efficiently in a big software program and manage big databases integrated with the backend |
 | Viren | Learn how to write clean code to build an end-to-end software project while learning all the aspects of a software project from frontend to backend to database integration. |
-
+|       |                |
+|       |                |
+|       |                |
 ---
 
 ## 3. Roles and Responsibilities
