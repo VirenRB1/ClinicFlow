@@ -7,7 +7,7 @@ Please find our group work agreement at the link below
 2. Najma Mohamed - 7934223
 3. Gurwinder Khandal - 7909492
 4. Hoang Phuc - 7900499
-5. Israel Ijiekhuamen
+5. Israel Ijiekhuamen - 7909801
 
 ## Project Information
 
