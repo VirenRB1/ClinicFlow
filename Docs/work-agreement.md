@@ -39,7 +39,7 @@ Each team member lists their personal goals for this project.
 |---|---|
 | Israel | Learn how to code efficiently in a big software program and manage big databases integrated with the backend |
 | Viren | Learn how to write clean code to build an end-to-end software project while learning all the aspects of a software project from frontend to backend to database integration. |
-|       |                |
+| Gurwinder | Learn how to document properly and also learn more frontend techniques |
 |       |                |
 |       |                |
 ---
@@ -52,9 +52,9 @@ Roles may rotate unless otherwise specified.
 | Role | Description | Assigned To |
 |---|---|---|
 | Project Coordinator | Organizes meetings, tracks deadlines | Israel |
-| Technical Lead | Oversees technical decisions and code quality | |
-| Documentation Lead | Maintains README/docs | |
-| GitLab Manager | Manages repo structure, merges, issues |  |
+| Technical Lead | Oversees technical decisions and code quality | Gurwinder |
+| Documentation Lead | Maintains README/docs | Najma |
+| GitLab Manager | Manages repo structure, merges, issues |  Phuc |
 | Quality Checker | Reviews work before submission | Viren |
 
 If responsibilities are shared or rotated, describe how below:
@@ -142,8 +142,8 @@ As a team, we have discussed the responsible and ethical use of Generative AI to
 - Over-reliance may lead to members underestimating deadlines
 
 **How our team will ensure transparency, accountability, and shared understanding of AI-assisted work:**
-- 
-- 
+- When a group member wishes to use AI, a discussion with the group will be had to determine whether AI use is necessary in that context
+- AI work will not be used unless all members can understand it
 
 ---
 
@@ -152,6 +152,7 @@ As a team, we have discussed the responsible and ethical use of Generative AI to
 If a team member repeatedly misses deadlines or responsibilities, the team will:
 
 - Deduct points from them in their peer review
+- A sit down review will be conducted to understand their reasons for missing the deadlines.
 - Report them to Lauren so that other members of the team are not responsible for deductions in the project marks
 
 *(Be explicit — vague answers are not acceptable.)*
@@ -164,8 +165,8 @@ By signing below, we confirm that we have discussed this document together and a
 
 | Name | Signature | Date |
 |---|---|---|
-|Viren Bhanderi | VRB|01/26/2026 |
-| | | |
+| Viren Bhanderi | VRB | 01/26/2026 |
+| Gurwinder Khandal | GK | 01/26/2026 |
 | | | |
 | | | |
 | | | |
