@@ -14,7 +14,7 @@
 | Viren Bhanderi | 3RD YEAR | Viren |
 | Israel Ijiekhuamen | 3rd YEAR | Israel |
 | Gurwinder Khandal | 3rd Year | Gurwinder |
-| Najma Mohammed | 3rd Year | Najma |
+| Najma Mohamed | 3rd Year | Najma |
 | Hoang Phuc | 3rd Year | Phuc |
 
 ---
@@ -39,7 +39,7 @@ Each team member lists their personal goals for this project.
 |---|---|
 | Israel | Learn how to code efficiently in a big software program and manage big databases integrated with the backend |
 | Viren | Learn how to write clean code to build an end-to-end software project while learning all the aspects of a software project from frontend to backend to database integration. |
-|       |                |
+| Najma Mohamed | Learn software development life cycle and real-life programming skills such as efficient code, through documentation, integrated testing and effectively work in a group. |
 |       |                |
 |       |                |
 ---
@@ -53,7 +53,7 @@ Roles may rotate unless otherwise specified.
 |---|---|---|
 | Project Coordinator | Organizes meetings, tracks deadlines | Israel |
 | Technical Lead | Oversees technical decisions and code quality | |
-| Documentation Lead | Maintains README/docs | |
+| Documentation Lead | Maintains README/docs | Najma |
 | GitLab Manager | Manages repo structure, merges, issues |  |
 | Quality Checker | Reviews work before submission | Viren |
 
@@ -142,8 +142,9 @@ As a team, we have discussed the responsible and ethical use of Generative AI to
 - Over-reliance may lead to members underestimating deadlines
 
 **How our team will ensure transparency, accountability, and shared understanding of AI-assisted work:**
-- 
-- 
+- Communicating honestly on use of AI in our work.
+- Limited use of AI in terms of whole code and instead use it for ideas and debugging.
+- Understanding of the responses given and using it applicably
 
 ---
 
@@ -165,7 +166,7 @@ By signing below, we confirm that we have discussed this document together and a
 | Name | Signature | Date |
 |---|---|---|
 |Viren Bhanderi | VRB|01/26/2026 |
-| | | |
+|Najma Mohamed | NM | 01/26/2026 |
 | | | |
 | | | |
 | | | |
