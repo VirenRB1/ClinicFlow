@@ -1,9 +1,9 @@
 # Team Working Agreement
 
 **Course:** COMP 3350: SOFTWARE ENGINEERING 1  
-**Project Name:**  
-**Team Name:**  
-**Date Created:**  
+**Project Name:** ClinicFlow 
+**Team Name:**  A02-G14-BooleanHooligans
+**Date Created:** 01/21/2026 
 
 ---
 
