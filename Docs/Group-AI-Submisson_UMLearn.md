@@ -1,0 +1,22 @@
+# Viren's Response
+
+I used AI to confirm if the features we had come up as a group were in the right direction. We had written down all the features as a group and asked AI to brainstorm some of the project features. The features ChatGPT gave us matched closely with what we had and we just added 2 more features that we thought were cool as a group. After we decided on all the features, we as a group decided on 3 features that we would implement in Iteration 1. 
+
+We then came up with the user stories and used AI to counter check if our user stories made sense with the features we had selected. AI gave us a nice explanation on the stories and also helped us with the wording so we had a clear understanding now of the user stories and in what order everything need to be done, basically how everything builds on each other. I also used ChatGPT to check if my vision statement was written well and I had described everything that I was required to for the vision statement to get full marks. ChatGPT pointed out some key points that were missing in my vision statement and I added the required sections.
+
+# Gurwinder's Response
+
+I use chatGPT to brainstorm potential features for our application. I already had a rough list of features that I wanted to implement but with the help of AI, I was able to add a few more to the list. Using chatgpt was a good idea because it made me think about how some of these features could be potentially broken up into smaller features. Overall, I would say using AI was helpful as it sped up the brainstorming for the features and reaffirmed some of the features we had already discussed.
+
+# Najma's Response
+
+I use chatGPT to brainstorm on ways to make a user story less technical as I wanted to write a user focused story rather than system focused one. It helped understand how users approach a product and terms like encryption are still more technical than I thought. It was helpful and useful in this term.
+
+# Israel's response
+
+In our group project, I played a role in determining the most suitable project ideas. This ensured that we selected a project that would allow each member to demonstrate their strengths. I facilitated group discussions, assessed feasibility and guided the team toward a solution that would maximize our technical skills and collaborative efforts. Ultimately, we decided to develop a clinical system application. This real-world problem presented an opportunity for us to apply our skills and learn effectively.
+
+I also contributed to the development and refinement of the clinical system application. My focus was on its functionality, user-friendliness and potential benefits in a clinical setting.
+
+# Phuc's Response
+I used chatGPT and Gemini to record the idea fragments that I input during brainstorming. After that it'd help me to summarize and evaluate them into usable and testable idea for feature that could be applied into project. I used 2 different AI to cross check and provide me a different point of views. I found that the AI usage was most effective to recollect and improvise my thought rather than generating output from stratch , because it wouldn't reach the expectation I have in mind, and hardly match with the overall project of our group.
