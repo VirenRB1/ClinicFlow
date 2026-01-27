@@ -41,7 +41,7 @@ Each team member lists their personal goals for this project.
 | Viren | Learn how to write clean code to build an end-to-end software project while learning all the aspects of a software project from frontend to backend to database integration. |
 | Gurwinder | Learn how to document properly and also learn more frontend techniques |
 | Najma Mohamed | Learn software development life cycle and real-life programming skills such as efficient code, through documentation, integrated testing and effectively work in a group. |
-|       |                |
+| Hoang Phuc |Learn how to design and implement role-based features, enforce clear responsibility boundaries between users, and translate real-world workflow rules into clean, testable application logic.|
 ---
 
 ## 3. Roles and Responsibilities
@@ -165,7 +165,7 @@ If a team member repeatedly misses deadlines or responsibilities, the team will:
 By signing below, we confirm that we have discussed this document together and agree to follow it.
 
 | Name | Signature | Date |
-|---|---|---|
+| Hoang Phuc | HP | 01/26/2026 |
 | Viren Bhanderi | VRB | 01/26/2026 |
 | Gurwinder Khandal | GK | 01/26/2026 |
 | Najma Mohamed| NM | 01/26/2026 |
