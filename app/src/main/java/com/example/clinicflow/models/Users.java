@@ -1,20 +1,34 @@
 package com.example.clinicflow.models;
 
-public class Users {
-    private String userId;
-    private String userName;
+public abstract class Users {
+    private String email;
     private String password;
     private String gender;   
     private String age;
 
-    public Users(String userId, String userName, String password, 
+    public Users(String email, String password,
                  String gender, String age) {
-        this.userId = userId;
-        this.userName = userName;
+        this.email = email;
         this.password = password;
         this.gender = gender;
         this.age = age;
     }
 
+    public String getEmail() {
+        return email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getAge() {
+        return age;
+    }
+}
+
 

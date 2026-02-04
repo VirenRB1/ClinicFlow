@@ -3,11 +3,14 @@ public class Staff extends Users {
     private String position;
 
 
-    public Staff(String userId, String userName, String password, String gender,
+    public Staff(String email, String password, String gender,
                  String age, String position) {
-        super(userId, userName, password, gender, age);
+        super(email,
+                password,
+                gender,
+                age);
         this.position = position;       
 
-        }
+    }
     
 }

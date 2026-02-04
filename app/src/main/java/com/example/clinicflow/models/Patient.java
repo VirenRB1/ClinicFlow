@@ -4,9 +4,9 @@ public class Patient extends Users {
     private String medicalHistory;
     private int phoneNumber;
 
-    public Patient(String userId, String userName, String password, String gender
+    public Patient(String email, String password, String gender
         , String age, int HealthcardNumber, String medicalHistory, int phoneNumber) {
-        super(userId, userName, password, gender, age);
+        super(email, password, gender, age);
         this.HealthcardNumber = HealthcardNumber;  
         this.medicalHistory = medicalHistory;
         this.phoneNumber = phoneNumber;
