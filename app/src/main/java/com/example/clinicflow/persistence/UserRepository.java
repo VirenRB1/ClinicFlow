@@ -7,9 +7,7 @@ import com.example.clinicflow.model.OfficeStaff;
 import java.util.List;
 
 public interface UserRepository {
-    List<Doctor> getAllDoctors();
     List<Patient> getAllPatients();
-    List<OfficeStaff> getAllOfficeStaff();
 
     void addDoctor(Doctor doctor);
     void addPatient(Patient patient);
