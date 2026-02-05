@@ -13,11 +13,11 @@ public interface UserRepository {
     void addPatient(Patient patient);
     void addStaff(Staff staff);
 
-    Doctor getDoctorById(int id);
-    Patient getPatientById(int id);
-    staff getStaffById(int id);
+    Doctor getDoctorByFullName(String fullName);
+    Patient getPatientByFullName(String fullName);
+    Staff getStaffByFullName(String fullName);
 
-    boolean deleteDoctor(int id);
-    boolean deletePatient(int id);
-    boolean deleteStaff(int id);
+    boolean deleteDoctorByFullName(String fullName);
+    boolean deletePatientByFullName(String fullName);
+    boolean deleteStaffByFullName(String fullName);
 }
