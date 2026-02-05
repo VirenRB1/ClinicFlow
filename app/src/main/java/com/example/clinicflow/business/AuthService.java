@@ -4,53 +4,61 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.FakeDatabase;
+import com.example.clinicflow.persistence.fake.FakeUserRepository;
+
+import java.util.List;
 
 public class AuthService {
+    FakeUserRepository db = new FakeUserRepository();
+
     public Users authenticate(String email, String password){
-
+        Users myUser;
         if(!formatCheck(email, password)){
-            return null;
+            myUser = null;
+        }else {
+            if (email.contains("@clinicstaff.com")) {
+                myUser = validateStaff(email, password);
+            } else if (email.contains("@clinicdoc.com")) {
+                myUser = validateDoctor(email, password);
+            } else {
+                myUser = validatePatient(email, password);
+            }
         }
-
-        FakeDatabase db = new FakeDatabase();
-
-        return patientFinder(db, email, password);
-        return doctorFinder(db, email, password);
-        return staffFinder(db, email, password);
-
-        return null;
+        return myUser;
     }
 
-    public Users patientFinder(FakeDatabase db, String email, String password){
-        for(Patient p : db.patients){
-            if(p.getEmail().equalsIgnoreCase(email) && p.getPassword().equals(password)){
-                return p;
+    public Users validatePatient(String email, String password){
+        List<Patient> patients = db.getAllPatients();
+        for(Patient patient : patients){
+            if(patient.getEmail().equalsIgnoreCase(email) && patient.getPassword().equals(password)){
+                return patient;
             }
         }
         return null;
     }
 
-    public Users staffFinder(FakeDatabase db, String email, String password){
-        for(Staff p : db.staff){
-            if(p.getEmail().equalsIgnoreCase(email) && p.getPassword().equals(password)){
-                return p;
+    public Users validateStaff(String email, String password){
+        List<Staff> staffs = db.getAllStaffs();
+        for(Staff staff : staffs){
+            if(staff.getEmail().equalsIgnoreCase(email) && staff.getPassword().equals(password)){
+                return staff;
             }
         }
         return null;
     }
 
-    public Users doctorFinder(FakeDatabase db, String email, String password){
-        for(Doctor p : db.doctors){
-            if(p.getEmail().equalsIgnoreCase(email) && p.getPassword().equals(password)){
-                return p;
+    public Users validateDoctor(String email, String password){
+        List<Doctor> doctors = db.getAllDoctors();
+        for(Doctor doc : doctors){
+            if(doc.getEmail().equalsIgnoreCase(email) && doc.getPassword().equals(password)){
+                return doc;
             }
         }
         return null;
     }
 
     public boolean formatCheck(String email, String password){
-        if(email == null || email.isEmpty()){
+        if(email == null || email.isEmpty() || !email.contains("@") || !email.contains(".")){
             return false;
         }
         if(password == null || password.isEmpty()){

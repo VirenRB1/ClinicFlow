@@ -2,9 +2,9 @@ package com.example.clinicflow.persistence.fake;
 
 import com.example.clinicflow.persistence.UserRepository;
 
-import com.example.clinicflow.model.Doctor;
-import com.example.clinicflow.model.Patient;
-import com.example.clinicflow.model.Staff;
+import com.example.clinicflow.models.Doctor;
+import com.example.clinicflow.models.Patient;
+import com.example.clinicflow.models.Staff;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ public class FakeUserRepository implements UserRepository {
 
     private void initializeFakeDoctors(){
         doctors = new ArrayList<>();
-        doctors.add(new Doctor("John","Doe","johndoe@clinicflow.com","pass1","Male",25,"Cardiology","LIC12345"));
-        doctors.add(new Doctor("Jane","Smith","janesmith@clinicflow.com","pass2","Female",30,"Neurology","LIC67890"));
-        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicflow.com","pass3","Female",40,"Pediatrics","LIC54321"));
+        doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male",25,"Cardiology","LIC12345"));
+        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female",30,"Neurology","LIC67890"));
+        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female",40,"Pediatrics","LIC54321"));
     }
 
     private void initializeFakePatients(){
@@ -42,14 +42,24 @@ public class FakeUserRepository implements UserRepository {
 
     private void initializeFakeStaffs(){
         staffs = new ArrayList<>();
-        staffs.add(new Staff("Eve","Miller","evemiller@clinicflow.com","pass7","Female",32,"Receptionist"));
-        staffs.add(new Staff("Frank","Garcia","frankgarcia@clinicflow.com","pass8","Male",29,"Receptionist"));
-        staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicflow.com","pass9","Female",38,"Administrator"));
+        staffs.add(new Staff("Eve","Miller","evemiller@clinicstaff.com","pass7","Female",32,"Receptionist"));
+        staffs.add(new Staff("Frank","Garcia","frankgarcia@clinicstaff.com","pass8","Male",29,"Receptionist"));
+        staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicstaff.com","pass9","Female",38,"Administrator"));
     }
 
     @Override
-    public void getAllPatients() {
+    public List <Patient> getAllPatients() {
         return Collections.unmodifiableList(patients);
+    }
+
+    @Override
+    public List <Doctor> getAllDoctors() {
+        return Collections.unmodifiableList(doctors);
+    }
+
+    @Override
+    public List <Staff> getAllStaffs() {
+        return Collections.unmodifiableList(staffs);
     }
 
     @Override
