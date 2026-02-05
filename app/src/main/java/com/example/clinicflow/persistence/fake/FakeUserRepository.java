@@ -4,7 +4,7 @@ import com.example.clinicflow.persistence.UserRepository;
 
 import com.example.clinicflow.model.Doctor;
 import com.example.clinicflow.model.Patient;
-import com.example.clinicflow.model.OfficeStaff;
+import com.example.clinicflow.model.Staff;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class FakeUserRepository implements UserRepository {
 
     List <Doctor> doctors = new ArrayList<>();
     List <Patient> patients = new ArrayList<>();
-    List <OfficeStaff> officeStaffs = new ArrayList<>();
+    List <Staff> staffs = new ArrayList<>();
 
     @Override
     public void getAllPatients() {
@@ -32,8 +32,8 @@ public class FakeUserRepository implements UserRepository {
     }
 
     @Override
-    public void addOfficeStaff(OfficeStaff officeStaff){
-        officeStaffs.add(officeStaff);
+    public void addStaff(Staff staff){
+        staffs.add(staff);
     }
 
     @Override
@@ -57,10 +57,10 @@ public class FakeUserRepository implements UserRepository {
     }
 
     @Override
-    public OfficeStaff getOfficeStaffById(int id){
-        for (OfficeStaff officeStaff : officeStaffs) {
-            if (officeStaff.getId() == id) {
-                return officeStaff;
+    public Staff getStaffById(int id){
+        for (Staff staff : staffs) {
+            if (staff.getId() == id) {
+                return staff;
             }
         }
         return null;
@@ -89,13 +89,13 @@ public class FakeUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean deleteOfficeStaff(int id){
-        for (OfficeStaff officeStaff : officeStaffs) {
-            if (officeStaff.getId() == id) {
-                officeStaffs.remove(officeStaff);
+    public boolean deleteStaff(int id){
+        for (Staff staff : staffs) {
+            if (staff.getId() == id) {
+                staffs.remove(staff);
                 return true;
             }
         }
-        return null;
+        return false;
     }
 }
