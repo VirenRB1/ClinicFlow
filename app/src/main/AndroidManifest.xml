@@ -26,6 +26,10 @@
             android:name=".presentation.DoctorScreen"/>
         <activity
             android:name=".presentation.StaffScreen"/>
+        <activity
+            android:name=".presentation.PatientProfile"/>
+        <activity
+            android:name=".presentation.BookAppointment"/>
     </application>
 
 </manifest>
