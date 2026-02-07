@@ -17,4 +17,6 @@
     <string name="manage">Manage Appointments</string>
     <string name="view_patients">View Patients</string>
     <string name="view_docs">View Physicians</string>
+    <string name="under_Con">Under Construction</string>
+    <string name="back">Back</string>
 </resources>

@@ -20,6 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.PatientScreen"/>
+        <activity
+            android:name=".presentation.DoctorScreen"/>
+        <activity
+            android:name=".presentation.StaffScreen"/>
+        <activity
+            android:name=".presentation.PatientProfile"/>
+        <activity
+            android:name=".presentation.BookAppointment"/>
     </application>
 
 </manifest>

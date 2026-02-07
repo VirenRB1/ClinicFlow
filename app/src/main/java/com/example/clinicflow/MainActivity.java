@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     EditText email;
     EditText password;
-
     Button loginBtn;
 
     @Override
@@ -48,7 +48,17 @@ public class MainActivity extends AppCompatActivity {
 
                 Users currUser = authService.authenticate(enteredEmail, enteredPW);
 
+                if(currUser == null){
+                    Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
+                }
+
                 Intent intent = identifyType(currUser);
+                if(intent != null){
+                    startActivity(intent);
+                } else{
+                    Toast.makeText(getApplicationContext(), "Intent is null", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

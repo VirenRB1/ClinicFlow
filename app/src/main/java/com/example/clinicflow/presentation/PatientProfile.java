@@ -14,57 +14,35 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
-
-public class PatientScreen extends AppCompatActivity {
-
+public class PatientProfile extends AppCompatActivity{
     Button logout;
 
-    Button myApts;
-
-    Button bookApt;
-
-    ImageButton profile;
-
+    Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.patient_landing);
+        setContentView(R.layout.patient_profile);
 
         logout = findViewById(R.id.logoutButton);
-        myApts = findViewById(R.id.myAppointmentsButton);
-        bookApt = findViewById(R.id.bookAppointmentButton);
-        profile = findViewById(R.id.profileButton);
+        back = findViewById(R.id.backButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientScreen.this, MainActivity.class);
+                Intent intent = new Intent(PatientProfile.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
-        myApts.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-
-        bookApt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PatientScreen.this, BookAppointment.class);
+                Intent intent = new Intent(PatientProfile.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PatientScreen.this, PatientProfile.class);
-                startActivity(intent);
-            }
-        });
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

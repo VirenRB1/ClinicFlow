@@ -41,7 +41,7 @@ public abstract class Users {
         return gender;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 }

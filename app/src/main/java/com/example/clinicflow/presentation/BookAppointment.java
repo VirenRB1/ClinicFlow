@@ -14,46 +14,26 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
-
-public class PatientScreen extends AppCompatActivity {
-
-    Button logout;
-
-    Button myApts;
-
-    Button bookApt;
+public class BookAppointment extends AppCompatActivity{
 
     ImageButton profile;
 
+    Button logout;
+
+    Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.patient_landing);
+        setContentView(R.layout.book_appointment);
 
         logout = findViewById(R.id.logoutButton);
-        myApts = findViewById(R.id.myAppointmentsButton);
-        bookApt = findViewById(R.id.bookAppointmentButton);
         profile = findViewById(R.id.profileButton);
+        back = findViewById(R.id.backButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientScreen.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        myApts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        bookApt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PatientScreen.this, BookAppointment.class);
+                Intent intent = new Intent(BookAppointment.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -61,7 +41,15 @@ public class PatientScreen extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientScreen.this, PatientProfile.class);
+                Intent intent = new Intent(BookAppointment.this, PatientProfile.class);
+                startActivity(intent);
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BookAppointment.this, PatientScreen.class);
                 startActivity(intent);
             }
         });
