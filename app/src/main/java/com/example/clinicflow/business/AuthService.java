@@ -9,7 +9,11 @@ import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import java.util.List;
 
 public class AuthService {
-    FakeUserRepository db = new FakeUserRepository();
+    private final FakeUserRepository DATABASE;
+
+    public AuthService(FakeUserRepository userRepository) {
+        this.DATABASE = userRepository;
+    }
 
     public Users authenticate(String email, String password){
         Users myUser;
@@ -28,7 +32,7 @@ public class AuthService {
     }
 
     public Users validatePatient(String email, String password){
-        List<Patient> patients = db.getAllPatients();
+        List<Patient> patients = DATABASE.getAllPatients();
         for(Patient patient : patients){
             if(patient.getEmail().equalsIgnoreCase(email) && patient.getPassword().equals(password)){
                 return patient;
@@ -38,7 +42,7 @@ public class AuthService {
     }
 
     public Users validateStaff(String email, String password){
-        List<Staff> staffs = db.getAllStaffs();
+        List<Staff> staffs = DATABASE.getAllStaffs();
         for(Staff staff : staffs){
             if(staff.getEmail().equalsIgnoreCase(email) && staff.getPassword().equals(password)){
                 return staff;
@@ -48,7 +52,7 @@ public class AuthService {
     }
 
     public Users validateDoctor(String email, String password){
-        List<Doctor> doctors = db.getAllDoctors();
+        List<Doctor> doctors = DATABASE.getAllDoctors();
         for(Doctor doc : doctors){
             if(doc.getEmail().equalsIgnoreCase(email) && doc.getPassword().equals(password)){
                 return doc;
@@ -58,12 +62,9 @@ public class AuthService {
     }
 
     public boolean formatCheck(String email, String password){
-        if(email == null || email.isEmpty() || !email.contains("@") || !email.contains(".")){
+        if(email == null || !email.contains("@") || !email.contains(".")){
             return false;
         }
-        if(password == null || password.isEmpty()){
-            return false;
-        }
-        return true;
+        return password != null && !password.isEmpty();
     }
 }
