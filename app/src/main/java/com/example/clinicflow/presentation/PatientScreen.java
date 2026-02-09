@@ -17,11 +17,14 @@ import com.example.clinicflow.R;
 
 public class PatientScreen extends AppCompatActivity {
 
+    public static final String EXTRA_USER_EMAIL = "user_email";
     Button logout;
 
     Button myApts;
 
     Button bookApt;
+
+    Button myRecs;
 
     ImageButton profile;
 
@@ -33,6 +36,7 @@ public class PatientScreen extends AppCompatActivity {
         logout = findViewById(R.id.logoutButton);
         myApts = findViewById(R.id.myAppointmentsButton);
         bookApt = findViewById(R.id.bookAppointmentButton);
+        myRecs = findViewById(R.id.myRecordsButton);
         profile = findViewById(R.id.profileButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +50,17 @@ public class PatientScreen extends AppCompatActivity {
         myApts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(PatientScreen.this, MyAppointments.class);
+                startActivity(intent);
+            }
+        });
 
+        myRecs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PatientScreen.this, MyRecords.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
+                startActivity(intent);
             }
         });
 

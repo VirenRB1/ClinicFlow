@@ -1,8 +1,9 @@
 package com.example.clinicflow.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MedicalRecord {
+public class MedicalRecord implements Serializable {
     private String patientName;
     private String doctorName;
 
