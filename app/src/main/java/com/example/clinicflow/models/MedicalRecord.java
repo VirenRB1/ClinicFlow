@@ -1,32 +1,44 @@
 package com.example.clinicflow.models;
 
+import java.util.Date;
+
 public class MedicalRecord {
-    private String patientEmail;
-    private final List<Visit> visitors;
+    private String patientName;
+    private String doctorName;
 
-    public MedicalRecord( String patientEmail) {
-        this.patientEmail = requireNonBlank(patientEmail, "patientEmail");
-        this.visitors = new ArrayList<>();
+    private String purpose;
+
+    private String doctorNote;
+
+    private Date date;
+
+    public MedicalRecord(String patientName, String doctorName, String purpose, String doctorNote, Date date) {
+        this.patientName = patientName;
+        this.doctorName = doctorName;
+        this.purpose = purpose;
+        this.doctorNote = doctorNote;
+        this.date = date;
     }
 
-    public String getPatientEmail() { return patientEmail; }
-public List<Visit> getVisitHistory() {
-        return Collections.unmodifiableList(visitors);
+    public String getPatientName() {
+        return patientName;
     }
 
-    public void addVisit(Visit visit) {
-        if (visit == null) throw new IllegalArgumentException("visit cannot be null");
-        if (!patientEmail.equals(visit.getPatientEmail())) {
-            throw new IllegalArgumentException("Visit patientEmail does not match MedicalRecord patientEmail");
-        }
-        visitors.add(visit);
+    public String getDoctorName() {
+        return doctorName;
     }
 
-    private static String requireNonBlank( String info, String fieldMessage){
-        if (info == null || info.isBlank()){
-            throw new IllegalArgumentException(fieldMessage + " cannot be null or blank!!!");
-        }
-        return info;
+    public String getPurpose() {
+        return purpose;
     }
-      
+
+    public String getDoctorNote() {
+        return doctorNote;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
 }
+
