@@ -14,10 +14,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.business.AuthService;
+import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import com.example.clinicflow.presentation.DoctorScreen;
 import com.example.clinicflow.presentation.PatientScreen;
 import com.example.clinicflow.presentation.StaffScreen;
@@ -34,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_screen);
 
-        AuthService authService = new AuthService();
+        // Create a single instance of the repository
+        FakeUserRepository userRepository = new FakeUserRepository();
+
+        AuthService authService = new AuthService(userRepository);
+        MedicalHistory medicalHistory = new MedicalHistory(userRepository);
 
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
