@@ -14,14 +14,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
-public class PatientProfile extends AppCompatActivity{
+public class DoctorProfile extends AppCompatActivity{
     Button logout;
 
     Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.patient_profile);
+        setContentView(R.layout.doc_profile);
 
         logout = findViewById(R.id.logoutButton);
         back = findViewById(R.id.backButton);
@@ -29,7 +29,7 @@ public class PatientProfile extends AppCompatActivity{
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientProfile.this, MainActivity.class);
+                Intent intent = new Intent(DoctorProfile.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -37,7 +37,7 @@ public class PatientProfile extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientProfile.this, PatientScreen.class);
+                Intent intent = new Intent(DoctorProfile.this, DoctorScreen.class);
                 startActivity(intent);
             }
         });

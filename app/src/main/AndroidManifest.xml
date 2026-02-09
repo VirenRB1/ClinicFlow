@@ -30,6 +30,24 @@
             android:name=".presentation.PatientProfile"/>
         <activity
             android:name=".presentation.BookAppointment"/>
+        <activity
+            android:name=".presentation.MyAppointments"/>
+        <activity
+            android:name=".presentation.ManageAppointments"/>
+        <activity
+            android:name=".presentation.DoctorProfile"/>
+        <activity
+            android:name=".presentation.StaffProfile"/>
+        <activity
+            android:name=".presentation.ViewPatients"/>
+        <activity
+            android:name=".presentation.ViewDoctors"/>
+        <activity
+            android:name=".presentation.MySchedule"/>
+        <activity
+            android:name=".presentation.SetAvailability"/>
+        <activity
+            android:name=".presentation.DocPatientRecords"/>
     </application>
 
 </manifest>

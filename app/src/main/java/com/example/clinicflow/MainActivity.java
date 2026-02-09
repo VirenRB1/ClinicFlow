@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
                 }
 
-                Intent intent = identifyType(currUser);
+                Intent intent = identifyType(currUser, enteredEmail);
                 if(intent != null){
                     startActivity(intent);
                 } else{
@@ -69,14 +69,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Intent identifyType(Users currUser){
+    private Intent identifyType(Users currUser, String email){
+        Intent intent = null;
         if (currUser instanceof Patient) {
-            return new Intent(MainActivity.this, PatientScreen.class);
+            intent = new Intent(MainActivity.this, PatientScreen.class);
         } else if (currUser instanceof Doctor) {
-            return new Intent(MainActivity.this, DoctorScreen.class);
+            intent = new Intent(MainActivity.this, DoctorScreen.class);
         } else if (currUser instanceof Staff) {
-            return new Intent(MainActivity.this, StaffScreen.class);
+           intent = new Intent(MainActivity.this, StaffScreen.class);
         }
-        return null;
+
+        if(intent != null){
+            intent.putExtra("user_email", email);
+        }
+        return intent;
     }
 }

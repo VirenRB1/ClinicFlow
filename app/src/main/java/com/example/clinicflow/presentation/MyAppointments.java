@@ -14,22 +14,34 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
-public class PatientProfile extends AppCompatActivity{
+public class MyAppointments extends AppCompatActivity{
+
+    ImageButton profile;
+
     Button logout;
 
     Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.patient_profile);
+        setContentView(R.layout.my_appointments);
 
         logout = findViewById(R.id.logoutButton);
+        profile = findViewById(R.id.profileButton);
         back = findViewById(R.id.backButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientProfile.this, MainActivity.class);
+                Intent intent = new Intent(MyAppointments.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyAppointments.this, PatientProfile.class);
                 startActivity(intent);
             }
         });
@@ -37,12 +49,10 @@ public class PatientProfile extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientProfile.this, PatientScreen.class);
+                Intent intent = new Intent(MyAppointments.this, PatientScreen.class);
                 startActivity(intent);
             }
         });
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
