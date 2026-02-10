@@ -1,20 +1,27 @@
 package com.example.clinicflow.persistence.fake;
 
+import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.persistence.UserRepository;
 
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FakeUserRepository implements UserRepository {
+public class FakeUserRepository implements UserRepository, Serializable {
 
     List <Doctor> doctors;
     List <Patient> patients;
     List <Staff> staffs;
+
+    HashMap<String, List<MedicalRecord>> medicalRecords;
+
 
     public FakeUserRepository(){
         createFakeData();
@@ -24,6 +31,7 @@ public class FakeUserRepository implements UserRepository {
         initializeFakeDoctors();
         initializeFakePatients();
         initializeFakeStaffs();
+        intializeFakeMedicalRecords();
     }
 
     private void initializeFakeDoctors(){
@@ -46,6 +54,26 @@ public class FakeUserRepository implements UserRepository {
         staffs.add(new Staff("Frank","Garcia","frankgarcia@clinicstaff.com","pass8","Male",29,"Receptionist"));
         staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicstaff.com","pass9","Female",38,"Administrator"));
     }
+
+    private void intializeFakeMedicalRecords(){
+        medicalRecords = new HashMap<>();
+        medicalRecords.put("Alice Brown", new ArrayList<>());
+        medicalRecords.put("Bob Davis", new ArrayList<>());
+        medicalRecords.put("Charlie Wilson", new ArrayList<>());
+
+        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "Check-up", "Regular check-up", new Date());
+        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "Follow-up", "Follow-up visit", new Date());
+        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "Prescription", "Prescribed medication", new Date());
+
+        medicalRecords.get("Alice Brown").add(record1);
+        medicalRecords.get("Alice Brown").add(record2);
+        medicalRecords.get("Charlie Wilson").add(record3);
+    }
+
+    public List<MedicalRecord> getMedicalRecords(String patientName) {
+        return medicalRecords.getOrDefault(patientName, new ArrayList<>());
+    }
+
 
     @Override
     public List <Patient> getAllPatients() {

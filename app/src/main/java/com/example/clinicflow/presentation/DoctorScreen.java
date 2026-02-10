@@ -49,28 +49,32 @@ public class DoctorScreen extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(DoctorScreen.this, DoctorProfile.class);
+                startActivity(intent);
             }
         });
 
         mySchd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(DoctorScreen.this, MySchedule.class);
+                startActivity(intent);
             }
         });
 
         setAvail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(DoctorScreen.this, SetAvailability.class);
+                startActivity(intent);
             }
         });
 
         patientRecs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(DoctorScreen.this, DocPatientRecords.class);
+                startActivity(intent);
             }
         });
 

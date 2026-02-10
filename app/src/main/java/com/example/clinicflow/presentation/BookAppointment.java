@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 public class BookAppointment extends AppCompatActivity{
-
+    public static final String EXTRA_USER_EMAIL = "user_email";
     ImageButton profile;
 
     Button logout;
@@ -42,6 +42,7 @@ public class BookAppointment extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BookAppointment.this, PatientProfile.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -50,6 +51,7 @@ public class BookAppointment extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BookAppointment.this, PatientScreen.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });

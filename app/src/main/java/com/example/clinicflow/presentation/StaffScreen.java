@@ -32,6 +32,8 @@ public class StaffScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.staff_landing);
 
+        String email = getIntent().getStringExtra("user_email");
+
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
         manage = findViewById(R.id.manageAppointmentsButton);
@@ -49,28 +51,32 @@ public class StaffScreen extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(StaffScreen.this, StaffProfile.class);
+                startActivity(intent);
             }
         });
 
         manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(StaffScreen.this, ManageAppointments.class);
+                startActivity(intent);
             }
         });
 
         viewPatients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(StaffScreen.this, ViewPatients.class);
+                startActivity(intent);
             }
         });
 
         viewDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(StaffScreen.this, ViewDoctors.class);
+                startActivity(intent);
             }
         });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

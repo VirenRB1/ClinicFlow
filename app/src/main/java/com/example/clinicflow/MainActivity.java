@@ -14,10 +14,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.business.AuthService;
+import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import com.example.clinicflow.presentation.DoctorScreen;
 import com.example.clinicflow.presentation.PatientScreen;
 import com.example.clinicflow.presentation.StaffScreen;
@@ -34,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_screen);
 
-        AuthService authService = new AuthService();
+        // Create a single instance of the repository
+        FakeUserRepository userRepository = new FakeUserRepository();
+
+        AuthService authService = new AuthService(userRepository);
 
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
                 }
 
-                Intent intent = identifyType(currUser);
+                Intent intent = identifyType(currUser, enteredEmail);
                 if(intent != null){
                     startActivity(intent);
                 } else{
@@ -69,14 +75,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Intent identifyType(Users currUser){
+    private Intent identifyType(Users currUser, String email){
+        Intent intent = null;
         if (currUser instanceof Patient) {
-            return new Intent(MainActivity.this, PatientScreen.class);
+            intent = new Intent(MainActivity.this, PatientScreen.class);
         } else if (currUser instanceof Doctor) {
-            return new Intent(MainActivity.this, DoctorScreen.class);
+            intent = new Intent(MainActivity.this, DoctorScreen.class);
         } else if (currUser instanceof Staff) {
-            return new Intent(MainActivity.this, StaffScreen.class);
+           intent = new Intent(MainActivity.this, StaffScreen.class);
         }
-        return null;
+
+        if(intent != null){
+            intent.putExtra("user_email", email);
+        }
+        return intent;
     }
 }
