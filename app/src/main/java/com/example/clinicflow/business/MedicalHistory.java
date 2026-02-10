@@ -1,14 +1,14 @@
 package com.example.clinicflow.business;
 
 import com.example.clinicflow.models.MedicalRecord;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
+import com.example.clinicflow.persistence.UserRepository;
 
 import java.util.List;
 
 public class MedicalHistory {
-    private final FakeUserRepository DATABASE;
+    private final UserRepository DATABASE;
 
-    public MedicalHistory(FakeUserRepository userRepository) {
+    public MedicalHistory(UserRepository userRepository) {
         this.DATABASE = userRepository;
     }
 

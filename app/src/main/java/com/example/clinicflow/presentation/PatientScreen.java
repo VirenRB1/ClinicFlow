@@ -62,7 +62,6 @@ public class PatientScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PatientScreen.this, MyRecords.class);
                 intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
-                intent.putExtra(EXTRA_DB, getIntent().getStringExtra(EXTRA_DB));
                 startActivity(intent);
             }
         });

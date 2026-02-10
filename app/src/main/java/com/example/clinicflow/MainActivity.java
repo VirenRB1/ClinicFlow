@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
                 }
 
-                Intent intent = identifyType(currUser, enteredEmail, userRepository);
+                Intent intent = identifyType(currUser, enteredEmail);
                 if(intent != null){
                     startActivity(intent);
                 } else{
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Intent identifyType(Users currUser, String email, UserRepository fakeDB){
+    private Intent identifyType(Users currUser, String email){
         Intent intent = null;
         if (currUser instanceof Patient) {
             intent = new Intent(MainActivity.this, PatientScreen.class);
@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(intent != null){
             intent.putExtra("user_email", email);
-            FakeUserRepository fakeDB1 = (FakeUserRepository) fakeDB;
-            intent.putExtra("fakeDB", fakeDB1);
         }
         return intent;
     }

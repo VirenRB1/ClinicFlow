@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.clinicflow.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
@@ -49,7 +50,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
         //email check is not done here because no way to get to this screen without logging in
         //All checks regarding email validation done in MainActivity
-        UserRepository repo = new FakeUserRepository();
+        UserRepository repo = ((ClinicFlowApp) getApplication()).getUserRepository();
 
         String patientFullName = getPatientName(repo, email);
         //Null check?
