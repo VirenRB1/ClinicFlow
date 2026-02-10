@@ -4,14 +4,15 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
 import java.util.List;
 
 public class AuthService {
-    private final FakeUserRepository DATABASE;
+    private final UserRepository DATABASE;
 
-    public AuthService(FakeUserRepository userRepository) {
+    public AuthService(UserRepository userRepository) {
         this.DATABASE = userRepository;
     }
 

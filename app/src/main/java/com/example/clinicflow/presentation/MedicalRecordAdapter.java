@@ -47,8 +47,9 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
     @Override
     public int getItemCount() {
-        return records.size();
+        return records == null ? 0 : records.size();
     }
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
