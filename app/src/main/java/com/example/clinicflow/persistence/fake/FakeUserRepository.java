@@ -43,9 +43,9 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     private void initializeFakePatients(){
         patients = new ArrayList<>();
-        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female",28,123456,"No significant history",5551234));
-        patients.add(new Patient("Bob","Davis","bobdavis@gmail.com","pass5","Male",35,654321,"Allergic to penicillin",5555678));
-        patients.add(new Patient("Charlie","Wilson","charliewilson@gmail.com","pass6","Male",45,789012,"Diabetic",5559012));
+        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female",28,123456,5551234));
+        patients.add(new Patient("Bob","Davis","bobdavis@gmail.com","pass5","Male",35,654321,5555678));
+        patients.add(new Patient("Charlie","Wilson","charliewilson@gmail.com","pass6","Male",45,789012,5559012));
     }
 
     private void initializeFakeStaffs(){
