@@ -42,6 +42,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyRecords.this, PatientScreen.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });

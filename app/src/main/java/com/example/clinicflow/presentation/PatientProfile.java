@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 public class PatientProfile extends AppCompatActivity{
+    public static final String EXTRA_USER_EMAIL = "user_email";
     Button logout;
 
     Button back;
@@ -38,6 +39,7 @@ public class PatientProfile extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientProfile.this, PatientScreen.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });

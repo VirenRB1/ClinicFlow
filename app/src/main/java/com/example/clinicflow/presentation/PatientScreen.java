@@ -18,6 +18,7 @@ import com.example.clinicflow.R;
 public class PatientScreen extends AppCompatActivity {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
+    public static final String EXTRA_DB = "fakeDB";
     Button logout;
 
     Button myApts;
@@ -51,6 +52,7 @@ public class PatientScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientScreen.this, MyAppointments.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -60,6 +62,7 @@ public class PatientScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PatientScreen.this, MyRecords.class);
                 intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
+                intent.putExtra(EXTRA_DB, getIntent().getStringExtra(EXTRA_DB));
                 startActivity(intent);
             }
         });
@@ -68,6 +71,7 @@ public class PatientScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientScreen.this, BookAppointment.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -76,6 +80,7 @@ public class PatientScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientScreen.this, PatientProfile.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });

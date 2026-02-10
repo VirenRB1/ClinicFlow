@@ -7,13 +7,14 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FakeUserRepository implements UserRepository {
+public class FakeUserRepository implements UserRepository, Serializable {
 
     List <Doctor> doctors;
     List <Patient> patients;

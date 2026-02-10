@@ -19,6 +19,7 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import com.example.clinicflow.presentation.DoctorScreen;
 import com.example.clinicflow.presentation.PatientScreen;
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         FakeUserRepository userRepository = new FakeUserRepository();
 
         AuthService authService = new AuthService(userRepository);
-        MedicalHistory medicalHistory = new MedicalHistory(userRepository);
 
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
                 }
 
-                Intent intent = identifyType(currUser, enteredEmail);
+                Intent intent = identifyType(currUser, enteredEmail, userRepository);
                 if(intent != null){
                     startActivity(intent);
                 } else{
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Intent identifyType(Users currUser, String email){
+    private Intent identifyType(Users currUser, String email, UserRepository fakeDB){
         Intent intent = null;
         if (currUser instanceof Patient) {
             intent = new Intent(MainActivity.this, PatientScreen.class);
@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(intent != null){
             intent.putExtra("user_email", email);
+            FakeUserRepository fakeDB1 = (FakeUserRepository) fakeDB;
+            intent.putExtra("fakeDB", fakeDB1);
         }
         return intent;
     }
