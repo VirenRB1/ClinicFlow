@@ -28,61 +28,14 @@
     <string name="default_purpose">Check Up</string>
     <string name="notes_title">Doctor\'s Notes</string>
     <string name="default_doc_note">Chief Complaint:
-The patient presented to the clinic reporting symptoms consistent with an acute upper respiratory concern. Primary complaints included a sore throat, discomfort with swallowing, and general malaise. The patient reported that symptoms began several days prior to the visit and had progressively worsened.
-
-History of Present Illness:
-The patient stated that the sore throat was persistent throughout the day and was accompanied by intermittent fatigue. The patient denied severe shortness of breath or chest pain. Mild headache and nasal congestion were noted. The patient reported no recent travel but did note possible exposure to individuals with similar symptoms. No significant alleviating factors were identified prior to presentation.
-
-Past Medical History:
-Reviewed and found to be non-contributory to the current condition. No known chronic illnesses affecting the present complaint were reported.
-
-Medications:
-Reviewed during the visit. The patient reported use of over-the-counter pain relievers with minimal symptom relief.
-
-Allergies:
-No known drug allergies reported.
-
-Review of Systems:
-
-Constitutional: Mild fatigue reported
-
-ENT: Sore throat, mild congestion
-
-Respiratory: No acute distress noted
-
-Cardiovascular: Denies chest pain or palpitations
-
-Gastrointestinal: No nausea or vomiting reported
-
-All other systems were reviewed and were negative.
-
-Physical Examination:
-
-General: Patient appeared alert, oriented, and in no acute distress
-
-Vital Signs: Within normal limits
-
-Head and Neck: Mild erythema noted in the posterior oropharynx
-
-Throat: No visible exudates, mild inflammation present
-
-Lungs: Clear to auscultation bilaterally
-
-Heart: Regular rate and rhythm
-
-Diagnostic Evaluation:
-A focused clinical examination was performed. Based on symptom presentation and physical findings, the likelihood of a viral versus bacterial etiology was evaluated. No immediate laboratory testing was deemed necessary at this time.
-
-Assessment / Diagnosis:
-Based on the patient’s reported symptoms and physical examination findings, the condition was assessed as acute pharyngitis, most consistent with a viral etiology.
-
-Treatment Plan:
-The patient was advised on supportive care measures including adequate hydration, rest, and symptomatic relief. A short course of medication was prescribed to address inflammation and discomfort. The patient was instructed on appropriate medication usage and potential side effects.
-
-Patient Education:
-The patient was counseled on symptom monitoring and advised to seek follow-up care if symptoms worsened, persisted beyond the expected timeframe, or if new symptoms developed. Warning signs requiring medical attention were reviewed.
-
-Disposition:
-The patient was discharged from the clinic in stable condition with instructions to continue treatment as directed. A return-to-care recommendation was provided if symptoms fail to improve.</string>
+        The patient presented to the clinic reporting symptoms consistent with an acute upper respiratory concern. Primary complaints included a sore throat, discomfort with swallowing, and general malaise. The patient reported that symptoms began several days prior to the visit and had progressively worsened.
+        History of Present Illness:
+        The patient stated that the sore throat was persistent throughout the day and was accompanied by intermittent fatigue. The patient denied severe shortness of breath or chest pain. Mild headache and nasal congestion were noted. The patient reported no recent travel but did note possible exposure to individuals with similar symptoms. No significant alleviating factors were identified prior to presentation.
+    </string>
+    <string name="first_hint">First Name</string>
+    <string name="last_hint">Last Name</string>
+    <string name="gender_hint">Gender</string>
+    <string name="age_hint">Age (In years)</string>
+    <string name="hcard_hint">HealthCard Number</string>
 
 </resources>
