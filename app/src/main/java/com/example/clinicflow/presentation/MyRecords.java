@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
+import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
@@ -25,6 +26,10 @@ import java.util.List;
 public class MyRecords extends AppCompatActivity implements RecyclerViewInterface{
 
     public static final String EXTRA_USER_EMAIL = "user_email";
+    public static final String EXTRA_DB = "fakeDB";
+
+    FakeUserRepository repo = (FakeUserRepository) getIntent().getSerializableExtra(EXTRA_DB);
+    MedicalHistory history = new MedicalHistory(repo);
 
     List<MedicalRecord> records;
     Button back;
@@ -49,12 +54,11 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
         //email check is not done here because no way to get to this screen without logging in
         //All checks regarding email validation done in MainActivity
-        UserRepository repo = new FakeUserRepository();
-
-        String patientFullName = getPatientName(repo, email);
+        String patientFullName = history.getPatientNameByEmail(email);
         //Null check?
 
-        records = repo.getMedicalRecords(patientFullName);
+        records = history.getSortedMedicalHistoryForPatient(patientFullName);
+
 
         MedicalRecordAdapter adapter = new MedicalRecordAdapter(this,records, this);
 
@@ -74,16 +78,6 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    private String getPatientName(UserRepository repo, String email) {
-        String fullName = null;
-        for (Patient p : repo.getAllPatients()) {
-            if (p.getEmail().equalsIgnoreCase(email)) {
-                fullName = p.getFullName();
-            }
-        }
-        return fullName;
     }
 
     @Override
