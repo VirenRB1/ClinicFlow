@@ -12,30 +12,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Medical Record Details"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <ScrollView
-        android:id="@+id/detailScroll"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:fillViewport="true"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/detailTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <!-- Summary card -->
-            <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -52,12 +48,15 @@
                         android:id="@+id/detailDoctorName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
                         android:text="Dr. John Doe"
+                        android:textColor="@color/blue"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/detailDate"
@@ -73,55 +72,67 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Patient -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Patient"
+                android:text="@string/patient"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
-                android:textSize="14sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/detailPatientName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="Alice Brown"
+                android:text="@string/default_patient"
                 android:textSize="16sp" />
 
-            <!-- Purpose -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Purpose"
+                android:text="@string/purpose"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
-                android:textSize="14sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/detailPurpose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="Check-up"
+                android:text="@string/default_purpose"
                 android:textSize="16sp" />
 
-            <!-- Doctor Note -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Doctor's Notes"
+                android:text="@string/notes_title"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
-                android:textSize="14sp" />
+                android:textSize="20sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="12dp"
+            android:fillViewport="true"
+            app:layout_constraintHeight_default="wrap"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/detailDoctorNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="Regular check-up. Patient is doing well."
+                android:text="@string/default_doc_note"
                 android:textSize="16sp" />
+        </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
