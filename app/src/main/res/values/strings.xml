@@ -37,5 +37,5 @@
     <string name="gender_hint">Gender</string>
     <string name="age_hint">Age (In years)</string>
     <string name="hcard_hint">HealthCard Number</string>
-
+    <string name="phone_hint">Phone Number</string>
 </resources>
