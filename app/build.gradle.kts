@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.cardview)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
