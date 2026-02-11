@@ -23,6 +23,7 @@ import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import com.example.clinicflow.presentation.DoctorScreen;
 import com.example.clinicflow.presentation.PatientScreen;
+import com.example.clinicflow.presentation.SignupScreen;
 import com.example.clinicflow.presentation.StaffScreen;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,26 +32,29 @@ public class MainActivity extends AppCompatActivity {
     EditText password;
     Button loginBtn;
 
+    Button signupBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_screen);
 
-        // Create a single instance of the repository
-        FakeUserRepository userRepository = new FakeUserRepository();
-
+        ClinicFlowApp app = (ClinicFlowApp) getApplication();
+        UserRepository userRepository = app.getUserRepository();
         AuthService authService = new AuthService(userRepository);
+
 
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
         loginBtn = findViewById(R.id.loginButton);
+        signupBtn = findViewById(R.id.signUpButton);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String enteredEmail = email.getText().toString();
-                String enteredPW = password.getText().toString();
+                String enteredEmail = email.getText().toString().trim();
+                String enteredPW = password.getText().toString().trim();
 
                 Users currUser = authService.authenticate(enteredEmail, enteredPW);
 
@@ -65,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Intent is null", Toast.LENGTH_LONG).show();
                 }
 
+            }
+        });
+
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignupScreen.class);
+                startActivity(intent);
             }
         });
 

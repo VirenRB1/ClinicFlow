@@ -37,6 +37,7 @@
         <activity android:name=".presentation.DocPatientRecords" />
         <activity android:name=".presentation.MyRecords"/>
         <activity android:name=".presentation.MedicalRecordDetail"/>
+        <activity android:name=".presentation.SignupScreen"/>
     </application>
 
 </manifest>
