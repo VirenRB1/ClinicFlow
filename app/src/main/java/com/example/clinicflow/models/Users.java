@@ -1,32 +1,17 @@
 package com.example.clinicflow.models;
 
 public abstract class Users {
-    private String firstName;
-    private String lastName;
     private String email;
     private String password;
     private String gender;   
-    private int age;
+    private String age;
 
-    public Users(String firstName, String lastName, String email, String password, String gender, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Users(String email, String password,
+                 String gender, String age) {
         this.email = email;
         this.password = password;
         this.gender = gender;
         this.age = age;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getFullName() {
-        return firstName + " " + lastName;
     }
 
     public String getEmail() {
@@ -41,7 +26,7 @@ public abstract class Users {
         return gender;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 }
