@@ -17,4 +17,25 @@
     <string name="manage">Manage Appointments</string>
     <string name="view_patients">View Patients</string>
     <string name="view_docs">View Physicians</string>
+    <string name="under_Con">Under Construction</string>
+    <string name="back">Back</string>
+    <string name="my_records">My Records</string>
+    <string name="my_rec_detail">Tap a record to view details</string>
+    <string name="no_records">No records were found</string>
+    <string name="patient">Patient</string>
+    <string name="default_patient">Alice Brown</string>
+    <string name="purpose">Purpose</string>
+    <string name="default_purpose">Check Up</string>
+    <string name="notes_title">Doctor\'s Notes</string>
+    <string name="default_doc_note">Chief Complaint:
+        The patient presented to the clinic reporting symptoms consistent with an acute upper respiratory concern. Primary complaints included a sore throat, discomfort with swallowing, and general malaise. The patient reported that symptoms began several days prior to the visit and had progressively worsened.
+        History of Present Illness:
+        The patient stated that the sore throat was persistent throughout the day and was accompanied by intermittent fatigue. The patient denied severe shortness of breath or chest pain. Mild headache and nasal congestion were noted. The patient reported no recent travel but did note possible exposure to individuals with similar symptoms. No significant alleviating factors were identified prior to presentation.
+    </string>
+    <string name="first_hint">First Name</string>
+    <string name="last_hint">Last Name</string>
+    <string name="gender_hint">Gender</string>
+    <string name="age_hint">Age (In years)</string>
+    <string name="hcard_hint">HealthCard Number</string>
+    <string name="phone_hint">Phone Number</string>
 </resources>

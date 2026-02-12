@@ -14,34 +14,27 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
-
-public class DoctorScreen extends AppCompatActivity {
+public class MyAppointments extends AppCompatActivity{
+    public static final String EXTRA_USER_EMAIL = "user_email";
+    ImageButton profile;
 
     Button logout;
 
-    ImageButton profile;
-
-    Button mySchd;
-
-    Button setAvail;
-
-    Button patientRecs;
-
+    Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.doctor_landing);
+        setContentView(R.layout.my_appointments);
 
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
-        mySchd = findViewById(R.id.myScheduleButton);
-        setAvail = findViewById(R.id.setAvailabilityButton);
-        patientRecs = findViewById(R.id.patientRecordsButton);
+        back = findViewById(R.id.backButton);
+        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, MainActivity.class);
+                Intent intent = new Intent(MyAppointments.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -49,31 +42,17 @@ public class DoctorScreen extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, DoctorProfile.class);
+                Intent intent = new Intent(MyAppointments.this, PatientProfile.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
 
-        mySchd.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, MySchedule.class);
-                startActivity(intent);
-            }
-        });
-
-        setAvail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, SetAvailability.class);
-                startActivity(intent);
-            }
-        });
-
-        patientRecs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, DocPatientRecords.class);
+                Intent intent = new Intent(MyAppointments.this, PatientScreen.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
