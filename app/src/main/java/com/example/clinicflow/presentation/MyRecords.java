@@ -92,6 +92,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         Intent intent = new Intent(MyRecords.this, MedicalRecordDetail.class);
 
         intent.putExtra("Record", records.get(position));
+        intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
 
         startActivity(intent);
     }
