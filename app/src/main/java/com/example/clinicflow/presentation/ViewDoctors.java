@@ -14,34 +14,26 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
-
-public class DoctorScreen extends AppCompatActivity {
-
-    Button logout;
+public class ViewDoctors extends AppCompatActivity{
 
     ImageButton profile;
 
-    Button mySchd;
+    Button logout;
 
-    Button setAvail;
-
-    Button patientRecs;
-
+    Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.doctor_landing);
+        setContentView(R.layout.view_physicians);
 
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
-        mySchd = findViewById(R.id.myScheduleButton);
-        setAvail = findViewById(R.id.setAvailabilityButton);
-        patientRecs = findViewById(R.id.patientRecordsButton);
+        back = findViewById(R.id.backButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, MainActivity.class);
+                Intent intent = new Intent(ViewDoctors.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -49,31 +41,15 @@ public class DoctorScreen extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, DoctorProfile.class);
+                Intent intent = new Intent(ViewDoctors.this, StaffProfile.class);
                 startActivity(intent);
             }
         });
 
-        mySchd.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, MySchedule.class);
-                startActivity(intent);
-            }
-        });
-
-        setAvail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, SetAvailability.class);
-                startActivity(intent);
-            }
-        });
-
-        patientRecs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, DocPatientRecords.class);
+                Intent intent = new Intent(ViewDoctors.this, StaffScreen.class);
                 startActivity(intent);
             }
         });
