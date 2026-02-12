@@ -18,6 +18,7 @@ public class ObjectCreation {
         }
         return false;
     }
+
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender, int age, int healthCardNum, int phoneNumber) {
         if (firstName == null || lastName == null || email == null || password == null || gender == null) {
             return false;
