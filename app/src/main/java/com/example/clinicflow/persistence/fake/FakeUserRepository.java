@@ -22,7 +22,6 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     HashMap<String, List<MedicalRecord>> medicalRecords;
 
-
     public FakeUserRepository() {
         createFakeData();
     }
@@ -37,8 +36,10 @@ public class FakeUserRepository implements UserRepository, Serializable {
     private void initializeFakeDoctors() {
         doctors = new ArrayList<>();
         doctors.add(new Doctor("John", "Doe", "johndoe@clinicdoc.com", "pass1", "Male", 25, "Cardiology", "LIC12345"));
-        doctors.add(new Doctor("Jane", "Smith", "janesmith@clinicdoc.com", "pass2", "Female", 30, "Neurology", "LIC67890"));
-        doctors.add(new Doctor("Emily", "Johnson", "emilyjohnson@clinicdoc.com", "pass3", "Female", 40, "Pediatrics", "LIC54321"));
+        doctors.add(
+                new Doctor("Jane", "Smith", "janesmith@clinicdoc.com", "pass2", "Female", 30, "Neurology", "LIC67890"));
+        doctors.add(new Doctor("Emily", "Johnson", "emilyjohnson@clinicdoc.com", "pass3", "Female", 40, "Pediatrics",
+                "LIC54321"));
     }
 
     private void initializeFakePatients() {
@@ -52,7 +53,8 @@ public class FakeUserRepository implements UserRepository, Serializable {
         staffs = new ArrayList<>();
         staffs.add(new Staff("Eve", "Miller", "evemiller@clinicstaff.com", "pass7", "Female", 32, "Receptionist"));
         staffs.add(new Staff("Frank", "Garcia", "frankgarcia@clinicstaff.com", "pass8", "Male", 29, "Receptionist"));
-        staffs.add(new Staff("Grace", "Martinez", "gracemartinez@clinicstaff.com", "pass9", "Female", 38, "Administrator"));
+        staffs.add(new Staff("Grace", "Martinez", "gracemartinez@clinicstaff.com", "pass9", "Female", 38,
+                "Administrator"));
     }
 
     private void intializeFakeMedicalRecords() {
@@ -61,9 +63,12 @@ public class FakeUserRepository implements UserRepository, Serializable {
         medicalRecords.put("Bob Davis", new ArrayList<>());
         medicalRecords.put("Charlie Wilson", new ArrayList<>());
 
-        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "Check-up", "Regular check-up", new Date());
-        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "Follow-up", "Follow-up visit", new Date());
-        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "Prescription", "Prescribed medication", new Date());
+        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "Check-up", "Regular check-up",
+                new Date());
+        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "Follow-up", "Follow-up visit",
+                new Date());
+        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "Prescription",
+                "Prescribed medication", new Date());
 
         medicalRecords.get("Alice Brown").add(record1);
         medicalRecords.get("Alice Brown").add(record2);
@@ -73,7 +78,6 @@ public class FakeUserRepository implements UserRepository, Serializable {
     public List<MedicalRecord> getMedicalRecords(String patientName) {
         return medicalRecords.getOrDefault(patientName, new ArrayList<>());
     }
-
 
     @Override
     public List<Patient> getAllPatients() {
@@ -89,6 +93,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
     public List<Staff> getAllStaffs() {
         return Collections.unmodifiableList(staffs);
     }
+
     @Override
     public void addPatient(Patient patient) {
         patients.add(patient);
@@ -105,4 +110,3 @@ public class FakeUserRepository implements UserRepository, Serializable {
     }
 
 }
-

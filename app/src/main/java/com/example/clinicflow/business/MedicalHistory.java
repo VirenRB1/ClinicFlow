@@ -14,11 +14,6 @@ public class MedicalHistory {
         this.DATABASE = userRepository;
     }
 
-    // Use this method to get a list of MedicalRecord in the frontend
-    //Please note the list could also be empty so handle that case
-    // Alice Brown has 2 records, Charlie Wilson has 1 record and Bob Davis has no records
-    //The function will sort the records by date in descending order so the latest record will be first
-
     private Patient checkPatientExists(String patientEmail) {
         return DATABASE.getPatientByEmail(patientEmail);
     }
@@ -27,7 +22,7 @@ public class MedicalHistory {
         Patient patient = checkPatientExists(patientEmail);
         if (patient == null) {
             return null;
-        }else{
+        } else {
             String patientName = patient.getFullName();
             return getSortedMedicalHistoryForPatient(patientName);
         }
@@ -37,7 +32,7 @@ public class MedicalHistory {
         List<MedicalRecord> medicalRecords = DATABASE.getMedicalRecords(patientName);
 
         // handling null cases
-        if( medicalRecords == null){
+        if (medicalRecords == null) {
             return new ArrayList<>();
         }
 

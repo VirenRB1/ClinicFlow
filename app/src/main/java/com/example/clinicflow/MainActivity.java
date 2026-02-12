@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         UserRepository userRepository = app.getUserRepository();
         AuthService authService = new AuthService(userRepository);
 
-
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
         loginBtn = findViewById(R.id.loginButton);
@@ -58,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Users currUser = authService.authenticate(enteredEmail, enteredPW);
 
-                if(currUser == null){
+                if (currUser == null) {
                     Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = identifyType(currUser, enteredEmail);
-                if(intent != null){
+                if (intent != null) {
                     startActivity(intent);
-                } else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Intent is null", Toast.LENGTH_LONG).show();
                 }
 
@@ -87,17 +86,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Intent identifyType(Users currUser, String email){
+    private Intent identifyType(Users currUser, String email) {
         Intent intent = null;
         if (currUser instanceof Patient) {
             intent = new Intent(MainActivity.this, PatientScreen.class);
         } else if (currUser instanceof Doctor) {
             intent = new Intent(MainActivity.this, DoctorScreen.class);
         } else if (currUser instanceof Staff) {
-           intent = new Intent(MainActivity.this, StaffScreen.class);
+            intent = new Intent(MainActivity.this, StaffScreen.class);
         }
 
-        if(intent != null){
+        if (intent != null) {
             intent.putExtra("user_email", email);
         }
         return intent;

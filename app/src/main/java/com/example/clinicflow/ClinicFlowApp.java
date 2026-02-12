@@ -3,7 +3,7 @@ package com.example.clinicflow;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
-public class ClinicFlowApp extends android.app.Application{
+public class ClinicFlowApp extends android.app.Application {
     private UserRepository userRepository;
 
     @Override

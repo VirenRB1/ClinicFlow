@@ -42,4 +42,3 @@ public class MedicalRecord implements Serializable {
     }
 
 }
-

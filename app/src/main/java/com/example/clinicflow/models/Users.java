@@ -5,7 +5,7 @@ public abstract class Users {
     private String lastName;
     private String email;
     private String password;
-    private String gender;   
+    private String gender;
     private int age;
 
     public Users(String firstName, String lastName, String email, String password, String gender, int age) {
@@ -45,5 +45,3 @@ public abstract class Users {
         return age;
     }
 }
-
-

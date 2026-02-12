@@ -8,9 +8,12 @@ import com.example.clinicflow.models.Staff;
 import java.util.List;
 
 public interface UserRepository {
-    List <Patient> getAllPatients();
-    List <Doctor> getAllDoctors();
-    List <Staff> getAllStaffs();
+    List<Patient> getAllPatients();
+
+    List<Doctor> getAllDoctors();
+
+    List<Staff> getAllStaffs();
+
     void addPatient(Patient patient);
 
     Patient getPatientByEmail(String email);
