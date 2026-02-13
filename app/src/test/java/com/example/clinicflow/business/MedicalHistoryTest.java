@@ -1,6 +1,5 @@
 package com.example.clinicflow.business;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,17 +20,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+// Unit tests for MedicalHistory
 public class MedicalHistoryTest {
 
     private UserRepository mockRepo;
     private MedicalHistory medicalHistory;
 
+    // create a fresh mock and service before each test
     @Before
     public void setup() {
         mockRepo = mock(UserRepository.class);
         medicalHistory = new MedicalHistory(mockRepo);
     }
 
+    // records should come back sorted by date (newest first)
     @Test
     public void testGetSortedMedicalHistoryForPatient_SortsByDateDescending() {
         // Arrange
@@ -68,23 +70,26 @@ public class MedicalHistoryTest {
         // Act
         List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient(patientName);
 
-        // Assert
+        // check order
         assertEquals(3, result.size());
-        assertEquals(record3, result.get(0)); // newest
+        assertEquals(record3, result.get(0));
         assertEquals(record2, result.get(1));
-        assertEquals(record1, result.get(2)); // oldest
+        assertEquals(record1, result.get(2));
         verify(mockRepo).getMedicalRecords(patientName);
     }
 
+    // repo returns null → should handle it and give empty list
     @Test
     public void testGetSortedMedicalHistoryForPatient_NullReturnsEmpty() {
         when(mockRepo.getMedicalRecords(anyString())).thenReturn(null);
+
         List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient("jefferey");
+
         assertNotNull(result);
         assertEquals(0, result.size());
     }
 
-
+    // repo returns empty list → result should stay empty
     @Test
     public void testGetSortedMedicalHistoryForPatient_EmptyListReturnsEmpty() {
         // Arrange
@@ -95,16 +100,16 @@ public class MedicalHistoryTest {
         // Act
         List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient(patientName);
 
-        // Assert
+        // still empty
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
         verify(mockRepo).getMedicalRecords(patientName);
     }
 
+    // helper to make dates easier to read in tests
     private Date getDate(int year, int month, int day) {
         var ins = (LocalDate.of(year, month, day).atStartOfDay().toInstant(ZoneOffset.UTC));
         return Date.from(ins);
     }
-
 }

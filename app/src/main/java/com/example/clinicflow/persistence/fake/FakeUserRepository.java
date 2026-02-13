@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
+// Fake temporary database
 public class FakeUserRepository implements UserRepository, Serializable {
-
+//Lists of doctors, patients and staffs
     List<Doctor> doctors;
     List<Patient> patients;
     List<Staff> staffs;
@@ -26,13 +26,14 @@ public class FakeUserRepository implements UserRepository, Serializable {
         createFakeData();
     }
 
+    //Create database
     private void createFakeData() {
         initializeFakeDoctors();
         initializeFakePatients();
         initializeFakeStaffs();
         intializeFakeMedicalRecords();
     }
-
+    //Add doctors
     private void initializeFakeDoctors() {
         doctors = new ArrayList<>();
         doctors.add(new Doctor("John", "Doe", "johndoe@clinicdoc.com", "pass1", "Male", 25, "Cardiology", "LIC12345"));
@@ -41,14 +42,14 @@ public class FakeUserRepository implements UserRepository, Serializable {
         doctors.add(new Doctor("Emily", "Johnson", "emilyjohnson@clinicdoc.com", "pass3", "Female", 40, "Pediatrics",
                 "LIC54321"));
     }
-
+    // Add patienta
     private void initializeFakePatients() {
         patients = new ArrayList<>();
         patients.add(new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female", 28, 123456, 5551234));
         patients.add(new Patient("Bob", "Davis", "bobdavis@gmail.com", "pass5", "Male", 35, 654321, 5555678));
         patients.add(new Patient("Charlie", "Wilson", "charliewilson@gmail.com", "pass6", "Male", 45, 789012, 5559012));
     }
-
+    // Add staffs
     private void initializeFakeStaffs() {
         staffs = new ArrayList<>();
         staffs.add(new Staff("Eve", "Miller", "evemiller@clinicstaff.com", "pass7", "Female", 32, "Receptionist"));
@@ -56,7 +57,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         staffs.add(new Staff("Grace", "Martinez", "gracemartinez@clinicstaff.com", "pass9", "Female", 38,
                 "Administrator"));
     }
-
+    // Add medical records
     private void intializeFakeMedicalRecords() {
         medicalRecords = new HashMap<>();
         medicalRecords.put("Alice Brown", new ArrayList<>());
@@ -78,7 +79,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
     public List<MedicalRecord> getMedicalRecords(String patientName) {
         return medicalRecords.getOrDefault(patientName, new ArrayList<>());
     }
-
+    //  Get methods
     @Override
     public List<Patient> getAllPatients() {
         return Collections.unmodifiableList(patients);
@@ -94,11 +95,13 @@ public class FakeUserRepository implements UserRepository, Serializable {
         return Collections.unmodifiableList(staffs);
     }
 
+    // Add a patient to database
     @Override
     public void addPatient(Patient patient) {
         patients.add(patient);
     }
 
+    // Get a patient by email
     @Override
     public Patient getPatientByEmail(String email) {
         for (Patient patient : patients) {

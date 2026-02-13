@@ -6,14 +6,14 @@ import com.example.clinicflow.persistence.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//Patient medical record
 public class MedicalHistory {
     private final UserRepository DATABASE;
 
     public MedicalHistory(UserRepository userRepository) {
         this.DATABASE = userRepository;
     }
-
+//Get list of medical record based on patient name
     public List<MedicalRecord> getSortedMedicalHistoryForPatient(String patientName) {
         List<MedicalRecord> medicalRecords = DATABASE.getMedicalRecords(patientName);
 
