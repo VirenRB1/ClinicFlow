@@ -24,7 +24,7 @@
         android:id="@+id/myRecordsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="100dp"
         android:layout_marginEnd="100dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/my_records"
@@ -32,8 +32,8 @@
         android:textColor="@color/blue"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/parent"
-        app:layout_constraintStart_toStartOf="@id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

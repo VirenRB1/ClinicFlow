@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    >
 
     <application
-        android:name=".ClinicFlowApp"
+        android:name=".application.ClinicFlowApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClinicFlow" >
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,6 @@
         <activity android:name=".presentation.ViewDoctors" />
         <activity android:name=".presentation.MySchedule" />
         <activity android:name=".presentation.SetAvailability" />
-        <activity android:name=".presentation.DocPatientRecords" />
         <activity android:name=".presentation.MyRecords"/>
         <activity android:name=".presentation.MedicalRecordDetail"/>
         <activity android:name=".presentation.SignupScreen"/>

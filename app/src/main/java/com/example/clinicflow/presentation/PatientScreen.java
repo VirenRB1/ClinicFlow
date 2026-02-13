@@ -12,13 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 
 public class PatientScreen extends AppCompatActivity {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
-    public static final String EXTRA_DB = "fakeDB";
     Button logout;
 
     Button myApts;
@@ -44,7 +42,9 @@ public class PatientScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientScreen.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
             }
         });
 

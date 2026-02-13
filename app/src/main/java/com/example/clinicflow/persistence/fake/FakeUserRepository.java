@@ -13,57 +13,63 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
+// Fake temporary database
 public class FakeUserRepository implements UserRepository, Serializable {
-
-    List <Doctor> doctors;
-    List <Patient> patients;
-    List <Staff> staffs;
+//Lists of doctors, patients and staffs
+    List<Doctor> doctors;
+    List<Patient> patients;
+    List<Staff> staffs;
 
     HashMap<String, List<MedicalRecord>> medicalRecords;
 
-
-    public FakeUserRepository(){
+    public FakeUserRepository() {
         createFakeData();
     }
 
-    private void createFakeData(){
+    //Create database
+    private void createFakeData() {
         initializeFakeDoctors();
         initializeFakePatients();
         initializeFakeStaffs();
         intializeFakeMedicalRecords();
     }
-
-    private void initializeFakeDoctors(){
+    //Add doctors
+    private void initializeFakeDoctors() {
         doctors = new ArrayList<>();
-        doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male",25,"Cardiology","LIC12345"));
-        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female",30,"Neurology","LIC67890"));
-        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female",40,"Pediatrics","LIC54321"));
+        doctors.add(new Doctor("John", "Doe", "johndoe@clinicdoc.com", "pass1", "Male", 25, "Cardiology", "LIC12345"));
+        doctors.add(
+                new Doctor("Jane", "Smith", "janesmith@clinicdoc.com", "pass2", "Female", 30, "Neurology", "LIC67890"));
+        doctors.add(new Doctor("Emily", "Johnson", "emilyjohnson@clinicdoc.com", "pass3", "Female", 40, "Pediatrics",
+                "LIC54321"));
     }
-
-    private void initializeFakePatients(){
+    // Add patienta
+    private void initializeFakePatients() {
         patients = new ArrayList<>();
-        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female",28,123456,5551234));
-        patients.add(new Patient("Bob","Davis","bobdavis@gmail.com","pass5","Male",35,654321,5555678));
-        patients.add(new Patient("Charlie","Wilson","charliewilson@gmail.com","pass6","Male",45,789012,5559012));
+        patients.add(new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female", 28, 123456, 5551234));
+        patients.add(new Patient("Bob", "Davis", "bobdavis@gmail.com", "pass5", "Male", 35, 654321, 5555678));
+        patients.add(new Patient("Charlie", "Wilson", "charliewilson@gmail.com", "pass6", "Male", 45, 789012, 5559012));
     }
-
-    private void initializeFakeStaffs(){
+    // Add staffs
+    private void initializeFakeStaffs() {
         staffs = new ArrayList<>();
-        staffs.add(new Staff("Eve","Miller","evemiller@clinicstaff.com","pass7","Female",32,"Receptionist"));
-        staffs.add(new Staff("Frank","Garcia","frankgarcia@clinicstaff.com","pass8","Male",29,"Receptionist"));
-        staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicstaff.com","pass9","Female",38,"Administrator"));
+        staffs.add(new Staff("Eve", "Miller", "evemiller@clinicstaff.com", "pass7", "Female", 32, "Receptionist"));
+        staffs.add(new Staff("Frank", "Garcia", "frankgarcia@clinicstaff.com", "pass8", "Male", 29, "Receptionist"));
+        staffs.add(new Staff("Grace", "Martinez", "gracemartinez@clinicstaff.com", "pass9", "Female", 38,
+                "Administrator"));
     }
-
-    private void intializeFakeMedicalRecords(){
+    // Add medical records
+    private void intializeFakeMedicalRecords() {
         medicalRecords = new HashMap<>();
         medicalRecords.put("Alice Brown", new ArrayList<>());
         medicalRecords.put("Bob Davis", new ArrayList<>());
         medicalRecords.put("Charlie Wilson", new ArrayList<>());
 
-        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "Check-up", "Regular check-up", new Date());
-        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "Follow-up", "Follow-up visit", new Date());
-        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "Prescription", "Prescribed medication", new Date());
+        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "Check-up", "Regular check-up",
+                new Date());
+        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "Follow-up", "Follow-up visit",
+                new Date());
+        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "Prescription",
+                "Prescribed medication", new Date());
 
         medicalRecords.get("Alice Brown").add(record1);
         medicalRecords.get("Alice Brown").add(record2);
@@ -73,98 +79,37 @@ public class FakeUserRepository implements UserRepository, Serializable {
     public List<MedicalRecord> getMedicalRecords(String patientName) {
         return medicalRecords.getOrDefault(patientName, new ArrayList<>());
     }
-
-
+    //  Get methods
     @Override
-    public List <Patient> getAllPatients() {
+    public List<Patient> getAllPatients() {
         return Collections.unmodifiableList(patients);
     }
 
     @Override
-    public List <Doctor> getAllDoctors() {
+    public List<Doctor> getAllDoctors() {
         return Collections.unmodifiableList(doctors);
     }
 
     @Override
-    public List <Staff> getAllStaffs() {
+    public List<Staff> getAllStaffs() {
         return Collections.unmodifiableList(staffs);
     }
 
+    // Add a patient to database
     @Override
-    public void addDoctor(Doctor doctor){
-        doctors.add(doctor);
-    }
-
-    @Override
-    public void addPatient(Patient patient){
+    public void addPatient(Patient patient) {
         patients.add(patient);
     }
 
+    // Get a patient by email
     @Override
-    public void addStaff(Staff staff){
-        staffs.add(staff);
-    }
-
-    @Override
-    public Doctor getDoctorByFullName(String fullName){
-        for (Doctor doctor : doctors) {
-            if (doctor.getFullName().equals(fullName)) {
-                return doctor;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Patient getPatientByFullName(String fullName){
+    public Patient getPatientByEmail(String email) {
         for (Patient patient : patients) {
-            if (patient.getFullName().equals(fullName)) {
+            if (patient.getEmail().equals(email)) {
                 return patient;
             }
         }
         return null;
     }
 
-    @Override
-    public Staff getStaffByFullName(String fullName){
-        for (Staff staff : staffs) {
-            if (staff.getFullName().equals(fullName)) {
-                return staff;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean deleteDoctorByFullName(String fullName){
-        for (Doctor doctor : doctors) {
-            if (doctor.getFullName().equals(fullName)) {
-                doctors.remove(doctor);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean deletePatientByFullName(String fullName){
-        for (Patient patient : patients) {
-            if (patient.getFullName().equals(fullName)) {
-                patients.remove(patient);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean deleteStaffByFullName(String fullName){
-        for (Staff staff : staffs) {
-            if (staff.getFullName().equals(fullName)) {
-                staffs.remove(staff);
-                return true;
-            }
-        }
-        return false;
-    }
 }

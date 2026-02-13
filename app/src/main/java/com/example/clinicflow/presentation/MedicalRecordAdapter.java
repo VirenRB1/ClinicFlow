@@ -12,11 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.models.MedicalRecord;
-import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdapter.MyViewHolder> {
     private final RecyclerViewInterface recyclerViewInterface;

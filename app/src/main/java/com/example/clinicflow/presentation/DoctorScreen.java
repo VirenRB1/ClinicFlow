@@ -1,5 +1,7 @@
 package com.example.clinicflow.presentation;
 
+import static com.example.clinicflow.presentation.PatientScreen.EXTRA_USER_EMAIL;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +14,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 
 public class DoctorScreen extends AppCompatActivity {
 
+    public static final String DOCTOR = "Doctor";
     Button logout;
 
     ImageButton profile;
@@ -38,11 +40,14 @@ public class DoctorScreen extends AppCompatActivity {
         setAvail = findViewById(R.id.setAvailabilityButton);
         patientRecs = findViewById(R.id.patientRecordsButton);
 
+        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DoctorScreen.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
             }
         });
 
@@ -73,7 +78,8 @@ public class DoctorScreen extends AppCompatActivity {
         patientRecs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, DocPatientRecords.class);
+                Intent intent = new Intent(DoctorScreen.this, ViewPatients.class);
+                intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });

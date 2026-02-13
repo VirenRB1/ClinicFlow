@@ -12,7 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 public class ManageAppointments extends AppCompatActivity{
 
@@ -34,7 +33,9 @@ public class ManageAppointments extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ManageAppointments.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
             }
         });
 
@@ -49,8 +50,7 @@ public class ManageAppointments extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ManageAppointments.this, StaffScreen.class);
-                startActivity(intent);
+                finish();
             }
         });
 

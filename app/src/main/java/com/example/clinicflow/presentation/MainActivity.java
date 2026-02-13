@@ -1,4 +1,4 @@
-package com.example.clinicflow;
+package com.example.clinicflow.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,18 +13,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.clinicflow.application.ClinicFlowApp;
+import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
-import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
-import com.example.clinicflow.presentation.DoctorScreen;
-import com.example.clinicflow.presentation.PatientScreen;
-import com.example.clinicflow.presentation.SignupScreen;
-import com.example.clinicflow.presentation.StaffScreen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         UserRepository userRepository = app.getUserRepository();
         AuthService authService = new AuthService(userRepository);
 
-
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
         loginBtn = findViewById(R.id.loginButton);
@@ -58,14 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Users currUser = authService.authenticate(enteredEmail, enteredPW);
 
-                if(currUser == null){
-                    Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
+                if (currUser == null) {
+                    Toast.makeText(getApplicationContext(), "No Such Account", Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = identifyType(currUser, enteredEmail);
-                if(intent != null){
+                if (intent != null) {
                     startActivity(intent);
-                } else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Intent is null", Toast.LENGTH_LONG).show();
                 }
 
@@ -87,17 +82,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Intent identifyType(Users currUser, String email){
+    private Intent identifyType(Users currUser, String email) {
         Intent intent = null;
         if (currUser instanceof Patient) {
             intent = new Intent(MainActivity.this, PatientScreen.class);
         } else if (currUser instanceof Doctor) {
             intent = new Intent(MainActivity.this, DoctorScreen.class);
         } else if (currUser instanceof Staff) {
-           intent = new Intent(MainActivity.this, StaffScreen.class);
+            intent = new Intent(MainActivity.this, StaffScreen.class);
         }
 
-        if(intent != null){
+        if (intent != null) {
             intent.putExtra("user_email", email);
         }
         return intent;

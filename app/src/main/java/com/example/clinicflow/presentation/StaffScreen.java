@@ -12,10 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 
 public class StaffScreen extends AppCompatActivity {
+
+    public static final String EXTRA_USER_EMAIL = "user_email";
 
     Button logout;
 
@@ -32,7 +33,7 @@ public class StaffScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.staff_landing);
 
-        String email = getIntent().getStringExtra("user_email");
+        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
 
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
@@ -44,7 +45,9 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
             }
         });
 
@@ -52,6 +55,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, StaffProfile.class);
+                intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });
@@ -60,6 +64,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, ManageAppointments.class);
+                intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });
@@ -68,6 +73,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, ViewPatients.class);
+                intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });
@@ -76,6 +82,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, ViewDoctors.class);
+                intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });

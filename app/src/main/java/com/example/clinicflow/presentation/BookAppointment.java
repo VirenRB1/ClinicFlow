@@ -12,7 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 public class BookAppointment extends AppCompatActivity{
     public static final String EXTRA_USER_EMAIL = "user_email";
@@ -34,6 +33,7 @@ public class BookAppointment extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BookAppointment.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -50,9 +50,7 @@ public class BookAppointment extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BookAppointment.this, PatientScreen.class);
-                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
-                startActivity(intent);
+                finish();
             }
         });
 
