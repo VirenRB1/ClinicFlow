@@ -94,7 +94,7 @@
 
 ## High-Level Overview of Component Interaction
 
-### Dependency
+### General Flow
 - `presentation` → `business`
 - `business` → `persistence` (depends on `UserRepository` interface)
 - `FakeUserRepository` → implements `UserRepository`
