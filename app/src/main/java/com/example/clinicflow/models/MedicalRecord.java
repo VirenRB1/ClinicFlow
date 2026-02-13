@@ -2,7 +2,9 @@ package com.example.clinicflow.models;
 
 import java.io.Serializable;
 import java.util.Date;
-
+//Medical record
+//Name of doctor how wrote the record, and patient name whom it belong
+//Purpose of the record, date created and doctor note
 public class MedicalRecord implements Serializable {
     private String patientName;
     private String doctorName;
@@ -20,7 +22,7 @@ public class MedicalRecord implements Serializable {
         this.doctorNote = doctorNote;
         this.date = date;
     }
-
+// Get method
     public String getPatientName() {
         return patientName;
     }

@@ -6,7 +6,7 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 
 import java.util.List;
-
+//User repository
 public interface UserRepository {
     List<Patient> getAllPatients();
 

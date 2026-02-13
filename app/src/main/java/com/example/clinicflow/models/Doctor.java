@@ -1,5 +1,6 @@
 package com.example.clinicflow.models;
-
+// Doctor account
+//Contain specialization in doctor job and a unique license number
 public class Doctor extends Users {
     private String specialization; // also experience
     private String licenseNumber;

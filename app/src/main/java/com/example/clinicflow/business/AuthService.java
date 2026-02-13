@@ -8,13 +8,15 @@ import com.example.clinicflow.persistence.UserRepository;
 
 import java.util.List;
 
+//Authentication
+//Receive an email and password, return corresponding valid user or error if the input is invalid
 public class AuthService {
     private final UserRepository DATABASE;
 
     public AuthService(UserRepository userRepository) {
         this.DATABASE = userRepository;
     }
-
+//Accept email and password to check for validation
     public Users authenticate(String email, String password) {
         Users myUser;
         if (!formatCheck(email, password)) {
@@ -30,7 +32,9 @@ public class AuthService {
         }
         return myUser;
     }
+// Validate 3 type of user, compare the input email and password to the existing users in database
 
+    //Check patient
     public Users validatePatient(String email, String password) {
         List<Patient> patients = DATABASE.getAllPatients();
         for (Patient patient : patients) {
@@ -40,7 +44,7 @@ public class AuthService {
         }
         return null;
     }
-
+    // Check staff
     public Users validateStaff(String email, String password) {
         List<Staff> staffs = DATABASE.getAllStaffs();
         for (Staff staff : staffs) {
@@ -50,7 +54,7 @@ public class AuthService {
         }
         return null;
     }
-
+    // Check doctor
     public Users validateDoctor(String email, String password) {
         List<Doctor> doctors = DATABASE.getAllDoctors();
         for (Doctor doc : doctors) {
@@ -60,7 +64,7 @@ public class AuthService {
         }
         return null;
     }
-
+// Check valid email format
     public boolean formatCheck(String email, String password) {
         if (email == null || !email.contains("@") || !email.contains(".")) {
             return false;

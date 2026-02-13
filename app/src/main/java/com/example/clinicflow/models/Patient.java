@@ -1,5 +1,7 @@
 package com.example.clinicflow.models;
 
+// Patient account
+// Unique phone number and healthcard number
 public class Patient extends Users {
     private int healthcardNumber;
     private int phoneNumber;

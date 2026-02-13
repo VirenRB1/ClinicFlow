@@ -1,5 +1,7 @@
 package com.example.clinicflow.models;
 
+// User basic account
+//Contain authentication info email and password, and other personal info
 public abstract class Users {
     private String firstName;
     private String lastName;
@@ -16,7 +18,7 @@ public abstract class Users {
         this.gender = gender;
         this.age = age;
     }
-
+//Get methods
     public String getFirstName() {
         return firstName;
     }

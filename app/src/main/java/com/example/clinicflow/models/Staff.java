@@ -1,5 +1,6 @@
 package com.example.clinicflow.models;
-
+// Staff account
+// Position of staff
 public class Staff extends Users {
     private String position;
 
