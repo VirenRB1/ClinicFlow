@@ -28,7 +28,9 @@ public class PatientProfile extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientProfile.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
             }
         });
 
