@@ -17,6 +17,8 @@ import com.example.clinicflow.R;
 
 public class StaffScreen extends AppCompatActivity {
 
+    public static final String EXTRA_USER_EMAIL = "user_email";
+
     Button logout;
 
     ImageButton profile;
@@ -52,6 +54,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, StaffProfile.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -60,6 +63,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, ManageAppointments.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -68,6 +72,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, ViewPatients.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -76,6 +81,7 @@ public class StaffScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StaffScreen.this, ViewDoctors.class);
+                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });

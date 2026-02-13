@@ -1,5 +1,7 @@
 package com.example.clinicflow.presentation;
 
+import static com.example.clinicflow.presentation.ViewPatients.EXTRA_PATIENT_EMAIL;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +37,9 @@ public class MedicalRecordDetail extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MedicalRecordDetail.this, MyRecords.class);
                 intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
+                if(getIntent().getStringExtra(EXTRA_PATIENT_EMAIL) != null){
+                    intent.putExtra(EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(EXTRA_PATIENT_EMAIL));
+                }
                 startActivity(intent);
             }
         });

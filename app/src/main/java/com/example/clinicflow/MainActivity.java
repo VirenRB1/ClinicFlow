@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 Users currUser = authService.authenticate(enteredEmail, enteredPW);
 
                 if (currUser == null) {
-                    Toast.makeText(getApplicationContext(), "currUser is null", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "No Such Account", Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = identifyType(currUser, enteredEmail);

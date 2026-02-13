@@ -1,5 +1,7 @@
 package com.example.clinicflow.presentation;
 
+import static com.example.clinicflow.presentation.ViewPatients.EXTRA_PATIENT_EMAIL;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -42,17 +44,33 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyRecords.this, PatientScreen.class);
+                Intent intent;
+                if(getIntent().getStringExtra(EXTRA_PATIENT_EMAIL) != null){
+                    intent = new Intent(MyRecords.this, ViewPatients.class);
+                    intent.putExtra(EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(EXTRA_PATIENT_EMAIL));
+                } else {
+                    intent = new Intent(MyRecords.this, PatientScreen.class);
+                }
                 intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
-        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
+        String userEmail = getIntent().getStringExtra(EXTRA_USER_EMAIL);
+        String patientEmail = getIntent().getStringExtra(EXTRA_PATIENT_EMAIL);
+
+        String finalEmail;
+
+        if(patientEmail != null) {
+            finalEmail = patientEmail;
+        } else {
+            finalEmail = userEmail;
+        }
+
         //email check is not done here because no way to get to this screen without logging in
         //All checks regarding email validation done in MainActivity
         UserRepository repo = ((ClinicFlowApp) getApplication()).getUserRepository();
 
-        String patientFullName = getPatientName(repo, email);
+        String patientFullName = getPatientName(repo, finalEmail);
         //Null check?
 
         records = repo.getMedicalRecords(patientFullName);
@@ -93,6 +111,9 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
 
         intent.putExtra("Record", records.get(position));
         intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
+        if(getIntent().getStringExtra(EXTRA_PATIENT_EMAIL) != null){
+            intent.putExtra(EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(EXTRA_PATIENT_EMAIL));
+        }
 
         startActivity(intent);
     }
