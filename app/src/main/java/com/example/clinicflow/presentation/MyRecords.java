@@ -21,7 +21,6 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
 import java.util.List;
 
@@ -44,15 +43,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                if(getIntent().getStringExtra(EXTRA_PATIENT_EMAIL) != null){
-                    intent = new Intent(MyRecords.this, ViewPatients.class);
-                    intent.putExtra(EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(EXTRA_PATIENT_EMAIL));
-                } else {
-                    intent = new Intent(MyRecords.this, PatientScreen.class);
-                }
-                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
-                startActivity(intent);
+                finish();
             }
         });
         String userEmail = getIntent().getStringExtra(EXTRA_USER_EMAIL);

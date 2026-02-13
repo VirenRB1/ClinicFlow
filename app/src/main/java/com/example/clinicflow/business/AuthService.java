@@ -5,7 +5,6 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
 import java.util.List;
 

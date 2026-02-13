@@ -119,9 +119,7 @@ public class ViewPatients extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewPatients.this, StaffScreen.class);
-                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
-                startActivity(intent);
+                finish();
             }
         });
 

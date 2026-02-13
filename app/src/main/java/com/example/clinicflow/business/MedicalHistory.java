@@ -14,20 +14,6 @@ public class MedicalHistory {
         this.DATABASE = userRepository;
     }
 
-    private Patient checkPatientExists(String patientEmail) {
-        return DATABASE.getPatientByEmail(patientEmail);
-    }
-
-    public List<MedicalRecord> getMedicalRecordsViaEmail(String patientEmail) {
-        Patient patient = checkPatientExists(patientEmail);
-        if (patient == null) {
-            return null;
-        } else {
-            String patientName = patient.getFullName();
-            return getSortedMedicalHistoryForPatient(patientName);
-        }
-    }
-
     public List<MedicalRecord> getSortedMedicalHistoryForPatient(String patientName) {
         List<MedicalRecord> medicalRecords = DATABASE.getMedicalRecords(patientName);
 

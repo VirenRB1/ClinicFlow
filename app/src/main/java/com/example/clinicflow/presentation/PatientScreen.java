@@ -12,13 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 
 public class PatientScreen extends AppCompatActivity {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
-    public static final String EXTRA_DB = "fakeDB";
     Button logout;
 
     Button myApts;

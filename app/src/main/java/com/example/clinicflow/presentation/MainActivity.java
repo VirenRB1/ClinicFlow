@@ -1,4 +1,4 @@
-package com.example.clinicflow;
+package com.example.clinicflow.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,18 +13,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.clinicflow.ClinicFlowApp;
+import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
-import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
-import com.example.clinicflow.presentation.DoctorScreen;
-import com.example.clinicflow.presentation.PatientScreen;
-import com.example.clinicflow.presentation.SignupScreen;
-import com.example.clinicflow.presentation.StaffScreen;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.ClinicFlowApp;
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.persistence.UserRepository;
@@ -59,8 +58,7 @@ public class SignupScreen extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignupScreen.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         signUpButton.setOnClickListener(new View.OnClickListener() {

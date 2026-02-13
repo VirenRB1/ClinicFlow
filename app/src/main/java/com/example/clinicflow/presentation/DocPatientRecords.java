@@ -12,7 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.clinicflow.MainActivity;
 import com.example.clinicflow.R;
 public class DocPatientRecords extends AppCompatActivity{
 
@@ -49,8 +48,7 @@ public class DocPatientRecords extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DocPatientRecords.this, DoctorScreen.class);
-                startActivity(intent);
+                finish();
             }
         });
 
