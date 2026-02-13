@@ -1,4 +1,4 @@
-package com.example.clinicflow;
+package com.example.clinicflow.application;
 
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
