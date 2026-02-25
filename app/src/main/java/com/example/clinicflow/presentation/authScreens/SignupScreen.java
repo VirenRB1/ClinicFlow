@@ -35,15 +35,88 @@ public class SignupScreen extends AppCompatActivity {
     Button signUpButton;
     Button backButton;
 
+    private ObjectCreation objectCreation;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.signup);
 
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        UserRepository userRepository = app.getUserRepository();
-        ObjectCreation objectCreation = new ObjectCreation(userRepository);
+        objectCreation = app.getObjectCreation();
 
+        setViews();
+        setEvents();
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+    }
+
+    private void setEvents() {
+        signUpButton.setOnClickListener(v -> onSignUpClick());
+        backButton.setOnClickListener(v -> onBackClick());
+    }
+
+    private void onBackClick() {
+        finish();
+    }
+
+    private void onSignUpClick() {
+        String first = cleanText(firstName);
+        String last = cleanText(lastName);
+        String emailAdd = cleanText(email);
+        String pass = cleanText(password);
+        String confirmPass = cleanText(confirmPassword);
+        String genderStr = cleanText(gender);
+        String ageStr = cleanText(age);
+        String hCardStr = cleanText(healthCard);
+        String phoneStr = cleanText(phoneNumber);
+
+        if (!pass.equals(confirmPass)) {
+            Toast.makeText(SignupScreen.this, "Passwords do not match", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Integer ageNum = parse(ageStr);
+        Integer hCardNum = parse(hCardStr);
+        Integer phoneNum = parse(phoneStr);
+
+        if(ageNum == null || hCardNum == null || phoneNum == null){
+            Toast.makeText(SignupScreen.this, "Age, health card number, and phone number must be numbers", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, ageNum, hCardNum, phoneNum);
+
+        if(!added){
+            Toast.makeText(SignupScreen.this, "Patient could not be added", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Toast.makeText(SignupScreen.this, "Patient added successfully", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(SignupScreen.this, PatientScreen.class);
+        intent.putExtra(MainActivity.EXTRA_USER_EMAIL, emailAdd);
+        startActivity(intent);
+    }
+
+    private String cleanText(EditText editText){
+        return editText.getText().toString().trim();
+    }
+
+    private Integer parse(String text){
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private void setViews(){
         firstName = findViewById(R.id.FirsNameEditText);
         lastName = findViewById(R.id.LastNameEditText);
         email = findViewById(R.id.EmailAddressEditText);
@@ -55,61 +128,5 @@ public class SignupScreen extends AppCompatActivity {
         phoneNumber = findViewById(R.id.PhoneEditText);
         signUpButton = findViewById(R.id.signUpButton);
         backButton = findViewById(R.id.backButton);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String first = firstName.getText().toString().trim();
-                String last = lastName.getText().toString().trim();
-                String emailAdd = email.getText().toString().trim();
-                String pass = password.getText().toString();
-                String confirmPass = confirmPassword.getText().toString();
-                String genderStr = gender.getText().toString().trim();
-                String ageStr = age.getText().toString().trim();
-                String hCardStr = healthCard.getText().toString().trim();
-                String phoneStr = phoneNumber.getText().toString().trim();
-
-                if (!pass.equals(confirmPass)) {
-                    Toast.makeText(SignupScreen.this, "Passwords do not match", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                int ageNum;
-                int hCardNum;
-                int phoneNum;
-
-                try {
-                    ageNum = Integer.parseInt(ageStr);
-                    hCardNum = Integer.parseInt(hCardStr);
-                    phoneNum = Integer.parseInt(phoneStr);
-                } catch (NumberFormatException e) {
-                    Toast.makeText(SignupScreen.this, "Age, healthcard number, and phone number must be numbers", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                Boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, ageNum, hCardNum, phoneNum);
-                if (added) {
-                    Toast.makeText(SignupScreen.this, "Patient added successfully", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SignupScreen.this, PatientScreen.class);
-                    intent.putExtra("user_email", emailAdd);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(SignupScreen.this, "Patient could not be added", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
     }
 }
