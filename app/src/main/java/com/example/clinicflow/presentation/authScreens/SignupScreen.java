@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.authScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 
 public class SignupScreen extends AppCompatActivity {
 

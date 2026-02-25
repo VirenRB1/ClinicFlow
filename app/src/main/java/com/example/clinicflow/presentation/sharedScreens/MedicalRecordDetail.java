@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.sharedScreens;
 
 import android.os.Bundle;
 import android.view.View;

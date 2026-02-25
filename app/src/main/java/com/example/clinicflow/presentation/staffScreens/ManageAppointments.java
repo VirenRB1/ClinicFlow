@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.staffScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-public class SetAvailability extends AppCompatActivity{
+import com.example.clinicflow.presentation.authScreens.MainActivity;
+
+public class ManageAppointments extends AppCompatActivity{
 
     ImageButton profile;
 
@@ -23,7 +25,7 @@ public class SetAvailability extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.set_availability);
+        setContentView(R.layout.manage_appointments);
 
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
@@ -32,7 +34,7 @@ public class SetAvailability extends AppCompatActivity{
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SetAvailability.this, MainActivity.class);
+                Intent intent = new Intent(ManageAppointments.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
@@ -42,7 +44,7 @@ public class SetAvailability extends AppCompatActivity{
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SetAvailability.this, DoctorProfile.class);
+                Intent intent = new Intent(ManageAppointments.this, StaffProfile.class);
                 startActivity(intent);
             }
         });

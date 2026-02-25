@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.patientScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
+import com.example.clinicflow.presentation.authScreens.MainActivity;
+
 public class BookAppointment extends AppCompatActivity{
     public static final String EXTRA_USER_EMAIL = "user_email";
     ImageButton profile;

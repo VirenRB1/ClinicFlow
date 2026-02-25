@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.authScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,9 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.doctorScreens.DoctorScreen;
+import com.example.clinicflow.presentation.patientScreens.PatientScreen;
+import com.example.clinicflow.presentation.staffScreens.StaffScreen;
 
 public class MainActivity extends AppCompatActivity {
 

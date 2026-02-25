@@ -1,4 +1,6 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.doctorScreens;
+
+import static com.example.clinicflow.presentation.patientScreens.PatientScreen.EXTRA_USER_EMAIL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,38 +15,38 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
+import com.example.clinicflow.presentation.authScreens.MainActivity;
+import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
-public class StaffScreen extends AppCompatActivity {
+public class DoctorScreen extends AppCompatActivity {
 
-    public static final String EXTRA_USER_EMAIL = "user_email";
-
+    public static final String DOCTOR = "Doctor";
     Button logout;
 
     ImageButton profile;
 
-    Button manage;
+    Button mySchd;
 
-    Button viewPatients;
+    Button setAvail;
 
-    Button viewDocs;
+    Button patientRecs;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.staff_landing);
-
-        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
+        setContentView(R.layout.doctor_landing);
 
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
-        manage = findViewById(R.id.manageAppointmentsButton);
-        viewPatients = findViewById(R.id.viewPatientsButton);
-        viewDocs = findViewById(R.id.viewPhysiciansButton);
+        mySchd = findViewById(R.id.myScheduleButton);
+        setAvail = findViewById(R.id.setAvailabilityButton);
+        patientRecs = findViewById(R.id.patientRecordsButton);
 
+        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, MainActivity.class);
+                Intent intent = new Intent(DoctorScreen.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
@@ -54,38 +56,36 @@ public class StaffScreen extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, StaffProfile.class);
+                Intent intent = new Intent(DoctorScreen.this, DoctorProfile.class);
+                startActivity(intent);
+            }
+        });
+
+        mySchd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DoctorScreen.this, MySchedule.class);
+                startActivity(intent);
+            }
+        });
+
+        setAvail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DoctorScreen.this, SetAvailability.class);
+                startActivity(intent);
+            }
+        });
+
+        patientRecs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DoctorScreen.this, ViewPatients.class);
                 intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });
 
-        manage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, ManageAppointments.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
-
-        viewPatients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, ViewPatients.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
-
-        viewDocs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, ViewDoctors.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
