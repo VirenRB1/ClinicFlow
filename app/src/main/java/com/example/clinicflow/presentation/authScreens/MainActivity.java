@@ -16,22 +16,20 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
-import com.example.clinicflow.models.Doctor;
-import com.example.clinicflow.models.Patient;
-import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.presentation.doctorScreens.DoctorScreen;
-import com.example.clinicflow.presentation.patientScreens.PatientScreen;
-import com.example.clinicflow.presentation.staffScreens.StaffScreen;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String EXTRA_USER_EMAIL = "user_email";
     EditText email;
     EditText password;
     Button loginBtn;
 
     Button signupBtn;
+
+    private AuthService authService;
+    private LoginNav loginNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
         UserRepository userRepository = app.getUserRepository();
-        AuthService authService = new AuthService(userRepository);
+        authService = app.getAuthService();
+        loginNav = new LoginNav(this);
+
 
         email = findViewById(R.id.EmailAddressEditText);
         password = findViewById(R.id.PasswordEditText);
@@ -58,14 +58,15 @@ public class MainActivity extends AppCompatActivity {
 
                 if (currUser == null) {
                     Toast.makeText(getApplicationContext(), "No Such Account", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
-                Intent intent = identifyType(currUser, enteredEmail);
-                if (intent != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Intent is null", Toast.LENGTH_LONG).show();
+                Intent intent = loginNav.sendToLanding(currUser, enteredEmail);
+                if (intent == null) {
+                    Toast.makeText(getApplicationContext(), "Incorrect Account Type", Toast.LENGTH_LONG).show();
+                    return;
                 }
+                startActivity(intent);
 
             }
         });
@@ -83,21 +84,5 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    private Intent identifyType(Users currUser, String email) {
-        Intent intent = null;
-        if (currUser instanceof Patient) {
-            intent = new Intent(MainActivity.this, PatientScreen.class);
-        } else if (currUser instanceof Doctor) {
-            intent = new Intent(MainActivity.this, DoctorScreen.class);
-        } else if (currUser instanceof Staff) {
-            intent = new Intent(MainActivity.this, StaffScreen.class);
-        }
-
-        if (intent != null) {
-            intent.putExtra("user_email", email);
-        }
-        return intent;
     }
 }
