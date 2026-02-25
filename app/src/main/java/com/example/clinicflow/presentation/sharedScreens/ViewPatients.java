@@ -26,25 +26,18 @@ import com.google.android.material.card.MaterialCardView;
 public class ViewPatients extends AppCompatActivity{
 
     public static final String EXTRA_PATIENT_EMAIL = "patient_email";
-
-    MaterialCardView patientCard;
-
-    ImageButton profile;
-
-    Button back;
-
-    Button search;
-
-    Button viewRecords;
-
-    EditText emailAddress;
-
-    TextView email;
-    TextView name;
-    TextView gender;
-    TextView age;
-    TextView hc;
-    TextView phone;
+    private MaterialCardView patientCard;
+    private ImageButton profile;
+    private Button back;
+    private Button search;
+    private Button viewRecords;
+    private EditText emailAddress;
+    private TextView email;
+    private TextView name;
+    private TextView gender;
+    private TextView age;
+    private TextView hc;
+    private TextView phone;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +48,7 @@ public class ViewPatients extends AppCompatActivity{
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
         UserRepository userRepository = app.getUserRepository();
 
-        patientCard = findViewById(R.id.patientCard);
-        viewRecords = findViewById(R.id.viewRecordsButton);
-        search = findViewById(R.id.searchButton);
-        profile = findViewById(R.id.profileButton);
-        back = findViewById(R.id.backButton);
-
-        email = findViewById(R.id.emailActual);
-        name = findViewById(R.id.nameActual);
-        gender = findViewById(R.id.genderActual);
-        age = findViewById(R.id.ageActual);
-        hc = findViewById(R.id.healthCardActual);
-        phone = findViewById(R.id.phoneActual);
-
-        emailAddress = findViewById(R.id.editTextEmailAddress);
-
+        setViews();
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,5 +107,22 @@ public class ViewPatients extends AppCompatActivity{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void setViews() {
+        patientCard = findViewById(R.id.patientCard);
+        viewRecords = findViewById(R.id.viewRecordsButton);
+        search = findViewById(R.id.searchButton);
+        profile = findViewById(R.id.profileButton);
+        back = findViewById(R.id.backButton);
+
+        email = findViewById(R.id.emailActual);
+        name = findViewById(R.id.nameActual);
+        gender = findViewById(R.id.genderActual);
+        age = findViewById(R.id.ageActual);
+        hc = findViewById(R.id.healthCardActual);
+        phone = findViewById(R.id.phoneActual);
+
+        emailAddress = findViewById(R.id.editTextEmailAddress);
     }
 }

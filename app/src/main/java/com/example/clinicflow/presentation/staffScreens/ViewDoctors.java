@@ -1,8 +1,9 @@
 package com.example.clinicflow.presentation.staffScreens;
 
-import android.content.Intent;
+import static com.example.clinicflow.presentation.Navigation.onClickEmail;
+import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -17,49 +18,37 @@ import com.example.clinicflow.presentation.authScreens.MainActivity;
 
 public class ViewDoctors extends AppCompatActivity{
 
-    ImageButton profile;
+    private ImageButton profile;
+    private Button logout;
+    private Button back;
 
-    Button logout;
-
-    Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.view_physicians);
 
-        logout = findViewById(R.id.logoutButton);
-        profile = findViewById(R.id.profileButton);
-        back = findViewById(R.id.backButton);
+        setViews();
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewDoctors.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+        final String email = getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL);
 
-            }
-        });
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewDoctors.this, StaffProfile.class);
-                startActivity(intent);
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setEvents(email);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void setEvents(String email) {
+        logout.setOnClickListener(v -> onLogoutClick(this));
+        back.setOnClickListener(v -> finish());
+        profile.setOnClickListener(v -> onClickEmail(this, StaffProfile.class, email));
+    }
+
+    private void setViews() {
+        logout = findViewById(R.id.logoutButton);
+        profile = findViewById(R.id.profileButton);
+        back = findViewById(R.id.backButton);
     }
 }

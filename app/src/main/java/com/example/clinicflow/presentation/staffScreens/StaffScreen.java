@@ -1,8 +1,9 @@
 package com.example.clinicflow.presentation.staffScreens;
 
-import android.content.Intent;
+import static com.example.clinicflow.presentation.Navigation.onClickEmail;
+import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -18,80 +19,43 @@ import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
 public class StaffScreen extends AppCompatActivity {
 
-    public static final String EXTRA_USER_EMAIL = "user_email";
-
-    Button logout;
-
-    ImageButton profile;
-
-    Button manage;
-
-    Button viewPatients;
-
-    Button viewDocs;
+    private Button logout;
+    private ImageButton profile;
+    private Button manage;
+    private Button viewPatients;
+    private Button viewDocs;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.staff_landing);
 
-        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
+        setViews();
 
-        logout = findViewById(R.id.logoutButton);
-        profile = findViewById(R.id.profileButton);
-        manage = findViewById(R.id.manageAppointmentsButton);
-        viewPatients = findViewById(R.id.viewPatientsButton);
-        viewDocs = findViewById(R.id.viewPhysiciansButton);
+        final String email = getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+        setEvents(email);
 
-            }
-        });
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, StaffProfile.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
-
-        manage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, ManageAppointments.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
-
-        viewPatients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, ViewPatients.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
-
-        viewDocs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StaffScreen.this, ViewDoctors.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void setEvents(String email) {
+        logout.setOnClickListener(v -> onLogoutClick(this));
+        profile.setOnClickListener(v -> onClickEmail(this, StaffProfile.class, email));
+        manage.setOnClickListener(v -> onClickEmail(this, ManageAppointments.class, email));
+        viewPatients.setOnClickListener(v -> onClickEmail(this, ViewPatients.class, email));
+        viewDocs.setOnClickListener(v -> onClickEmail(this, ViewDoctors.class, email));
+    }
+
+    private void setViews() {
+        logout = findViewById(R.id.logoutButton);
+        profile = findViewById(R.id.profileButton);
+        manage = findViewById(R.id.manageAppointmentsButton);
+        viewPatients = findViewById(R.id.viewPatientsButton);
+        viewDocs = findViewById(R.id.viewPhysiciansButton);
     }
 }
