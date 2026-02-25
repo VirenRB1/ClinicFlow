@@ -1,7 +1,5 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.patientScreens.PatientScreen.EXTRA_USER_EMAIL;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +19,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.authScreens.MainActivity;
 import com.example.clinicflow.presentation.staffScreens.StaffProfile;
 import com.google.android.material.card.MaterialCardView;
 
@@ -102,7 +101,7 @@ public class ViewPatients extends AppCompatActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(ViewPatients.this, MyRecords.class);
                 intent.putExtra(EXTRA_PATIENT_EMAIL, emailAddress.getText().toString().trim());
-                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
+                intent.putExtra(MainActivity.EXTRA_USER_EMAIL, getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
@@ -112,7 +111,7 @@ public class ViewPatients extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewPatients.this, StaffProfile.class);
-                intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
+                intent.putExtra(MainActivity.EXTRA_USER_EMAIL, getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL));
                 startActivity(intent);
             }
         });
