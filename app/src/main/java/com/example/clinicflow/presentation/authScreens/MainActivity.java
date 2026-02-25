@@ -22,11 +22,11 @@ import com.example.clinicflow.persistence.UserRepository;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
-    EditText email;
-    EditText password;
-    Button loginBtn;
+    private EditText email;
+    private EditText password;
+    private Button loginBtn;
 
-    Button signupBtn;
+    private Button signupBtn;
 
     private AuthService authService;
     private LoginNav loginNav;

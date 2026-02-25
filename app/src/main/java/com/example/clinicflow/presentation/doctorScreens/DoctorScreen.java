@@ -1,6 +1,7 @@
 package com.example.clinicflow.presentation.doctorScreens;
 
-import static com.example.clinicflow.presentation.patientScreens.PatientScreen.EXTRA_USER_EMAIL;
+import static com.example.clinicflow.presentation.Navigation.onClickEmail;
+import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,76 +21,43 @@ import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
 public class DoctorScreen extends AppCompatActivity {
 
-    public static final String DOCTOR = "Doctor";
-    Button logout;
-
-    ImageButton profile;
-
-    Button mySchd;
-
-    Button setAvail;
-
-    Button patientRecs;
+    private Button logout;
+    private ImageButton profile;
+    private Button mySchd;
+    private Button setAvail;
+    private Button patientRecs;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.doctor_landing);
 
-        logout = findViewById(R.id.logoutButton);
-        profile = findViewById(R.id.profileButton);
-        mySchd = findViewById(R.id.myScheduleButton);
-        setAvail = findViewById(R.id.setAvailabilityButton);
-        patientRecs = findViewById(R.id.patientRecordsButton);
+        setViews();
 
-        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+        final String email = getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL);
 
-            }
-        });
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, DoctorProfile.class);
-                startActivity(intent);
-            }
-        });
-
-        mySchd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, MySchedule.class);
-                startActivity(intent);
-            }
-        });
-
-        setAvail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, SetAvailability.class);
-                startActivity(intent);
-            }
-        });
-
-        patientRecs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorScreen.this, ViewPatients.class);
-                intent.putExtra(EXTRA_USER_EMAIL, email);
-                startActivity(intent);
-            }
-        });
+        setEvents(email);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void setEvents(String email) {
+        logout.setOnClickListener(v -> onLogoutClick(this));
+        profile.setOnClickListener(v -> onClickEmail(this, DoctorProfile.class, email));
+        mySchd.setOnClickListener(v -> onClickEmail(this, MySchedule.class, email));
+        setAvail.setOnClickListener(v -> onClickEmail(this, SetAvailability.class, email));
+        patientRecs.setOnClickListener(v -> onClickEmail(this, ViewPatients.class, email));
+    }
+
+    private void setViews() {
+        logout = findViewById(R.id.logoutButton);
+        profile = findViewById(R.id.profileButton);
+        mySchd = findViewById(R.id.myScheduleButton);
+        setAvail = findViewById(R.id.setAvailabilityButton);
+        patientRecs = findViewById(R.id.patientRecordsButton);
     }
 }

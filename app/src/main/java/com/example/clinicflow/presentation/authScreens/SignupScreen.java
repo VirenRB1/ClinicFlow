@@ -21,19 +21,17 @@ import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 
 public class SignupScreen extends AppCompatActivity {
 
-    EditText firstName;
-    EditText lastName;
-    EditText email;
-    EditText password;
-    EditText confirmPassword;
-
-    EditText gender;
-    EditText age;
-    EditText healthCard;
-    EditText phoneNumber;
-
-    Button signUpButton;
-    Button backButton;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText email;
+    private EditText password;
+    private EditText confirmPassword;
+    private EditText gender;
+    private EditText age;
+    private EditText healthCard;
+    private EditText phoneNumber;
+    private Button signUpButton;
+    private Button backButton;
 
     private ObjectCreation objectCreation;
 

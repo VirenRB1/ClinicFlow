@@ -1,5 +1,7 @@
 package com.example.clinicflow.presentation.doctorScreens;
 
+import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,40 +17,32 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.authScreens.MainActivity;
 
 public class DoctorProfile extends AppCompatActivity{
-    Button logout;
 
-    Button back;
+    private Button logout;
+    private Button back;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.doc_profile);
 
-        logout = findViewById(R.id.logoutButton);
-        back = findViewById(R.id.backButton);
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DoctorProfile.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-
+        setViews();
+        setEvents();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void setEvents() {
+        logout.setOnClickListener(v -> onLogoutClick(this));
+        back.setOnClickListener(v -> finish());
+    }
+
+    private void setViews() {
+        logout = findViewById(R.id.logoutButton);
+        back = findViewById(R.id.backButton);
     }
 }
