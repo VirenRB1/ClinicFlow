@@ -1,9 +1,10 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.doctorScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,25 +13,39 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-public class StaffProfile extends AppCompatActivity{
+import com.example.clinicflow.presentation.authScreens.MainActivity;
+
+public class SetAvailability extends AppCompatActivity{
+
+    ImageButton profile;
+
     Button logout;
 
     Button back;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.staff_profile);
+        setContentView(R.layout.set_availability);
 
         logout = findViewById(R.id.logoutButton);
+        profile = findViewById(R.id.profileButton);
         back = findViewById(R.id.backButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StaffProfile.this, MainActivity.class);
+                Intent intent = new Intent(SetAvailability.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SetAvailability.this, DoctorProfile.class);
+                startActivity(intent);
             }
         });
 
@@ -40,8 +55,6 @@ public class StaffProfile extends AppCompatActivity{
                 finish();
             }
         });
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

@@ -1,6 +1,6 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.ViewPatients.EXTRA_PATIENT_EMAIL;
+import static com.example.clinicflow.presentation.sharedScreens.ViewPatients.EXTRA_PATIENT_EMAIL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,10 +21,12 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.components.MedicalRecordAdapter;
+import com.example.clinicflow.presentation.components.RecyclerViewInterface;
 
 import java.util.List;
 
-public class MyRecords extends AppCompatActivity implements RecyclerViewInterface{
+public class MyRecords extends AppCompatActivity implements RecyclerViewInterface {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
 

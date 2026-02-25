@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClinicFlow" >
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.authScreens.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,22 +21,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.PatientScreen" />
-        <activity android:name=".presentation.DoctorScreen" />
-        <activity android:name=".presentation.StaffScreen" />
-        <activity android:name=".presentation.PatientProfile" />
-        <activity android:name=".presentation.BookAppointment" />
-        <activity android:name=".presentation.MyAppointments" />
-        <activity android:name=".presentation.ManageAppointments" />
-        <activity android:name=".presentation.DoctorProfile" />
-        <activity android:name=".presentation.StaffProfile" />
-        <activity android:name=".presentation.ViewPatients" />
-        <activity android:name=".presentation.ViewDoctors" />
-        <activity android:name=".presentation.MySchedule" />
-        <activity android:name=".presentation.SetAvailability" />
-        <activity android:name=".presentation.MyRecords"/>
-        <activity android:name=".presentation.MedicalRecordDetail"/>
-        <activity android:name=".presentation.SignupScreen"/>
+        <activity android:name=".presentation.patientScreens.PatientScreen" />
+        <activity android:name=".presentation.doctorScreens.DoctorScreen" />
+        <activity android:name=".presentation.staffScreens.StaffScreen" />
+        <activity android:name=".presentation.patientScreens.PatientProfile" />
+        <activity android:name=".presentation.patientScreens.BookAppointment" />
+        <activity android:name=".presentation.patientScreens.MyAppointments" />
+        <activity android:name=".presentation.staffScreens.ManageAppointments" />
+        <activity android:name=".presentation.doctorScreens.DoctorProfile" />
+        <activity android:name=".presentation.staffScreens.StaffProfile" />
+        <activity android:name=".presentation.sharedScreens.ViewPatients" />
+        <activity android:name=".presentation.staffScreens.ViewDoctors" />
+        <activity android:name=".presentation.doctorScreens.MySchedule" />
+        <activity android:name=".presentation.doctorScreens.SetAvailability" />
+        <activity android:name=".presentation.sharedScreens.MyRecords"/>
+        <activity android:name=".presentation.sharedScreens.MedicalRecordDetail"/>
+        <activity android:name=".presentation.authScreens.SignupScreen"/>
     </application>
 
 </manifest>

@@ -1,6 +1,6 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.PatientScreen.EXTRA_USER_EMAIL;
+import static com.example.clinicflow.presentation.patientScreens.PatientScreen.EXTRA_USER_EMAIL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.staffScreens.StaffProfile;
 import com.google.android.material.card.MaterialCardView;
 
 public class ViewPatients extends AppCompatActivity{

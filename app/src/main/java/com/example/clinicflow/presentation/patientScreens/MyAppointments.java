@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.patientScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-public class ViewDoctors extends AppCompatActivity{
+import com.example.clinicflow.presentation.authScreens.MainActivity;
 
+public class MyAppointments extends AppCompatActivity{
+    public static final String EXTRA_USER_EMAIL = "user_email";
     ImageButton profile;
 
     Button logout;
@@ -23,26 +25,27 @@ public class ViewDoctors extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.view_physicians);
+        setContentView(R.layout.my_appointments);
 
         logout = findViewById(R.id.logoutButton);
         profile = findViewById(R.id.profileButton);
         back = findViewById(R.id.backButton);
+        String email = getIntent().getStringExtra(EXTRA_USER_EMAIL);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewDoctors.this, MainActivity.class);
+                Intent intent = new Intent(MyAppointments.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-
             }
         });
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewDoctors.this, StaffProfile.class);
+                Intent intent = new Intent(MyAppointments.this, PatientProfile.class);
+                intent.putExtra(EXTRA_USER_EMAIL, email);
                 startActivity(intent);
             }
         });

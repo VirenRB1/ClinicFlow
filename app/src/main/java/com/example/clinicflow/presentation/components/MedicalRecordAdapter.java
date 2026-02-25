@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation;
+package com.example.clinicflow.presentation.components;
 
 import android.content.Context;
 import android.view.LayoutInflater;
