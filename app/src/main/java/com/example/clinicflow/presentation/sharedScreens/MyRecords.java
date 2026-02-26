@@ -63,10 +63,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         //All checks regarding email validation done in MainActivity
         UserRepository repo = ((ClinicFlowApp) getApplication()).getUserRepository();
 
-        String patientFullName = getPatientName(repo, finalEmail);
-        //Null check?
-
-        records = repo.getMedicalRecords(patientFullName);
+        records = repo.getMedicalRecords(finalEmail);
 
         MedicalRecordAdapter adapter = new MedicalRecordAdapter(this,records, this);
 
@@ -86,16 +83,6 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    private String getPatientName(UserRepository repo, String email) {
-        String fullName = null;
-        for (Patient p : repo.getAllPatients()) {
-            if (p.getEmail().equalsIgnoreCase(email)) {
-                fullName = p.getFullName();
-            }
-        }
-        return fullName;
     }
 
     @Override

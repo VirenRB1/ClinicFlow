@@ -18,6 +18,8 @@ public interface UserRepository {
 
     Patient getPatientByEmail(String email);
 
-    List<MedicalRecord> getMedicalRecords(String patientName);
+    List<MedicalRecord> getMedicalRecords(String patientEmail);
+
+    void addMedicalRecord(MedicalRecord record);
 
 }
