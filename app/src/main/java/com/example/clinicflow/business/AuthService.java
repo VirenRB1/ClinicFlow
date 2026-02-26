@@ -35,7 +35,7 @@ public class AuthService {
 // Validate 3 type of user, compare the input email and password to the existing users in database
 
     //Check patient
-    public Users validatePatient(String email, String password) {
+    private Users validatePatient(String email, String password) {
         List<Patient> patients = DATABASE.getAllPatients();
         for (Patient patient : patients) {
             if (patient.getEmail().equalsIgnoreCase(email) && patient.getPassword().equals(password)) {
@@ -45,7 +45,7 @@ public class AuthService {
         return null;
     }
     // Check staff
-    public Users validateStaff(String email, String password) {
+    private Users validateStaff(String email, String password) {
         List<Staff> staffs = DATABASE.getAllStaffs();
         for (Staff staff : staffs) {
             if (staff.getEmail().equalsIgnoreCase(email) && staff.getPassword().equals(password)) {
@@ -55,7 +55,7 @@ public class AuthService {
         return null;
     }
     // Check doctor
-    public Users validateDoctor(String email, String password) {
+    private Users validateDoctor(String email, String password) {
         List<Doctor> doctors = DATABASE.getAllDoctors();
         for (Doctor doc : doctors) {
             if (doc.getEmail().equalsIgnoreCase(email) && doc.getPassword().equals(password)) {
@@ -65,7 +65,7 @@ public class AuthService {
         return null;
     }
 // Check valid email format
-    public boolean formatCheck(String email, String password) {
+    private boolean formatCheck(String email, String password) {
         if (email == null || !email.contains("@") || !email.contains(".")) {
             return false;
         }
