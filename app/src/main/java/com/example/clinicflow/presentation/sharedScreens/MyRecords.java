@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
+import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.MedicalRecord;
-import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.presentation.components.MedicalRecordAdapter;
 import com.example.clinicflow.presentation.components.RecyclerViewInterface;
@@ -62,8 +62,9 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         //email check is not done here because no way to get to this screen without logging in
         //All checks regarding email validation done in MainActivity
         UserRepository repo = ((ClinicFlowApp) getApplication()).getUserRepository();
+        MedicalHistory medicalHistory = new MedicalHistory(repo);
 
-        records = repo.getMedicalRecords(finalEmail);
+        records = medicalHistory.getSortedMedicalHistoryForPatient(finalEmail);
 
         MedicalRecordAdapter adapter = new MedicalRecordAdapter(this,records, this);
 
