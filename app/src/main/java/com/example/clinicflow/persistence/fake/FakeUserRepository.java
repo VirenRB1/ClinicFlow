@@ -60,24 +60,24 @@ public class FakeUserRepository implements UserRepository, Serializable {
     // Add medical records
     private void intializeFakeMedicalRecords() {
         medicalRecords = new HashMap<>();
-        medicalRecords.put("Alice Brown", new ArrayList<>());
-        medicalRecords.put("Bob Davis", new ArrayList<>());
-        medicalRecords.put("Charlie Wilson", new ArrayList<>());
+        medicalRecords.put("alicebrown@gmail.com", new ArrayList<>());
+        medicalRecords.put("bobdavis@gmail.com", new ArrayList<>());
+        medicalRecords.put("charliewilson@gmail.com", new ArrayList<>());
 
-        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "Check-up", "Regular check-up",
+        MedicalRecord record1 = new MedicalRecord("Alice Brown", "John Doe", "alicebrown@gmail.com", "Check-up", "Regular check-up",
                 new Date());
-        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "Follow-up", "Follow-up visit",
+        MedicalRecord record2 = new MedicalRecord("Alice Brown", "Jane Smith", "alicebrown@gmail.com", "Follow-up", "Follow-up visit",
                 new Date());
-        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "Prescription",
+        MedicalRecord record3 = new MedicalRecord("Charlie Wilson", "Emily Johnson", "charliewilson@gmail.com", "Prescription",
                 "Prescribed medication", new Date());
 
-        medicalRecords.get("Alice Brown").add(record1);
-        medicalRecords.get("Alice Brown").add(record2);
-        medicalRecords.get("Charlie Wilson").add(record3);
+        medicalRecords.get("alicebrown@gmail.com").add(record1);
+        medicalRecords.get("alicebrown@gmail.com").add(record2);
+        medicalRecords.get("charliewilson@gmail.com").add(record3);
     }
 
-    public List<MedicalRecord> getMedicalRecords(String patientName) {
-        return medicalRecords.getOrDefault(patientName, new ArrayList<>());
+    public List<MedicalRecord> getMedicalRecords(String patientEmail) {
+        return medicalRecords.getOrDefault(patientEmail, new ArrayList<>());
     }
     //  Get methods
     @Override
@@ -99,6 +99,15 @@ public class FakeUserRepository implements UserRepository, Serializable {
     @Override
     public void addPatient(Patient patient) {
         patients.add(patient);
+    }
+
+    @Override
+    public void addMedicalRecord(MedicalRecord record) {
+        String email = record.getEmail();
+        if (!medicalRecords.containsKey(email)) {
+            medicalRecords.put(email, new ArrayList<>());
+        }
+        medicalRecords.get(email).add(record);
     }
 
     // Get a patient by email

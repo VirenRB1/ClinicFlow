@@ -8,16 +8,17 @@ import java.util.Date;
 public class MedicalRecord implements Serializable {
     private String patientName;
     private String doctorName;
-
+    private String email;
     private String purpose;
 
     private String doctorNote;
 
     private Date date;
 
-    public MedicalRecord(String patientName, String doctorName, String purpose, String doctorNote, Date date) {
+    public MedicalRecord(String patientName, String doctorName, String email, String purpose, String doctorNote, Date date) {
         this.patientName = patientName;
         this.doctorName = doctorName;
+        this.email = email;
         this.purpose = purpose;
         this.doctorNote = doctorNote;
         this.date = date;
@@ -29,6 +30,10 @@ public class MedicalRecord implements Serializable {
 
     public String getDoctorName() {
         return doctorName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getPurpose() {
