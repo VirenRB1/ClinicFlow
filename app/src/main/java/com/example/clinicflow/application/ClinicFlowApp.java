@@ -1,9 +1,11 @@
 package com.example.clinicflow.application;
 
+import android.content.Context;
+
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
+import com.example.clinicflow.persistence.real.SqlRepository;
 //Startup app
 public class ClinicFlowApp extends android.app.Application {
     private UserRepository userRepository;
@@ -16,7 +18,8 @@ public class ClinicFlowApp extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        userRepository = new FakeUserRepository();
+        Context context = getApplicationContext();
+        userRepository = new SqlRepository(context);
         authService = new AuthService(userRepository);
         objectCreation = new ObjectCreation(userRepository);
     }
