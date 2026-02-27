@@ -11,6 +11,7 @@ public final class Navigation {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
     public static final String EXTRA_PATIENT_EMAIL = "patient_email";
+    public static final String EXTRA_RECORD = "Record";
 
     public static void onLogoutClick(Activity activity){
         Intent intent = new Intent(activity, MainActivity.class);
