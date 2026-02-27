@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation.staffScreens;
+package com.example.clinicflow.presentation.sharedScreens;
 
 import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
 
@@ -12,9 +12,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.presentation.authScreens.MainActivity;
+import com.example.clinicflow.presentation.Navigation;
 
-public class StaffProfile extends AppCompatActivity{
+public class Profile extends AppCompatActivity {
 
     private Button logout;
     private Button back;
@@ -22,11 +22,11 @@ public class StaffProfile extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.staff_profile);
+        setContentView(R.layout.profile);
 
         setViews();
 
-        final String email = getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
 
         setEvents();
 

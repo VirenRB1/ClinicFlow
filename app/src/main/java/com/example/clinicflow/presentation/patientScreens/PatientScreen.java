@@ -14,8 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.presentation.authScreens.MainActivity;
+import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.sharedScreens.MyRecords;
+import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class PatientScreen extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class PatientScreen extends AppCompatActivity {
 
         setViews();
 
-        final String email = getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
 
         setEvents(email);
 
@@ -48,7 +49,7 @@ public class PatientScreen extends AppCompatActivity {
         myApts.setOnClickListener(v -> onClickEmail(this, MyAppointments.class, email));
         bookApt.setOnClickListener(v -> onClickEmail(this, BookAppointment.class, email));
         myRecs.setOnClickListener(v -> onClickEmail(this, MyRecords.class, email));
-        profile.setOnClickListener(v -> onClickEmail(this, PatientProfile.class, email));
+        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
     }
 
     private void setViews() {

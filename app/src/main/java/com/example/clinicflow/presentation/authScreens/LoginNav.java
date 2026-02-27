@@ -8,6 +8,7 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.doctorScreens.DoctorScreen;
 import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 import com.example.clinicflow.presentation.staffScreens.StaffScreen;
@@ -31,7 +32,7 @@ public class LoginNav {
         }
 
         if (intent != null) {
-            intent.putExtra(MainActivity.EXTRA_USER_EMAIL, email);
+            intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
         }
         return intent;
     }
