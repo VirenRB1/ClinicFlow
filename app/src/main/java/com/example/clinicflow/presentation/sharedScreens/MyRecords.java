@@ -1,7 +1,5 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.sharedScreens.ViewPatients.EXTRA_PATIENT_EMAIL;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +19,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.components.MedicalRecordAdapter;
 import com.example.clinicflow.presentation.components.RecyclerViewInterface;
 
@@ -49,7 +48,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
             }
         });
         String userEmail = getIntent().getStringExtra(EXTRA_USER_EMAIL);
-        String patientEmail = getIntent().getStringExtra(EXTRA_PATIENT_EMAIL);
+        String patientEmail = getIntent().getStringExtra(Navigation.EXTRA_PATIENT_EMAIL);
 
         String finalEmail;
 
@@ -92,8 +91,8 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
 
         intent.putExtra("Record", records.get(position));
         intent.putExtra(EXTRA_USER_EMAIL, getIntent().getStringExtra(EXTRA_USER_EMAIL));
-        if(getIntent().getStringExtra(EXTRA_PATIENT_EMAIL) != null){
-            intent.putExtra(EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(EXTRA_PATIENT_EMAIL));
+        if(getIntent().getStringExtra(Navigation.EXTRA_PATIENT_EMAIL) != null){
+            intent.putExtra(Navigation.EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(Navigation.EXTRA_PATIENT_EMAIL));
         }
 
         startActivity(intent);

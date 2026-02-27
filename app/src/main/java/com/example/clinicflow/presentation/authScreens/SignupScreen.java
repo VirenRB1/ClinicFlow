@@ -2,7 +2,6 @@ package com.example.clinicflow.presentation.authScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 
 public class SignupScreen extends AppCompatActivity {
@@ -98,7 +97,7 @@ public class SignupScreen extends AppCompatActivity {
 
         Toast.makeText(SignupScreen.this, "Patient added successfully", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SignupScreen.this, PatientScreen.class);
-        intent.putExtra(MainActivity.EXTRA_USER_EMAIL, emailAdd);
+        intent.putExtra(Navigation.EXTRA_USER_EMAIL, emailAdd);
         startActivity(intent);
     }
 

@@ -1,6 +1,7 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
-import android.content.Intent;
+import static com.example.clinicflow.presentation.Navigation.onClickEmail;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,15 +18,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
+import com.example.clinicflow.business.PatientLookupService;
 import com.example.clinicflow.models.Patient;
-import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.presentation.authScreens.MainActivity;
-import com.example.clinicflow.presentation.staffScreens.StaffProfile;
+import com.example.clinicflow.presentation.Navigation;
 import com.google.android.material.card.MaterialCardView;
 
 public class ViewPatients extends AppCompatActivity{
 
-    public static final String EXTRA_PATIENT_EMAIL = "patient_email";
     private MaterialCardView patientCard;
     private ImageButton profile;
     private Button back;
@@ -39,6 +38,8 @@ public class ViewPatients extends AppCompatActivity{
     private TextView hc;
     private TextView phone;
 
+    private String userEmail;
+    private PatientLookupService patientLookupService;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,61 +47,13 @@ public class ViewPatients extends AppCompatActivity{
         setContentView(R.layout.view_patients);
 
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        UserRepository userRepository = app.getUserRepository();
+        patientLookupService = app.getPatientLookupService();
 
         setViews();
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String enteredEmail = emailAddress.getText().toString().trim();
+        userEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
 
-                Patient patient = userRepository.getPatientByEmail(enteredEmail);
-
-                if (patient == null) {
-                    Toast.makeText(getApplicationContext(), "No Such Account", Toast.LENGTH_LONG).show();
-                    viewRecords.setVisibility(View.INVISIBLE);
-                    patientCard.setVisibility(View.INVISIBLE);
-                } else {
-                    email.setText(patient.getEmail());
-                    name.setText(patient.getFullName());
-                    gender.setText(patient.getGender());
-                    age.setText(String.valueOf(patient.getAge()));
-                    hc.setText(String.valueOf(patient.getHealthCardNumber()));
-                    phone.setText(String.valueOf(patient.getPhoneNumber()));
-
-                    viewRecords.setVisibility(View.VISIBLE);
-                    patientCard.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        viewRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewPatients.this, MyRecords.class);
-                intent.putExtra(EXTRA_PATIENT_EMAIL, emailAddress.getText().toString().trim());
-                intent.putExtra(MainActivity.EXTRA_USER_EMAIL, getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL));
-                startActivity(intent);
-            }
-        });
-
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewPatients.this, StaffProfile.class);
-                intent.putExtra(MainActivity.EXTRA_USER_EMAIL, getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL));
-                startActivity(intent);
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setEvents();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -109,20 +62,65 @@ public class ViewPatients extends AppCompatActivity{
         });
     }
 
+    private void setEvents() {
+        search.setOnClickListener(v -> onClickSearch());
+        viewRecords.setOnClickListener(v -> onClickView());
+        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, userEmail));
+        back.setOnClickListener(v -> finish());
+    }
+    private void onClickView() {
+        Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
+    }
+
+    private void onClickSearch() {
+        String enteredEmail = emailAddress.getText().toString().trim();
+
+        if(enteredEmail.isEmpty()) {
+            Toast.makeText(this, "Please enter a Patient email", Toast.LENGTH_LONG).show();
+            hide();
+            return;
+        }
+
+        Patient patient = patientLookupService.findPatientByEmail(enteredEmail);
+
+        if(patient == null) {
+            Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
+            hide();
+            return;
+        }
+
+        setPatient(patient);
+    }
+
+    private void setPatient(Patient patient) {
+        email.setText(patient.getEmail());
+        name.setText(patient.getFullName());
+        gender.setText(patient.getGender());
+        age.setText(String.valueOf(patient.getAge()));
+        hc.setText(String.valueOf(patient.getHealthCardNumber()));
+        phone.setText(String.valueOf(patient.getPhoneNumber()));
+
+        viewRecords.setVisibility(View.VISIBLE);
+        patientCard.setVisibility(View.VISIBLE);
+    }
+
+    private void hide() {
+        patientCard.setVisibility(View.INVISIBLE);
+        viewRecords.setVisibility(View.INVISIBLE);
+    }
+
     private void setViews() {
         patientCard = findViewById(R.id.patientCard);
         viewRecords = findViewById(R.id.viewRecordsButton);
         search = findViewById(R.id.searchButton);
         profile = findViewById(R.id.profileButton);
         back = findViewById(R.id.backButton);
-
         email = findViewById(R.id.emailActual);
         name = findViewById(R.id.nameActual);
         gender = findViewById(R.id.genderActual);
         age = findViewById(R.id.ageActual);
         hc = findViewById(R.id.healthCardActual);
         phone = findViewById(R.id.phoneActual);
-
         emailAddress = findViewById(R.id.editTextEmailAddress);
     }
 }
