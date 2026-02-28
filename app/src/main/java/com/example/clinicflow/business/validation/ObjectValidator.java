@@ -2,6 +2,9 @@ package com.example.clinicflow.business.validation;
 
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
+
+import java.time.LocalDate;
+
 //Create database
 public class ObjectValidator {
     private final UserRepository DATABASE;
@@ -16,14 +19,14 @@ public class ObjectValidator {
             String email,
             String password,
             String gender,
-            int age,
+            LocalDate dateOfBirth,
             int healthCardNum,
             int phoneNumber) {
         validateNullFields(firstName, lastName, email, password, gender);
         validateEmptyFields(firstName, lastName, email, password, gender);
         validateDuplicateEmail(email);
         validateEmailFormat(email);
-        validateAge(age);
+        validateDateOfBirth(dateOfBirth);
     }
     private void validateNullFields(
             String firstName,
@@ -59,9 +62,9 @@ public class ObjectValidator {
         }
     }
 
-    private void validateAge(int age){
-        if (age < 0) {
-            throw new IllegalArgumentException("Invalid age");
+    private void validateDateOfBirth(LocalDate dateOfBirth){
+        if (dateOfBirth.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Date of birth cannot be in the future");
         }
     }
 

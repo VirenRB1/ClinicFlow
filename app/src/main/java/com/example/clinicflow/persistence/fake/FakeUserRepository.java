@@ -38,13 +38,13 @@ public class FakeUserRepository implements UserRepository, Serializable {
     private void initializeFakeDoctors() {
         doctors = new ArrayList<>();
         doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male", LocalDate.of(1997,3,12),"Cardiology","LIC12345"));
-        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female",LocalDate.of(1999,19,9),"Neurology","LIC67890"));
+        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female",LocalDate.of(1999,9,19),"Neurology","LIC67890"));
         doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female",LocalDate.of(1988,8,8),"Pediatrics","LIC54321"));
     }
     // Add patienta
     private void initializeFakePatients() {
         patients = new ArrayList<>();
-        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female",LocalDate.of(2020,3,12),123456,5551234));
+        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female",LocalDate.of(2001,3,12),123456,5551234));
         patients.add(new Patient("Bob","Davis","bobdavis@gmail.com","pass5","Male",LocalDate.of(1999,3,12),654321,5555678));
         patients.add(new Patient("Charlie","Wilson","charliewilson@gmail.com","pass6","Male",LocalDate.of(2000,1,2),789012,5559012));
     }

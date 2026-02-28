@@ -8,6 +8,8 @@ import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 public class ObjectCreationTest {
     private ObjectCreation objectCreation;
 
@@ -28,7 +30,7 @@ public class ObjectCreationTest {
                 "williamy@.com",
                 "password",
                 "Female",
-                23,
+                LocalDate.of(2002, 6, 24),
                 1245,
                 1234553343
         );
@@ -47,7 +49,7 @@ public class ObjectCreationTest {
                             "williamy@.com",
                             "password",
                             "Female",
-                            23,
+                            LocalDate.of(2002, 6, 24),
                             1245,
                             1234553343
                     );
@@ -67,7 +69,7 @@ public class ObjectCreationTest {
                     "williamy@.com",
                     "password",
                     "Female",
-                    23,
+                    LocalDate.of(2002, 6, 24),
                     1245,
                     1234553343
             );
@@ -84,7 +86,7 @@ public class ObjectCreationTest {
                     "williamy.com",
                     "password",
                     "Female",
-                    23,
+                    LocalDate.of(2002, 6, 24),
                     1245,
                     1234553343
             );
@@ -101,7 +103,7 @@ public class ObjectCreationTest {
                     "williamy@.com",
                     "",
                     "Female",
-                    23,
+                    LocalDate.of(2002, 6, 24),
                     1245,
                     1234553343
             );
@@ -118,7 +120,7 @@ public class ObjectCreationTest {
                     "william@.com",
                     "password",
                     "",
-                    23,
+                    LocalDate.of(2002, 6, 24),
                     1245,
                     1234553343
             );
@@ -136,7 +138,7 @@ public class ObjectCreationTest {
                     "alicebrown@gmail.com",
                     "pass4",
                     "Female",
-                    28,
+                    LocalDate.of(1997, 6, 24),
                     123456,
                     5551234
             );

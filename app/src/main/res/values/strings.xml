@@ -54,4 +54,6 @@
     <string name="phone_label">Phone:</string>
     <string name="default_phone">2042222222</string>
     <string name="view_recs">View Records</string>
+    <string name="dob_hint">Date of Birth (YYYY-MM-DD)</string>
+"
 </resources>

@@ -1,5 +1,6 @@
 package com.example.clinicflow.presentation.authScreens;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -18,6 +19,8 @@ import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 
+import java.time.LocalDate;
+
 public class SignupScreen extends AppCompatActivity {
 
     private EditText firstName;
@@ -26,7 +29,8 @@ public class SignupScreen extends AppCompatActivity {
     private EditText password;
     private EditText confirmPassword;
     private EditText gender;
-    private EditText age;
+    private EditText dob;
+    private LocalDate actDob = null;
     private EditText healthCard;
     private EditText phoneNumber;
     private Button signUpButton;
@@ -57,6 +61,20 @@ public class SignupScreen extends AppCompatActivity {
     private void setEvents() {
         signUpButton.setOnClickListener(v -> onSignUpClick());
         backButton.setOnClickListener(v -> onBackClick());
+        dob.setOnClickListener(v -> onDobClick());
+    }
+
+    private void onDobClick() {
+        LocalDate curr = LocalDate.now();
+
+        DatePickerDialog dialog = new DatePickerDialog(this,
+                android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                (view, year, month, dayOfMonth) -> {
+            actDob = LocalDate.of(year, month + 1, dayOfMonth);
+            dob.setText(actDob.toString());
+        },
+        curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
+        dialog.show();
     }
 
     private void onBackClick() {
@@ -70,7 +88,6 @@ public class SignupScreen extends AppCompatActivity {
         String pass = cleanText(password);
         String confirmPass = cleanText(confirmPassword);
         String genderStr = cleanText(gender);
-        String ageStr = cleanText(age);
         String hCardStr = cleanText(healthCard);
         String phoneStr = cleanText(phoneNumber);
 
@@ -79,16 +96,20 @@ public class SignupScreen extends AppCompatActivity {
             return;
         }
 
-        Integer ageNum = parse(ageStr);
-        Integer hCardNum = parse(hCardStr);
-        Integer phoneNum = parse(phoneStr);
-
-        if(ageNum == null || hCardNum == null || phoneNum == null){
-            Toast.makeText(SignupScreen.this, "Age, health card number, and phone number must be numbers", Toast.LENGTH_LONG).show();
+        if(actDob == null) {
+            Toast.makeText(SignupScreen.this, "Date of birth must be set", Toast.LENGTH_LONG).show();
             return;
         }
 
-        boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, ageNum, hCardNum, phoneNum);
+        Integer hCardNum = parse(hCardStr);
+        Integer phoneNum = parse(phoneStr);
+
+        if(hCardNum == null || phoneNum == null) {
+            Toast.makeText(SignupScreen.this, "Health card number, and Phone number must be numbers", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardNum, phoneNum);
 
         if(!added){
             Toast.makeText(SignupScreen.this, "Patient could not be added", Toast.LENGTH_LONG).show();
@@ -120,7 +141,7 @@ public class SignupScreen extends AppCompatActivity {
         password = findViewById(R.id.PasswordEditText);
         confirmPassword = findViewById(R.id.PasswordConfirmEditText);
         gender = findViewById(R.id.GenderEditText);
-        age = findViewById(R.id.AgeEditText);
+        dob = findViewById(R.id.DobEditText);
         healthCard = findViewById(R.id.HealthCardEditText);
         phoneNumber = findViewById(R.id.PhoneEditText);
         signUpButton = findViewById(R.id.signUpButton);

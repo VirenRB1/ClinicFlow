@@ -4,11 +4,12 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.business.validation.ObjectValidator;
 
+import java.time.LocalDate;
+
 //Add an object in database
 public class ObjectCreation {
     private final UserRepository DATABASE;
     private final ObjectValidator VALIDATOR;
-
 
     public ObjectCreation(UserRepository userRepository) {
         DATABASE = userRepository;
@@ -16,20 +17,20 @@ public class ObjectCreation {
     }
 // Add patient
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
-            int age, int healthCardNum, int phoneNumber) {
+                                        LocalDate dateOfBirth, int healthCardNum, int phoneNumber) {
         VALIDATOR.validateObject(
                 firstName,
                 lastName,
                 email,
                 password,
                 gender,
-                age,
+                dateOfBirth,
                 healthCardNum,
                 phoneNumber
         );
 
         DATABASE.addPatient(
-                new Patient(firstName, lastName, email, password, gender, age, healthCardNum, phoneNumber));
+                new Patient(firstName, lastName, email, password, gender, dateOfBirth, healthCardNum, phoneNumber));
         return true;
 
     }
