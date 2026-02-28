@@ -21,7 +21,7 @@ public class ObjectValidator {
             int phoneNumber) {
         validateNullFields(firstName, lastName, email, password, gender);
         validateEmptyFields(firstName, lastName, email, password, gender);
-        //validateDuplicateEmail(email);
+        validateDuplicateEmail(email);
         validateEmailFormat(email);
         validateAge(age);
     }
@@ -63,6 +63,13 @@ public class ObjectValidator {
         if (age < 0) {
             throw new IllegalArgumentException("Invalid age");
         }
+    }
+
+    private void validateDuplicateEmail(String email){
+        if (DATABASE.getPatientByEmail(email) != null) {
+            throw new IllegalStateException("Email already exists");
+        }
+
     }
 
 }
