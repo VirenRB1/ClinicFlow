@@ -8,6 +8,7 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,26 +37,23 @@ public class FakeUserRepository implements UserRepository, Serializable {
     //Add doctors
     private void initializeFakeDoctors() {
         doctors = new ArrayList<>();
-        doctors.add(new Doctor("John", "Doe", "johndoe@clinicdoc.com", "pass1", "Male", 25, "Cardiology", "LIC12345"));
-        doctors.add(
-                new Doctor("Jane", "Smith", "janesmith@clinicdoc.com", "pass2", "Female", 30, "Neurology", "LIC67890"));
-        doctors.add(new Doctor("Emily", "Johnson", "emilyjohnson@clinicdoc.com", "pass3", "Female", 40, "Pediatrics",
-                "LIC54321"));
+        doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male", LocalDate.of(1997,3,12),"Cardiology","LIC12345"));
+        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female",LocalDate.of(1999,19,9),"Neurology","LIC67890"));
+        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female",LocalDate.of(1988,8,8),"Pediatrics","LIC54321"));
     }
     // Add patienta
     private void initializeFakePatients() {
         patients = new ArrayList<>();
-        patients.add(new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female", 28, 123456, 5551234));
-        patients.add(new Patient("Bob", "Davis", "bobdavis@gmail.com", "pass5", "Male", 35, 654321, 5555678));
-        patients.add(new Patient("Charlie", "Wilson", "charliewilson@gmail.com", "pass6", "Male", 45, 789012, 5559012));
+        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female",LocalDate.of(2020,3,12),123456,5551234));
+        patients.add(new Patient("Bob","Davis","bobdavis@gmail.com","pass5","Male",LocalDate.of(1999,3,12),654321,5555678));
+        patients.add(new Patient("Charlie","Wilson","charliewilson@gmail.com","pass6","Male",LocalDate.of(2000,1,2),789012,5559012));
     }
     // Add staffs
     private void initializeFakeStaffs() {
         staffs = new ArrayList<>();
-        staffs.add(new Staff("Eve", "Miller", "evemiller@clinicstaff.com", "pass7", "Female", 32, "Receptionist"));
-        staffs.add(new Staff("Frank", "Garcia", "frankgarcia@clinicstaff.com", "pass8", "Male", 29, "Receptionist"));
-        staffs.add(new Staff("Grace", "Martinez", "gracemartinez@clinicstaff.com", "pass9", "Female", 38,
-                "Administrator"));
+        staffs.add(new Staff("Eve","Miller","evemiller@clinicstaff.com","pass7","Female",LocalDate.of(2003,3,6),"Receptionist"));
+        staffs.add(new Staff("Frank","Garcia","frankgarcia@clinicstaff.com","pass8","Male",LocalDate.of(2001,7,4),"Receptionist"));
+        staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicstaff.com","pass9","Female",LocalDate.of(1999,3,3),"Administrator"));
     }
     // Add medical records
     private void intializeFakeMedicalRecords() {

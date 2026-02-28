@@ -1,12 +1,13 @@
 package com.example.clinicflow.models;
-// Staff account
-// Position of staff
+
+import java.time.LocalDate;
+
 public class Staff extends Users {
     private String position;
 
     public Staff(String firstName, String lastName, String email, String password, String gender,
-            int age, String position) {
-        super(firstName, lastName, email, password, gender, age);
+                 LocalDate dateOfBirth, String position) {
+        super(firstName, lastName, email, password, gender, dateOfBirth);
         this.position = position;
     }
 
