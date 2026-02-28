@@ -13,9 +13,11 @@ public class Patient extends Users {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getHealthcardNumber() {
+    public int getHealthCardNumber() {
         return healthcardNumber;
     }
 
-    public int getPhoneNumber() { return phoneNumber; }
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
 }

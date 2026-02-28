@@ -6,24 +6,20 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 
 import java.util.List;
-
+//User repository
 public interface UserRepository {
-    List <Patient> getAllPatients();
-    List <Doctor> getAllDoctors();
-    List <Staff> getAllStaffs();
+    List<Patient> getAllPatients();
 
-    void addDoctor(Doctor doctor);
+    List<Doctor> getAllDoctors();
+
+    List<Staff> getAllStaffs();
+
     void addPatient(Patient patient);
-    void addStaff(Staff staff);
 
-    Doctor getDoctorByFullName(String fullName);
-    Patient getPatientByFullName(String fullName);
-    Staff getStaffByFullName(String fullName);
+    Patient getPatientByEmail(String email);
 
-    List<MedicalRecord> getMedicalRecords(String patientName);
+    List<MedicalRecord> getMedicalRecords(String patientEmail);
 
+    void addMedicalRecord(MedicalRecord record);
 
-    boolean deleteDoctorByFullName(String fullName);
-    boolean deletePatientByFullName(String fullName);
-    boolean deleteStaffByFullName(String fullName);
 }

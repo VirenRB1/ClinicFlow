@@ -38,4 +38,20 @@
     <string name="age_hint">Age (In years)</string>
     <string name="hcard_hint">HealthCard Number</string>
     <string name="phone_hint">Phone Number</string>
+    <string name="find_patients">Find Patients</string>
+    <string name="search_by_email">Search for Patient Records via Email</string>
+    <string name="search">Search</string>
+    <string name="patient_info">Patient Info</string>
+    <string name="name_label">Name:</string>
+    <string name="default_email">alicebrown@gmail.com</string>
+    <string name="email_label">Email:</string>
+    <string name="gender_label">Gender:</string>
+    <string name="default_gender">Female</string>
+    <string name="age_label">Age:</string>
+    <string name="default_age">26</string>
+    <string name="hc_label">Health Card:</string>
+    <string name="default_hc_num">123456789</string>
+    <string name="phone_label">Phone:</string>
+    <string name="default_phone">2042222222</string>
+    <string name="view_recs">View Records</string>
 </resources>

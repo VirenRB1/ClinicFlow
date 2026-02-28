@@ -1,71 +1,57 @@
 package com.example.clinicflow.business;
 
-import com.example.clinicflow.models.Doctor;
-import com.example.clinicflow.models.Patient;
-import com.example.clinicflow.models.Staff;
+import com.example.clinicflow.business.auth.AuthExceptions;
+import com.example.clinicflow.business.auth.CredentialsValidator;
+import com.example.clinicflow.business.auth.DoctorAuthenticator;
+import com.example.clinicflow.business.auth.PatientAuthenticator;
+import com.example.clinicflow.business.auth.StaffAuthenticator;
+import com.example.clinicflow.business.auth.UserAuthenticator;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuthService {
-    private final UserRepository DATABASE;
+
+    private final UserRepository repo;
+    private final CredentialsValidator validator;
+    private final List<UserAuthenticator> authenticators;
 
     public AuthService(UserRepository userRepository) {
-        this.DATABASE = userRepository;
+        this.repo = userRepository;
+        this.validator = new CredentialsValidator();
+
+        this.authenticators = new ArrayList<>();
+        this.authenticators.add(new StaffAuthenticator());
+        this.authenticators.add(new DoctorAuthenticator());
+        this.authenticators.add(new PatientAuthenticator()); // fallback last
     }
 
-    public Users authenticate(String email, String password){
-        Users myUser;
-        if(!formatCheck(email, password)){
-            myUser = null;
-        }else {
-            if (email.contains("@clinicstaff.com")) {
-                myUser = validateStaff(email, password);
-            } else if (email.contains("@clinicdoc.com")) {
-                myUser = validateDoctor(email, password);
-            } else {
-                myUser = validatePatient(email, password);
+    // ✅ Old method stays (same name/signature/behavior)
+    public Users authenticate(String email, String password) {
+        try {
+            return authenticateOrThrow(email, password);
+        } catch (AuthExceptions.AuthException e) {
+            return null;
+        }
+    }
+
+    // ✅ New “better” method
+    public Users authenticateOrThrow(String email, String password) throws AuthExceptions.AuthException {
+        validator.validate(email, password);
+
+        UserAuthenticator authenticator = findAuthenticator(email);
+        return authenticator.authenticate(repo, email, password);
+    }
+
+    private UserAuthenticator findAuthenticator(String email) {
+        for (UserAuthenticator a : authenticators) {
+            if (a.supports(email)) {
+                return a;
             }
         }
-        return myUser;
-    }
-
-    public Users validatePatient(String email, String password){
-        List<Patient> patients = DATABASE.getAllPatients();
-        for(Patient patient : patients){
-            if(patient.getEmail().equalsIgnoreCase(email) && patient.getPassword().equals(password)){
-                return patient;
-            }
-        }
-        return null;
-    }
-
-    public Users validateStaff(String email, String password){
-        List<Staff> staffs = DATABASE.getAllStaffs();
-        for(Staff staff : staffs){
-            if(staff.getEmail().equalsIgnoreCase(email) && staff.getPassword().equals(password)){
-                return staff;
-            }
-        }
-        return null;
-    }
-
-    public Users validateDoctor(String email, String password){
-        List<Doctor> doctors = DATABASE.getAllDoctors();
-        for(Doctor doc : doctors){
-            if(doc.getEmail().equalsIgnoreCase(email) && doc.getPassword().equals(password)){
-                return doc;
-            }
-        }
-        return null;
-    }
-
-    public boolean formatCheck(String email, String password){
-        if(email == null || !email.contains("@") || !email.contains(".")){
-            return false;
-        }
-        return password != null && !password.isEmpty();
+        // fallback safety (should never happen)
+        return new PatientAuthenticator();
     }
 }

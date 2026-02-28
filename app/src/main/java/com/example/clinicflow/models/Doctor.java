@@ -3,7 +3,7 @@ package com.example.clinicflow.models;
 import java.time.LocalDate;
 
 public class Doctor extends Users {
-    private String specialization;  //also experience
+    private String specialization; // also experience
     private String licenseNumber;
 
     public Doctor(String firstName, String lastName, String email, String password, String gender,

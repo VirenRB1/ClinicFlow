@@ -1,6 +1,5 @@
 package com.example.clinicflow.business;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,39 +20,46 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+// Unit tests for MedicalHistory
 public class MedicalHistoryTest {
 
     private UserRepository mockRepo;
     private MedicalHistory medicalHistory;
 
+    // create a fresh mock and service before each test
     @Before
     public void setup() {
         mockRepo = mock(UserRepository.class);
         medicalHistory = new MedicalHistory(mockRepo);
     }
 
+    // records should come back sorted by date (newest first)
     @Test
     public void testGetSortedMedicalHistoryForPatient_SortsByDateDescending() {
         // Arrange
         String patientName = "Alice Brown";
+        String patientEmail = "alicebrown@gmail.com";
 
         MedicalRecord record1 = new MedicalRecord(
                 patientName,
                 " Dr. Israel",
-                "",
+                patientEmail,
+                "Initial Checkup",
                 "",
                 getDate(2001, 6, 10)
         );
         MedicalRecord record2 = new MedicalRecord(
                 patientName,
                 " Dr. Israel",
-                "L",
+                patientEmail,
+                "Follow-up",
                 "",
                 getDate(2005, 5, 20)
         );
         MedicalRecord record3 = new MedicalRecord(patientName,
                 " Dr. Rex",
-                "_",
+                patientEmail,
+                "Prescription",
                 "",
                 getDate(2006, 10, 26)
         );
@@ -63,48 +69,51 @@ public class MedicalHistoryTest {
         unsortedList.add(record2);
         unsortedList.add(record3);
 
-        when(mockRepo.getMedicalRecords(patientName)).thenReturn(unsortedList);
+        when(mockRepo.getMedicalRecords(patientEmail)).thenReturn(unsortedList);
 
         // Act
-        List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient(patientName);
+        List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient(patientEmail);
 
-        // Assert
+        // check order
         assertEquals(3, result.size());
-        assertEquals(record3, result.get(0)); // newest
+        assertEquals(record3, result.get(0));
         assertEquals(record2, result.get(1));
-        assertEquals(record1, result.get(2)); // oldest
-        verify(mockRepo).getMedicalRecords(patientName);
+        assertEquals(record1, result.get(2));
+        verify(mockRepo).getMedicalRecords(patientEmail);
     }
 
+    // repo returns null → should handle it and give empty list
     @Test
     public void testGetSortedMedicalHistoryForPatient_NullReturnsEmpty() {
         when(mockRepo.getMedicalRecords(anyString())).thenReturn(null);
-        List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient("jefferey");
+
+        List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient("jefferey@some-email.com");
+
         assertNotNull(result);
         assertEquals(0, result.size());
     }
 
-
+    // repo returns empty list → result should stay empty
     @Test
     public void testGetSortedMedicalHistoryForPatient_EmptyListReturnsEmpty() {
         // Arrange
-        String patientName = "Bob Davis";
+        String patientEmail = "bobdavis@another-email.com";
 
-        when(mockRepo.getMedicalRecords(patientName)).thenReturn(new ArrayList<>());
+        when(mockRepo.getMedicalRecords(patientEmail)).thenReturn(new ArrayList<>());
 
         // Act
-        List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient(patientName);
+        List<MedicalRecord> result = medicalHistory.getSortedMedicalHistoryForPatient(patientEmail);
 
-        // Assert
+        // still empty
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
-        verify(mockRepo).getMedicalRecords(patientName);
+        verify(mockRepo).getMedicalRecords(patientEmail);
     }
 
+    // helper to make dates easier to read in tests
     private Date getDate(int year, int month, int day) {
         var ins = (LocalDate.of(year, month, day).atStartOfDay().toInstant(ZoneOffset.UTC));
         return Date.from(ins);
     }
-
 }

@@ -20,7 +20,7 @@ public abstract class Users {
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
     }
-
+//Get methods
     public String getFirstName() {
         return firstName;
     }
@@ -54,5 +54,3 @@ public abstract class Users {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 }
-
-
