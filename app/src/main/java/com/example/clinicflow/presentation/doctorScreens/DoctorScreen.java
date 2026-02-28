@@ -3,9 +3,7 @@ package com.example.clinicflow.presentation.doctorScreens;
 import static com.example.clinicflow.presentation.Navigation.onClickEmail;
 import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -16,7 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.presentation.authScreens.MainActivity;
+import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.sharedScreens.Profile;
 import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
 public class DoctorScreen extends AppCompatActivity {
@@ -34,7 +33,7 @@ public class DoctorScreen extends AppCompatActivity {
 
         setViews();
 
-        final String email = getIntent().getStringExtra(MainActivity.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
 
         setEvents(email);
 
@@ -47,7 +46,7 @@ public class DoctorScreen extends AppCompatActivity {
 
     private void setEvents(String email) {
         logout.setOnClickListener(v -> onLogoutClick(this));
-        profile.setOnClickListener(v -> onClickEmail(this, DoctorProfile.class, email));
+        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
         mySchd.setOnClickListener(v -> onClickEmail(this, MySchedule.class, email));
         setAvail.setOnClickListener(v -> onClickEmail(this, SetAvailability.class, email));
         patientRecs.setOnClickListener(v -> onClickEmail(this, ViewPatients.class, email));

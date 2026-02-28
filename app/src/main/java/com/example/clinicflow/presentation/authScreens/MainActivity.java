@@ -17,12 +17,8 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.business.auth.AuthExceptions;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String EXTRA_USER_EMAIL = "user_email";
     private EditText email;
     private EditText password;
     private Button loginBtn;
@@ -39,15 +35,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.login_screen);
 
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        UserRepository userRepository = app.getUserRepository();
         authService = app.getAuthService();
         loginNav = new LoginNav(this);
 
-
-        email = findViewById(R.id.EmailAddressEditText);
-        password = findViewById(R.id.PasswordEditText);
-        loginBtn = findViewById(R.id.loginButton);
-        signupBtn = findViewById(R.id.signUpButton);
+        setViews();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,5 +78,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void setViews() {
+        email = findViewById(R.id.EmailAddressEditText);
+        password = findViewById(R.id.PasswordEditText);
+        loginBtn = findViewById(R.id.loginButton);
+        signupBtn = findViewById(R.id.signUpButton);
     }
 }
