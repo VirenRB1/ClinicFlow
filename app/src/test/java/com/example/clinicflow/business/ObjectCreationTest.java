@@ -111,7 +111,6 @@ public class ObjectCreationTest {
     // Empty gender should throw exception
     @Test
     public void testEmptyGender() {
-
         assertThrows(IllegalArgumentException.class, () -> {
             objectCreation.addPatientToDatabase(
                     "Najma",
@@ -129,20 +128,7 @@ public class ObjectCreationTest {
     //  Duplicate email should throw IllegalStateException
     @Test
     public void testDuplicates() {
-
-        // First insert should succeed
-//        objectCreation.addPatientToDatabase(
-//                "Alice",
-//                "Brown",
-//                "alicebrown@gmail.com",
-//                "pass4",
-//                "Female",
-//                28,
-//                123456,
-//                5551234
-//        );
-
-        // Second insert should fail
+        // Alice is already in the database hence throws exceptions
         assertThrows(IllegalStateException.class, () -> {
             objectCreation.addPatientToDatabase(
                     "Alice",

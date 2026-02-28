@@ -14,15 +14,6 @@ public class ObjectCreation {
         DATABASE = userRepository;
         this.VALIDATOR = new ObjectValidator(userRepository);
     }
-// Prevent duplicate email
-    private boolean checkForDuplicatePatient(String email) {
-        for (Patient patient : DATABASE.getAllPatients()) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
-        return false;
-    }
 // Add patient
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
             int age, int healthCardNum, int phoneNumber) {
@@ -36,9 +27,6 @@ public class ObjectCreation {
                 healthCardNum,
                 phoneNumber
         );
-        if (checkForDuplicatePatient(email)) {
-            return false;
-        }
 
         DATABASE.addPatient(
                 new Patient(firstName, lastName, email, password, gender, age, healthCardNum, phoneNumber));
