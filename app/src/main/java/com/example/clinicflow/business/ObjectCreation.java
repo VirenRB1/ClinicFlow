@@ -2,38 +2,35 @@ package com.example.clinicflow.business;
 
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.business.validation.ObjectValidator;
+
 //Add an object in database
 public class ObjectCreation {
     private final UserRepository DATABASE;
+    private final ObjectValidator VALIDATOR;
+
 
     public ObjectCreation(UserRepository userRepository) {
         DATABASE = userRepository;
-    }
-// Prevent duplicate email
-    private boolean checkForDuplicatePatient(String email) {
-        for (Patient patient : DATABASE.getAllPatients()) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
-        return false;
+        this.VALIDATOR = new ObjectValidator(userRepository);
     }
 // Add patient
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
             int age, int healthCardNum, int phoneNumber) {
-        if (firstName == null || lastName == null || email == null || password == null || gender == null) {
-            return false;
-        }
-        if (firstName.isEmpty() || lastName.isEmpty() || !email.contains("@") || password.isEmpty()
-                || gender.isEmpty()) {
-            return false;
-        }
-        if (checkForDuplicatePatient(email)) {
-            return false;
-        } else {
-            DATABASE.addPatient(
-                    new Patient(firstName, lastName, email, password, gender, age, healthCardNum, phoneNumber));
-            return true;
-        }
+        VALIDATOR.validateObject(
+                firstName,
+                lastName,
+                email,
+                password,
+                gender,
+                age,
+                healthCardNum,
+                phoneNumber
+        );
+
+        DATABASE.addPatient(
+                new Patient(firstName, lastName, email, password, gender, age, healthCardNum, phoneNumber));
+        return true;
+
     }
 }

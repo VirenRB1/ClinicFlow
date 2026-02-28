@@ -8,7 +8,7 @@ import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ObjectCreationTest  {
+public class ObjectCreationTest {
     private ObjectCreation objectCreation;
 
     // set up a fresh repo and service before each test
@@ -20,8 +20,9 @@ public class ObjectCreationTest  {
 
     // normal case: valid patient info should be accepted
     @Test
-    public void testAddPatientToDatabase(){
-        boolean result = objectCreation.addPatientToDatabase(
+    public void testAddPatientToDatabase() {
+
+        objectCreation.addPatientToDatabase(
                 "Najma",
                 "Mohamed",
                 "williamy@.com",
@@ -31,102 +32,114 @@ public class ObjectCreationTest  {
                 1245,
                 1234553343
         );
-        assert(result);
+
     }
 
-    // null in required field should be rejected
+    //  Null field should throw exception
     @Test
-    public void testNullField(){
-        boolean result = objectCreation.addPatientToDatabase(
-                null,
-                "Mohamed",
-                "williamy@.com",
-                "password",
-                "Female",
-                23,
-                1245,
-                1234553343
-        );
-        assertFalse(result);
+    public void testNullField() {
+
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> {
+                    objectCreation.addPatientToDatabase(
+                            null,
+                            "Mohamed",
+                            "williamy@.com",
+                            "password",
+                            "Female",
+                            23,
+                            1245,
+                            1234553343
+                    );
+                });
+
+        assertEquals("Null fields are not allowed", exception.getMessage());
     }
 
     // empty first/last name should fail
     @Test
-    public void testEmptyName(){
-        boolean result = objectCreation.addPatientToDatabase(
-                "",
-                "",
-                "williamy@.com",
-                "password",
-                "Female",
-                23,
-                1245,
-                1234553343
-        );
-        assertFalse(result);
+    public void testEmptyName() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "",
+                    "",
+                    "williamy@.com",
+                    "password",
+                    "Female",
+                    23,
+                    1245,
+                    1234553343
+            );
+        });
     }
 
     // email without '@' should be invalid
     @Test
-    public void testInvalidEmail(){
-        boolean result = objectCreation.addPatientToDatabase(
-                "Najma",
-                "Mohamed",
-                "williamy.com",
-                "password",
-                "Female",
-                23,
-                1245,
-                1234553343
-        );
-        assertFalse(result);
+    public void testInvalidEmail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "Najma",
+                    "Mohamed",
+                    "williamy.com",
+                    "password",
+                    "Female",
+                    23,
+                    1245,
+                    1234553343
+            );
+        });
     }
 
-    // empty password should not be allowed
+    // empty password should not be allowed and throw exception
     @Test
-    public void testEmptyPassword(){
-        boolean result = objectCreation.addPatientToDatabase(
-                "Najma",
-                "Mohamed",
-                "williamy@.com",
-                "",
-                "Female",
-                23,
-                1245,
-                1234553343
-        );
-        assertFalse(result);
+    public void testEmptyPassword() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "Najma",
+                    "Mohamed",
+                    "williamy@.com",
+                    "",
+                    "Female",
+                    23,
+                    1245,
+                    1234553343
+            );
+        });
     }
 
-    // empty gender should fail validation
+    // Empty gender should throw exception
     @Test
-    public void testEmptyGender(){
-        boolean result = objectCreation.addPatientToDatabase(
-                "Najma",
-                "Mohamed",
-                "william@.com",
-                "password",
-                "",
-                23,
-                1245,
-                1234553343
-        );
-        assertFalse(result);
+    public void testEmptyGender() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "Najma",
+                    "Mohamed",
+                    "william@.com",
+                    "password",
+                    "",
+                    23,
+                    1245,
+                    1234553343
+            );
+        });
     }
 
-    // duplicate patient/email should not be added again
+    //  Duplicate email should throw IllegalStateException
     @Test
-    public void testDuplicates(){
-        boolean result = objectCreation.addPatientToDatabase(
-                "Alice",
-                "Brown",
-                "alicebrown@gmail.com",
-                "pass4",
-                "Female",
-                28,
-                123456,
-                5551234
-        );
-        assertFalse(result);
+    public void testDuplicates() {
+        // Alice is already in the database hence throws exceptions
+        assertThrows(IllegalStateException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "Alice",
+                    "Brown",
+                    "alicebrown@gmail.com",
+                    "pass4",
+                    "Female",
+                    28,
+                    123456,
+                    5551234
+            );
+        });
     }
 }
