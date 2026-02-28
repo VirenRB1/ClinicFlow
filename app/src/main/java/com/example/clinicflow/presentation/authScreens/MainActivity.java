@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
+import com.example.clinicflow.business.auth.AuthExceptions;
 import com.example.clinicflow.models.Users;
 
 public class MainActivity extends AppCompatActivity {
