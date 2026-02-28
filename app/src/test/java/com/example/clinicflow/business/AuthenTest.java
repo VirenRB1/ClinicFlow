@@ -10,6 +10,7 @@ import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
+import com.example.clinicflow.business.auth.AuthExceptions;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -137,6 +138,53 @@ public class AuthenTest {
         assertTrue(u instanceof Patient);
 
         System.out.println("Result: PASS (Patient authenticated)");
+    }
+    // exception: non-existing email should throw UserNotFoundException
+    @Test
+    public void no_email_throw() {
+        System.out.println("Test: login with non-existing email → expect UserNotFoundException");
+
+        try {
+            auth.authenticateOrThrow("noone@clinicdoc.com", "pass1");
+            fail("Expected UserNotFoundException, but no exception was thrown");
+        } catch (AuthExceptions.UserNotFoundException e) {
+            assertEquals("Account not exist.", e.getMessage());
+            System.out.println("Result: PASS (UserNotFoundException + message matched)");
+        } catch (AuthExceptions.AuthException e) {
+            fail("Expected UserNotFoundException, but got: " + e.getClass().getSimpleName());
+        }
+    }
+
+    // exception: wrong password should throw WrongPasswordException
+    @Test
+    public void bad_pw_throw() {
+        System.out.println("Test: login with wrong password → expect WrongPasswordException");
+
+        try {
+            auth.authenticateOrThrow("johndoe@clinicdoc.com", "wrong");
+            fail("Expected WrongPasswordException, but no exception was thrown");
+        } catch (AuthExceptions.WrongPasswordException e) {
+            assertEquals("Incorrect password.", e.getMessage());
+            System.out.println("Result: PASS (WrongPasswordException + message matched)");
+        } catch (AuthExceptions.AuthException e) {
+            fail("Expected WrongPasswordException, but got: " + e.getClass().getSimpleName());
+        }
+    }
+
+    // exception: empty input should throw InvalidInputException
+    @Test
+    public void empty_both_throw() {
+        System.out.println("Test: login with empty email and password → expect InvalidInputException");
+
+        try {
+            auth.authenticateOrThrow("", "");
+            fail("Expected InvalidInputException, but no exception was thrown");
+        } catch (AuthExceptions.InvalidInputException e) {
+            assertEquals("Invalid email format or empty password.", e.getMessage());
+            System.out.println("Result: PASS (InvalidInputException + message matched)");
+        } catch (AuthExceptions.AuthException e) {
+            fail("Expected InvalidInputException, but got: " + e.getClass().getSimpleName());
+        }
     }
 }
 

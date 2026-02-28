@@ -18,6 +18,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.business.auth.AuthExceptions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
                 String enteredEmail = email.getText().toString().trim();
                 String enteredPW = password.getText().toString().trim();
 
-                Users currUser = authService.authenticate(enteredEmail, enteredPW);
+                Users currUser;
 
-                if (currUser == null) {
-                    Toast.makeText(getApplicationContext(), "No Such Account", Toast.LENGTH_LONG).show();
+                try {
+                    currUser = authService.authenticateOrThrow(enteredEmail, enteredPW);
+                } catch (AuthExceptions.AuthException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
