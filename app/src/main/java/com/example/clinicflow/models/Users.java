@@ -1,6 +1,10 @@
 package com.example.clinicflow.models;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -9,18 +13,19 @@ public abstract class Users {
     private String lastName;
     private String email;
     private String password;
-    private String gender;   
+    private String gender;
     private LocalDate dateOfBirth;
 
-    public Users(String firstName, String lastName, String email, String password, String gender, LocalDate dateOfBirth) {
+    public Users(String firstName, String lastName, String email, String password, String gender, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = dob;
     }
-//Get methods
+
+    //Get methods
     public String getFirstName() {
         return firstName;
     }
@@ -45,12 +50,17 @@ public abstract class Users {
         return gender;
     }
 
-    public LocalDate getDateOfBirth() {return dateOfBirth;}
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public int getAge() {
         if (dateOfBirth.isAfter(LocalDate.now())) {
             throw new IllegalStateException("Date of birth cannot be in the future.");
         }
-        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+        LocalDate today = LocalDate.now();
+        return Period.between(dateOfBirth, today).getYears();
     }
+
 }

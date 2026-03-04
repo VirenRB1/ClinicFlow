@@ -1,23 +1,29 @@
 package com.example.clinicflow.models;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Patient extends Users {
-    private int healthcardNumber;
-    private int phoneNumber;
+    private String healthcardNumber;
+    private String phoneNumber;
 
     public Patient(String firstName, String lastName, String email, String password, String gender
-        , LocalDate dateOfBirth, int healthcardNumber, int phoneNumber) {
+        , LocalDate dateOfBirth, String healthcardNumber, String phoneNumber) {
         super(firstName,lastName, email, password, gender, dateOfBirth);
         this.healthcardNumber = healthcardNumber;
         this.phoneNumber = phoneNumber;
     }
 
-    public int getHealthCardNumber() {
+    public String getHealthCardNumber() {
         return healthcardNumber;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
+
 }

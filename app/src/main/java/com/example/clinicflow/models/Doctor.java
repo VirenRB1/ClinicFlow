@@ -7,8 +7,8 @@ public class Doctor extends Users {
     private String licenseNumber;
 
     public Doctor(String firstName, String lastName, String email, String password, String gender,
-                  LocalDate dateOfBirth, String specialization, String licenseNumber) {
-        super(firstName, lastName, email, password, gender, dateOfBirth);
+                  LocalDate dob, String specialization, String licenseNumber) {
+        super(firstName, lastName, email, password, gender,dob);
         this.specialization = specialization;
         this.licenseNumber = licenseNumber;
     }
