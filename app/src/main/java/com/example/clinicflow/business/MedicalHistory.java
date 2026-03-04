@@ -19,8 +19,8 @@ public class MedicalHistory {
         if (medicalRecords == null) {
             return new ArrayList<>();
         }
-
-        medicalRecords.sort((record1, record2) -> record2.getDate().compareTo(record1.getDate()));
+        // Sort medical records by record ID in descending order. so the newest first
+        medicalRecords.sort((record1, record2) -> record2.getRecordId() - record1.getRecordId());
         return medicalRecords;
     }
 
