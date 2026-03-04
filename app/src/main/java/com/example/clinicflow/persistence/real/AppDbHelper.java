@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AppDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "clinic_flow.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +36,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 DbContract.PatientEntry.COLUMN_EMAIL + " VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY, " +
                 DbContract.PatientEntry.COLUMN_PASSWORD + " VARCHAR(255) NOT NULL, " +
                 DbContract.PatientEntry.COLUMN_GENDER + " VARCHAR(10) NOT NULL, " +
-                DbContract.PatientEntry.COLUMN_AGE + " INTEGER NOT NULL, " +
+                DbContract.PatientEntry.COLUMN_DATE_OF_BIRTH + " TEXT NOT NULL, " +
                 DbContract.PatientEntry.COLUMN_HEALTHCARD_NUMBER + " INTEGER NOT NULL UNIQUE, " +
                 DbContract.PatientEntry.COLUMN_PHONE_NUMBER + " INTEGER NOT NULL UNIQUE" +
                 ");";
@@ -50,7 +50,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 DbContract.DoctorEntry.COLUMN_EMAIL + " VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY, " +
                 DbContract.DoctorEntry.COLUMN_PASSWORD + " VARCHAR(255) NOT NULL, " +
                 DbContract.DoctorEntry.COLUMN_GENDER + " VARCHAR(10) NOT NULL, " +
-                DbContract.DoctorEntry.COLUMN_AGE + " INTEGER NOT NULL, " +
+                DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH + " TEXT NOT NULL, " +
                 DbContract.DoctorEntry.COLUMN_SPECIALIZATION + " VARCHAR(255) NOT NULL, " +
                 DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER + " VARCHAR(255) NOT NULL UNIQUE" +
                 ");";
@@ -64,7 +64,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 DbContract.StaffEntry.COLUMN_EMAIL + " VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY, " +
                 DbContract.StaffEntry.COLUMN_PASSWORD + " VARCHAR(255) NOT NULL, " +
                 DbContract.StaffEntry.COLUMN_GENDER + " VARCHAR(10) NOT NULL, " +
-                DbContract.StaffEntry.COLUMN_AGE + " INTEGER NOT NULL, " +
+                DbContract.StaffEntry.COLUMN_DATE_OF_BIRTH + " TEXT NOT NULL, " +
                 DbContract.StaffEntry.COLUMN_POSITION + " VARCHAR(255) NOT NULL" +
                 ");";
         db.execSQL(createStaffTableQuery);
@@ -76,11 +76,11 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 DbContract.MedicalRecordEntry.COLUMN_RECORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME + " TEXT NOT NULL, " +
                 DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME + " TEXT NOT NULL, " +
-                DbContract.MedicalRecordEntry.COLUMN_EMAIL + " VARCHAR(255) NOT NULL, " +
+                DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL + " VARCHAR(255) NOT NULL, " +
                 DbContract.MedicalRecordEntry.COLUMN_PURPOSE + " VARCHAR(255) NOT NULL, " +
                 DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE + " TEXT NOT NULL, " +
                 DbContract.MedicalRecordEntry.COLUMN_DATE + " DATE NOT NULL," +
-                "FOREIGN KEY(" + DbContract.MedicalRecordEntry.COLUMN_EMAIL + ") REFERENCES "
+                "FOREIGN KEY(" + DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL + ") REFERENCES "
                 + DbContract.PatientEntry.TABLE_NAME + "(" + DbContract.PatientEntry.COLUMN_EMAIL + ")" +
                 ");";
         db.execSQL(createMedicalRecordTableQuery);
