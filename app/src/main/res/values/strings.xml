@@ -48,12 +48,13 @@
     <string name="gender_label">Gender:</string>
     <string name="default_gender">Female</string>
     <string name="age_label">Age:</string>
+    <string name="dob_label">Date of Birth:</string>
     <string name="default_age">26</string>
+    <string name="default_dob">2000-01-01</string>
     <string name="hc_label">Health Card:</string>
     <string name="default_hc_num">123456789</string>
     <string name="phone_label">Phone:</string>
     <string name="default_phone">2042222222</string>
     <string name="view_recs">View Records</string>
     <string name="dob_hint">Date of Birth (YYYY-MM-DD)</string>
-"
 </resources>

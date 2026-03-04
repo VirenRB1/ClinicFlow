@@ -171,24 +171,24 @@
                 tools:text="@string/default_gender" />
 
             <TextView
-                android:id="@+id/age"
+                android:id="@+id/dob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/age_label"
+                android:text="@string/dob_label"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gender" />
 
             <TextView
-                android:id="@+id/ageActual"
+                android:id="@+id/dobActual"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                app:layout_constraintBaseline_toBaselineOf="@id/age"
+                app:layout_constraintBaseline_toBaselineOf="@id/dob"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/age"
-                tools:text="@string/default_age" />
+                app:layout_constraintStart_toEndOf="@id/dob"
+                tools:text="@string/default_dob" />
 
             <TextView
                 android:id="@+id/healthCard"
@@ -198,7 +198,7 @@
                 android:text="@string/hc_label"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/age" />
+                app:layout_constraintTop_toBottomOf="@id/dob" />
 
             <TextView
                 android:id="@+id/healthCardActual"
