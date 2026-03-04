@@ -17,7 +17,7 @@ public class ObjectCreation {
     }
 // Add patient
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
-                                        LocalDate dateOfBirth, int healthCardNum, int phoneNumber) {
+                                        LocalDate dateOfBirth, String healthCardNum, String phoneNumber) {
         VALIDATOR.validateObject(
                 firstName,
                 lastName,
