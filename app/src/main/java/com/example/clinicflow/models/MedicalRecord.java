@@ -1,24 +1,25 @@
 package com.example.clinicflow.models;
 
-import java.io.Serializable;
 import java.util.Date;
 //Medical record
 //Name of doctor how wrote the record, and patient name whom it belong
 //Purpose of the record, date created and doctor note
-public class MedicalRecord implements Serializable {
+public class MedicalRecord {
+    int recordId;
     private String patientName;
     private String doctorName;
-    private String email;
+    private String patientEmail;
     private String purpose;
 
     private String doctorNote;
 
     private Date date;
 
-    public MedicalRecord(String patientName, String doctorName, String email, String purpose, String doctorNote, Date date) {
+    public MedicalRecord(int recordId, String patientName, String doctorName, String patientEmail, String purpose, String doctorNote, Date date) {
+        this.recordId = recordId;
         this.patientName = patientName;
         this.doctorName = doctorName;
-        this.email = email;
+        this.patientEmail = patientEmail;
         this.purpose = purpose;
         this.doctorNote = doctorNote;
         this.date = date;
@@ -33,7 +34,7 @@ public class MedicalRecord implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return patientEmail;
     }
 
     public String getPurpose() {
