@@ -22,8 +22,8 @@ public class ClinicFlowApp extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         Context context = getApplicationContext();
-        //userRepository = new SqlRepository(context);
-        userRepository = new FakeUserRepository(); //for testing uncomment this and comment the code above
+        userRepository = new SqlRepository(context);
+        //userRepository = new FakeUserRepository(); //for testing uncomment this and comment the code above
         authService = new AuthService(userRepository);
         objectCreation = new ObjectCreation(userRepository);
         patientLookupService = new PatientLookupService(userRepository);

@@ -41,6 +41,7 @@ public class MedicalHistoryTest {
         String patientEmail = "alicebrown@gmail.com";
 
         MedicalRecord record1 = new MedicalRecord(
+                1,
                 patientName,
                 " Dr. Israel",
                 patientEmail,
@@ -49,6 +50,7 @@ public class MedicalHistoryTest {
                 getDate(2001, 6, 10)
         );
         MedicalRecord record2 = new MedicalRecord(
+                2,
                 patientName,
                 " Dr. Israel",
                 patientEmail,
@@ -56,7 +58,7 @@ public class MedicalHistoryTest {
                 "",
                 getDate(2005, 5, 20)
         );
-        MedicalRecord record3 = new MedicalRecord(patientName,
+        MedicalRecord record3 = new MedicalRecord(3,patientName,
                 " Dr. Rex",
                 patientEmail,
                 "Prescription",

@@ -2,6 +2,9 @@ package com.example.clinicflow.business.validation;
 
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.persistence.UserRepository;
+
+import java.time.LocalDate;
+
 //Create database
 public class ObjectValidator {
     private final UserRepository DATABASE;
@@ -16,25 +19,28 @@ public class ObjectValidator {
             String email,
             String password,
             String gender,
-            int age,
-            int healthCardNum,
-            int phoneNumber) {
-        validateNullFields(firstName, lastName, email, password, gender);
-        validateEmptyFields(firstName, lastName, email, password, gender);
+            LocalDate dateOfBirth,
+            String healthCardNum,
+            String phoneNumber) {
+        validateNullFields(firstName, lastName, email, password, gender, healthCardNum, phoneNumber);
+        validateEmptyFields(firstName, lastName, email, password, gender, healthCardNum, phoneNumber);
         validateDuplicateEmail(email);
         validateEmailFormat(email);
-        validateAge(age);
+        validateDateOfBirth(dateOfBirth);
     }
     private void validateNullFields(
             String firstName,
             String lastName,
             String email,
             String password,
-            String gender) {
+            String gender,
+            String healthCardNum,
+            String phoneNumber) {
 
         if (firstName == null || lastName == null
                 || email == null || password == null
-                || gender == null) {
+                || gender == null || healthCardNum == null
+                || phoneNumber == null) {
             throw new IllegalArgumentException("Null fields are not allowed");
         }
     }
@@ -44,10 +50,13 @@ public class ObjectValidator {
             String lastName,
             String email,
             String password,
-            String gender){
+            String gender,
+            String healthCardNum,
+            String phoneNumber){
         if (firstName.isEmpty() || lastName.isEmpty()
                 || email.isEmpty() || password.isEmpty()
-                || gender.isEmpty()) {
+                || gender.isEmpty() || healthCardNum.isEmpty()
+                || phoneNumber.isEmpty()) {
             throw new IllegalArgumentException("Empty fields are not allowed");
         }
 
@@ -59,9 +68,12 @@ public class ObjectValidator {
         }
     }
 
-    private void validateAge(int age){
-        if (age < 0) {
-            throw new IllegalArgumentException("Invalid age");
+    private void validateDateOfBirth(LocalDate dateOfBirth){
+        if (dateOfBirth == null) {
+            throw new IllegalArgumentException("Date of birth cannot be null");
+        }
+        if (dateOfBirth.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Date of birth cannot be in the future");
         }
     }
 
