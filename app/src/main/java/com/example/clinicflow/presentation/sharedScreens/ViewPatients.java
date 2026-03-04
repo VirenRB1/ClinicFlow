@@ -97,8 +97,8 @@ public class ViewPatients extends AppCompatActivity{
         name.setText(patient.getFullName());
         gender.setText(patient.getGender());
         age.setText(String.valueOf(patient.getAge()));
-        hc.setText(String.valueOf(patient.getHealthCardNumber()));
-        phone.setText(String.valueOf(patient.getPhoneNumber()));
+        hc.setText(patient.getHealthCardNumber());
+        phone.setText(patient.getPhoneNumber());
 
         viewRecords.setVisibility(View.VISIBLE);
         patientCard.setVisibility(View.VISIBLE);
