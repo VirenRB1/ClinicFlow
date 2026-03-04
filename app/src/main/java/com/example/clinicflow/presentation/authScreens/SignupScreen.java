@@ -101,37 +101,31 @@ public class SignupScreen extends AppCompatActivity {
             return;
         }
 
-        Integer hCardNum = parse(hCardStr);
-        Integer phoneNum = parse(phoneStr);
-
-        if(hCardNum == null || phoneNum == null) {
-            Toast.makeText(SignupScreen.this, "Health card number, and Phone number must be numbers", Toast.LENGTH_LONG).show();
+        // Basic validation: ensure health card and phone number are provided
+        if (hCardStr.isEmpty() || phoneStr.isEmpty()) {
+            Toast.makeText(SignupScreen.this, "Health card number and Phone number are required", Toast.LENGTH_LONG).show();
             return;
         }
 
-        boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardNum, phoneNum);
+        try {
+            boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
 
-        if(!added){
-            Toast.makeText(SignupScreen.this, "Patient could not be added", Toast.LENGTH_LONG).show();
-            return;
+            if(!added){
+                Toast.makeText(SignupScreen.this, "Patient could not be added", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            Toast.makeText(SignupScreen.this, "Patient added successfully", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(SignupScreen.this, PatientScreen.class);
+            intent.putExtra(Navigation.EXTRA_USER_EMAIL, emailAdd);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(SignupScreen.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        Toast.makeText(SignupScreen.this, "Patient added successfully", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(SignupScreen.this, PatientScreen.class);
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, emailAdd);
-        startActivity(intent);
     }
 
     private String cleanText(EditText editText){
         return editText.getText().toString().trim();
-    }
-
-    private Integer parse(String text){
-        try {
-            return Integer.parseInt(text);
-        } catch (NumberFormatException e) {
-            return null;
-        }
     }
 
     private void setViews(){
