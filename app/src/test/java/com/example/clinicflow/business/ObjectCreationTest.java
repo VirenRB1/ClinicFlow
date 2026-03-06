@@ -31,8 +31,8 @@ public class ObjectCreationTest {
                 "password",
                 "Female",
                 LocalDate.of(2002, 6, 24),
-                1245,
-                1234553343
+                "124576877",
+                "1234553346"
         );
 
     }
@@ -46,12 +46,12 @@ public class ObjectCreationTest {
                     objectCreation.addPatientToDatabase(
                             null,
                             "Mohamed",
-                            "williamy@.com",
-                            "password",
+                            "amy@.com",
+                            "password6",
                             "Female",
                             LocalDate.of(2002, 6, 24),
-                            1245,
-                            1234553343
+                            "1245",
+                            "1434553343"
                     );
                 });
 
@@ -66,12 +66,12 @@ public class ObjectCreationTest {
             objectCreation.addPatientToDatabase(
                     "",
                     "",
-                    "williamy@.com",
-                    "password",
+                    "niamy@.com",
+                    "password7",
                     "Female",
                     LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
+                    "1245",
+                    "1234553243"
             );
         });
     }
@@ -81,14 +81,14 @@ public class ObjectCreationTest {
     public void testInvalidEmail() {
         assertThrows(IllegalArgumentException.class, () -> {
             objectCreation.addPatientToDatabase(
-                    "Najma",
-                    "Mohamed",
-                    "williamy.com",
-                    "password",
+                    "Liam",
+                    "Walter",
+                    "liam.com",
+                    "password5",
                     "Female",
                     LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
+                    "1245",
+                    "1234553343"
             );
         });
     }
@@ -98,14 +98,14 @@ public class ObjectCreationTest {
     public void testEmptyPassword() {
         assertThrows(IllegalArgumentException.class, () -> {
             objectCreation.addPatientToDatabase(
-                    "Najma",
-                    "Mohamed",
-                    "williamy@.com",
+                    "Will",
+                    "Sandy",
+                    "wilamy@.com",
                     "",
                     "Female",
                     LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
+                    "1245",
+                    "1234563343"
             );
         });
     }
@@ -115,14 +115,14 @@ public class ObjectCreationTest {
     public void testEmptyGender() {
         assertThrows(IllegalArgumentException.class, () -> {
             objectCreation.addPatientToDatabase(
-                    "Najma",
-                    "Mohamed",
-                    "william@.com",
-                    "password",
+                    "Sandra",
+                    "Ohm",
+                    "san@.com",
+                    "password3",
                     "",
                     LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
+                    "1245",
+                    "1234553343"
             );
         });
     }
@@ -139,9 +139,43 @@ public class ObjectCreationTest {
                     "pass4",
                     "Female",
                     LocalDate.of(1997, 6, 24),
-                    123456,
-                    5551234
+                    "123456",
+                    "5551234"
             );
         });
+    }
+
+    @Test
+    public void testInvalidPhoneNumber() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "David",
+                    "Wan",
+                    "wan@.com",
+                    "password2",
+                    "Male",
+                    LocalDate.of(2002, 6, 24),
+                    "123456789",
+                    "12345533493"
+            );
+        });
+        assertEquals("Phone number must be 10 digits", exception.getMessage());
+    }
+
+    @Test
+    public void testInvalidHealthCard() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            objectCreation.addPatientToDatabase(
+                    "Heather",
+                    "Canda",
+                    "canda@.com",
+                    "password9",
+                    "Female",
+                    LocalDate.of(2002, 7, 24),
+                    "1245",
+                    "1234553343"
+            );
+        });
+        assertEquals("Health card number must be 9 or 10 digits", exception.getMessage());
     }
 }
