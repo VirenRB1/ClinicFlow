@@ -44,17 +44,17 @@ public class AdminScreen extends AppCompatActivity {
     private void setEvents(String email) {
         logout.setOnClickListener(v -> onLogoutClick(this));
         profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
-        addDoctor.setOnClickListener(v -> onClickRole(Navigation.DOCTOR));
-        addStaff.setOnClickListener(v -> onClickRole(Navigation.STAFF));
-        addPatient.setOnClickListener(v -> onClickRole(Navigation.PATIENT));
+        addDoctor.setOnClickListener(v -> onClickRole(Navigation.DOCTOR, email));
+        addStaff.setOnClickListener(v -> onClickRole(Navigation.STAFF, email));
+        addPatient.setOnClickListener(v -> onClickRole(Navigation.PATIENT, email));
     }
 
-    private void onClickRole(String role){
-        Intent intent = new Intent(this, UserSignUp.class);
+    private void onClickRole(String role, String email) {
+        Intent intent = new Intent(this, AddOrDeleteScreen.class);
         intent.putExtra(Navigation.USER_ROLE, role);
+        intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
         startActivity(intent);
     }
-
 
     private void setViews() {
         logout = findViewById(R.id.logoutButton);

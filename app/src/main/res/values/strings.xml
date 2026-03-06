@@ -66,4 +66,11 @@
     <string name="position_hint">Staff Position</string>
     <string name="specialization_hint">Specialization</string>
     <string name="license_number_hint">License Number</string>
+    <string name="addorDeleteDoctor">Add/Delete Doctor</string>
+    <string name="addOrDeleteStaff">Add/Delete Staff</string>
+    <string name="addOrDeletePatient">Add/Delete Patient</string>
+    <string name="delete">Delete User</string>
+    <string name="search_by_email_user">Search for User By Email</string>
+    <string name="add">Add User</string>
+    <string name="choose">Choose Option</string>
 </resources>

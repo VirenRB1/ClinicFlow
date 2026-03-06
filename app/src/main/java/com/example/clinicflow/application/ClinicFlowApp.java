@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.business.MedicalHistory;
 import com.example.clinicflow.business.ObjectCreation;
-import com.example.clinicflow.business.PatientLookupService;
+import com.example.clinicflow.business.LookupService;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 //import com.example.clinicflow.persistence.real.SqlRepository;
@@ -16,7 +16,7 @@ public class ClinicFlowApp extends android.app.Application {
     private AuthService authService;
     private ObjectCreation objectCreation;
     private MedicalHistory medicalHistory;
-    private PatientLookupService patientLookupService;
+    private LookupService lookupService;
 
     @Override
     public void onCreate() {
@@ -26,7 +26,7 @@ public class ClinicFlowApp extends android.app.Application {
         userRepository = new FakeUserRepository(); //for testing uncomment this and comment the code above
         authService = new AuthService(userRepository);
         objectCreation = new ObjectCreation(userRepository);
-        patientLookupService = new PatientLookupService(userRepository);
+        lookupService = new LookupService(userRepository);
         medicalHistory = new MedicalHistory(userRepository);
     }
 
@@ -34,8 +34,8 @@ public class ClinicFlowApp extends android.app.Application {
         return medicalHistory;
     }
 
-    public PatientLookupService getPatientLookupService() {
-        return patientLookupService;
+    public LookupService getLookupService() {
+        return lookupService;
     }
 
     public ObjectCreation getObjectCreation() {

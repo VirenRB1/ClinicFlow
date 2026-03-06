@@ -1,7 +1,6 @@
 package com.example.clinicflow.presentation.admin;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 
 import java.time.LocalDate;
 
@@ -113,6 +111,10 @@ public class UserSignUp extends AppCompatActivity {
         String positionStr = null;
 
 
+        if(!pass.equals(confirmPass)){
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (role.equals(Navigation.PATIENT)){
             hCardStr = cleanText(healthCard);
             phoneStr = cleanText(phoneNumber);
@@ -125,18 +127,13 @@ public class UserSignUp extends AppCompatActivity {
 
 
         try {
-            boolean added = false;
 
             if(role.equals(Navigation.PATIENT)){
-                added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
+                objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
             } else if (role.equals(Navigation.DOCTOR)) {
-                added = objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationStr, licenseNumberStr);
+                objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationStr, licenseNumberStr);
             } else {
-                added = objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
-            }
-            if(!added){
-                Toast.makeText(this, "Patient could not be added", Toast.LENGTH_LONG).show();
-                return;
+                objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
             }
 
             Toast.makeText(this, "Patient added successfully", Toast.LENGTH_LONG).show();

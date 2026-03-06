@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation.sharedScreens;
+package com.example.clinicflow.presentation.admin;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
 
@@ -18,38 +18,37 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.LookupService;
-import com.example.clinicflow.models.Patient;
+import com.example.clinicflow.business.ObjectCreation;
+import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 import com.google.android.material.card.MaterialCardView;
 
-public class ViewPatients extends AppCompatActivity{
+public class UserDelete extends AppCompatActivity{
 
     private MaterialCardView patientCard;
     private BasicBinds binds;
     private Button search;
-    private Button viewRecords;
+    private Button delete;
     private EditText emailAddress;
     private TextView email;
     private TextView name;
     private TextView gender;
     private TextView age;
-    private TextView hc;
-    private TextView phone;
-
     private String userEmail;
     private LookupService lookupService;
+    private ObjectCreation objectCreation;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.view_patients);
+        setContentView(R.layout.delete_user);
 
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
         lookupService = app.getLookupService();
+        objectCreation = app.getObjectCreation();
 
         setViews();
-
         userEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
 
         setEvents();
@@ -63,61 +62,62 @@ public class ViewPatients extends AppCompatActivity{
 
     private void setEvents() {
         search.setOnClickListener(v -> onClickSearch());
-        viewRecords.setOnClickListener(v -> onClickView());
+        delete.setOnClickListener(v -> onClickDelete());
         binds.setBasicEvents(this, userEmail);
     }
-    private void onClickView() {
-        Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
+    private void onClickDelete() {
+        boolean deleted = objectCreation.deleteUser(emailAddress.getText().toString().trim());
+        if(!deleted) {
+            Toast.makeText(this, "User could not be deleted", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Toast.makeText(this, "User deleted successfully", Toast.LENGTH_LONG).show();
     }
 
     private void onClickSearch() {
         String enteredEmail = emailAddress.getText().toString().trim();
 
         if(enteredEmail.isEmpty()) {
-            Toast.makeText(this, "Please enter a Patient email", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter a email", Toast.LENGTH_LONG).show();
             hide();
             return;
         }
 
-        Patient patient = lookupService.findPatientByEmail(enteredEmail);
+        Users user = lookupService.findUserByEmail(enteredEmail);
 
-        if(patient == null) {
+        if(user == null) {
             Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
             hide();
             return;
         }
 
-        setPatient(patient);
+        setUser(user);
     }
 
-    private void setPatient(Patient patient) {
-        email.setText(patient.getEmail());
-        name.setText(patient.getFullName());
-        gender.setText(patient.getGender());
-        age.setText(String.valueOf(patient.getAge()));
-        hc.setText(patient.getHealthCardNumber());
-        phone.setText(patient.getPhoneNumber());
+    private void setUser(Users user) {
+        email.setText(user.getEmail());
+        name.setText(user.getFullName());
+        gender.setText(user.getGender());
+        age.setText(String.valueOf(user.getAge()));
 
-        viewRecords.setVisibility(View.VISIBLE);
+        delete.setVisibility(View.VISIBLE);
         patientCard.setVisibility(View.VISIBLE);
     }
 
     private void hide() {
         patientCard.setVisibility(View.INVISIBLE);
-        viewRecords.setVisibility(View.INVISIBLE);
+        delete.setVisibility(View.INVISIBLE);
     }
 
     private void setViews() {
         patientCard = findViewById(R.id.patientCard);
-        viewRecords = findViewById(R.id.viewRecordsButton);
+        delete = findViewById(R.id.deleteButton);
         search = findViewById(R.id.searchButton);
         binds = setBasicBinds(this);
         email = findViewById(R.id.emailActual);
         name = findViewById(R.id.nameActual);
         gender = findViewById(R.id.genderActual);
         age = findViewById(R.id.ageActual);
-        hc = findViewById(R.id.healthCardActual);
-        phone = findViewById(R.id.phoneActual);
         emailAddress = findViewById(R.id.editTextEmailAddress);
     }
 }
