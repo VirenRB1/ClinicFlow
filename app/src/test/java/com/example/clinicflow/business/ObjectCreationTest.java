@@ -2,6 +2,7 @@ package com.example.clinicflow.business;
 
 import static org.junit.Assert.*;
 
+import com.example.clinicflow.business.validation.ValidationExceptions;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
@@ -11,137 +12,206 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 public class ObjectCreationTest {
+
     private ObjectCreation objectCreation;
 
-    // set up a fresh repo and service before each test
     @Before
     public void setup() {
         UserRepository repo = new FakeUserRepository();
         objectCreation = new ObjectCreation(repo);
     }
 
-    // normal case: valid patient info should be accepted
+    // Valid patient signup
     @Test
-    public void testAddPatientToDatabase() {
+    public void testAddPatientSuccess() throws ValidationExceptions.ValidationException {
 
-        objectCreation.addPatientToDatabase(
+        boolean result = objectCreation.addPatientToDatabase(
                 "Najma",
                 "Mohamed",
-                "williamy@.com",
+                "najma@gmail.com",
                 "password",
                 "Female",
-                LocalDate.of(2002, 6, 24),
-                1245,
-                1234553343
+                LocalDate.of(2002,6,24),
+                "124576877",
+                "1234553346"
         );
 
+        assertTrue(result);
     }
 
-    //  Null field should throw exception
+    // Empty field
     @Test
-    public void testNullField() {
+    public void testEmptyFirstName() {
 
-        IllegalArgumentException exception =
-                assertThrows(IllegalArgumentException.class, () -> {
-                    objectCreation.addPatientToDatabase(
-                            null,
-                            "Mohamed",
-                            "williamy@.com",
-                            "password",
-                            "Female",
-                            LocalDate.of(2002, 6, 24),
-                            1245,
-                            1234553343
-                    );
-                });
-
-        assertEquals("Null fields are not allowed", exception.getMessage());
-    }
-
-    // empty first/last name should fail
-    @Test
-    public void testEmptyName() {
-
-        assertThrows(IllegalArgumentException.class, () -> {
+        try {
             objectCreation.addPatientToDatabase(
                     "",
-                    "",
-                    "williamy@.com",
+                    "Mohamed",
+                    "amy@gmail.com",
                     "password",
                     "Female",
-                    LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
+                    LocalDate.of(2002,6,24),
+                    "123456789",
+                    "1434553343"
             );
-        });
+
+            fail("Expected EmptyFieldException");
+
+        } catch (ValidationExceptions.EmptyFieldException e) {
+            assertEquals("First name cannot be empty.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
     }
 
-    // email without '@' should be invalid
+    // Invalid email
     @Test
     public void testInvalidEmail() {
-        assertThrows(IllegalArgumentException.class, () -> {
+
+        try {
             objectCreation.addPatientToDatabase(
-                    "Najma",
-                    "Mohamed",
-                    "williamy.com",
+                    "Liam",
+                    "Walter",
+                    "liam.com",
                     "password",
-                    "Female",
-                    LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
+                    "Male",
+                    LocalDate.of(2002,6,24),
+                    "123456789",
+                    "1234553343"
             );
-        });
+
+            fail("Expected InvalidEmailException");
+
+        } catch (ValidationExceptions.InvalidEmailException e) {
+            assertEquals("Invalid email format.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
     }
 
-    // empty password should not be allowed and throw exception
+    // Duplicate email
     @Test
-    public void testEmptyPassword() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            objectCreation.addPatientToDatabase(
-                    "Najma",
-                    "Mohamed",
-                    "williamy@.com",
-                    "",
-                    "Female",
-                    LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
-            );
-        });
-    }
+    public void testDuplicateEmail() {
 
-    // Empty gender should throw exception
-    @Test
-    public void testEmptyGender() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            objectCreation.addPatientToDatabase(
-                    "Najma",
-                    "Mohamed",
-                    "william@.com",
-                    "password",
-                    "",
-                    LocalDate.of(2002, 6, 24),
-                    1245,
-                    1234553343
-            );
-        });
-    }
-
-    //  Duplicate email should throw IllegalStateException
-    @Test
-    public void testDuplicates() {
-        // Alice is already in the database hence throws exceptions
-        assertThrows(IllegalStateException.class, () -> {
+        try {
             objectCreation.addPatientToDatabase(
                     "Alice",
                     "Brown",
                     "alicebrown@gmail.com",
                     "pass4",
                     "Female",
-                    LocalDate.of(1997, 6, 24),
-                    123456,
-                    5551234
+                    LocalDate.of(2000,1,1),
+                    "123456789",
+                    "1234553343"
             );
-        });
+
+            fail("Expected DuplicateEmailException");
+
+        } catch (ValidationExceptions.DuplicateEmailException e) {
+            assertEquals("Email already exists.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
     }
+
+    // Invalid gender
+    @Test
+    public void testInvalidGender() {
+
+        try {
+            objectCreation.addPatientToDatabase(
+                    "Sandra",
+                    "Ohm",
+                    "sandray@gmail.com",
+                    "password",
+                    "Gundam",
+                    LocalDate.of(2002,6,24),
+                    "123456789",
+                    "1234553343"
+            );
+
+            fail("Expected InvalidGenderException");
+
+        } catch (ValidationExceptions.InvalidGenderException e) {
+            assertEquals("Gender must be Male, Female, or Other.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
+    }
+
+    // Invalid phone number
+    @Test
+    public void testInvalidPhoneNumber() {
+
+        try {
+            objectCreation.addPatientToDatabase(
+                    "David",
+                    "Wan",
+                    "wan@gmail.com",
+                    "password",
+                    "Male",
+                    LocalDate.of(2002,6,24),
+                    "123456789",
+                    "123"
+            );
+
+            fail("Expected InvalidPhoneNumberException");
+
+        } catch (ValidationExceptions.InvalidPhoneNumberException e) {
+            assertEquals("Phone number must be 10 digits.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
+    }
+
+    // Invalid health card
+    @Test
+    public void testInvalidHealthCard() {
+
+        try {
+            objectCreation.addPatientToDatabase(
+                    "Heather",
+                    "Canda",
+                    "canda@gmail.com",
+                    "password",
+                    "Female",
+                    LocalDate.of(2002,7,24),
+                    "1245",
+                    "1234553343"
+            );
+
+            fail("Expected InvalidHealthCardException");
+
+        } catch (ValidationExceptions.InvalidHealthCardException e) {
+            assertEquals("Health card number must be 9 or 10 digits.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
+    }
+
+    // Future DOB
+    @Test
+    public void testFutureDOB() {
+
+        try {
+            objectCreation.addPatientToDatabase(
+                    "Future",
+                    "Kid",
+                    "futurekid@gmail.com",
+                    "password",
+                    "Male",
+                    LocalDate.now().plusDays(1),
+                    "123456789",
+                    "1234553343"
+            );
+
+            fail("Expected InvalidDateOfBirthException");
+
+        } catch (ValidationExceptions.InvalidDateOfBirthException e) {
+            assertEquals("Date of birth cannot be in the future.", e.getMessage());
+        } catch (ValidationExceptions.ValidationException e) {
+            fail("Wrong exception type");
+        }
+    }
+
 }

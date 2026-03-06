@@ -1,16 +1,14 @@
 package com.example.clinicflow.business;
 
-
 import static org.junit.Assert.*;
 
-import com.example.clinicflow.business.AuthService;
+import com.example.clinicflow.business.auth.AuthExceptions;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
-import com.example.clinicflow.business.auth.AuthExceptions;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,7 @@ public class AuthenTest {
         auth = new AuthService(repo);
     }
 
-    // unexist email
+    // non-existing email
     @Test
     public void no_email() {
         System.out.println("Test: login with non-existing email → expect null");
@@ -36,7 +34,7 @@ public class AuthenTest {
         System.out.println("Result: PASS (returned null as expected)");
     }
 
-    // unmatch password
+    // wrong password
     @Test
     public void bad_pw() {
         System.out.println("Test: login with wrong password → expect null");
@@ -47,7 +45,7 @@ public class AuthenTest {
         System.out.println("Result: PASS (returned null as expected)");
     }
 
-    // not entering email/password
+    // empty email and password
     @Test
     public void empty_both() {
         System.out.println("Test: login with empty email and password → expect null");
@@ -58,7 +56,7 @@ public class AuthenTest {
         System.out.println("Result: PASS (returned null as expected)");
     }
 
-    // not entering email
+    // empty email
     @Test
     public void empty_email() {
         System.out.println("Test: login with empty email → expect null");
@@ -69,12 +67,23 @@ public class AuthenTest {
         System.out.println("Result: PASS (returned null as expected)");
     }
 
-    // not entering password
+    // empty password
     @Test
     public void empty_pw() {
         System.out.println("Test: login with empty password → expect null");
 
         Users u = auth.authenticate("johndoe@clinicdoc.com", "");
+        assertNull(u);
+
+        System.out.println("Result: PASS (returned null as expected)");
+    }
+
+    // invalid email format
+    @Test
+    public void invalid_email() {
+        System.out.println("Test: login with invalid email format → expect null");
+
+        Users u = auth.authenticate("johndoe@", "pass1");
         assertNull(u);
 
         System.out.println("Result: PASS (returned null as expected)");
@@ -89,9 +98,8 @@ public class AuthenTest {
         assertNotNull(u);
         assertTrue(u instanceof Doctor);
 
-        System.out.println("Result: PASS (email local part is case-insensitive)");
+        System.out.println("Result: PASS (email is case-insensitive)");
     }
-
 
     // upper/lower case password
     @Test
@@ -104,7 +112,7 @@ public class AuthenTest {
         System.out.println("Result: PASS (password is case-sensitive)");
     }
 
-    // successfully login as doctor
+    // successful login as doctor
     @Test
     public void ok_doctor() {
         System.out.println("Test: login as doctor → expect Doctor object");
@@ -116,7 +124,7 @@ public class AuthenTest {
         System.out.println("Result: PASS (Doctor authenticated)");
     }
 
-    // successfully login as staff
+    // successful login as staff
     @Test
     public void ok_staff() {
         System.out.println("Test: login as staff → expect Staff object");
@@ -128,7 +136,7 @@ public class AuthenTest {
         System.out.println("Result: PASS (Staff authenticated)");
     }
 
-    // successfully login as patient
+    // successful login as patient
     @Test
     public void ok_patient() {
         System.out.println("Test: login as patient → expect Patient object");
@@ -139,7 +147,8 @@ public class AuthenTest {
 
         System.out.println("Result: PASS (Patient authenticated)");
     }
-    // exception: non-existing email should throw UserNotFoundException
+
+    // exception: non-existing email
     @Test
     public void no_email_throw() {
         System.out.println("Test: login with non-existing email → expect UserNotFoundException");
@@ -148,14 +157,14 @@ public class AuthenTest {
             auth.authenticateOrThrow("noone@clinicdoc.com", "pass1");
             fail("Expected UserNotFoundException, but no exception was thrown");
         } catch (AuthExceptions.UserNotFoundException e) {
-            assertEquals("Account not exist.", e.getMessage());
+            assertEquals("User not found.", e.getMessage());
             System.out.println("Result: PASS (UserNotFoundException + message matched)");
         } catch (AuthExceptions.AuthException e) {
             fail("Expected UserNotFoundException, but got: " + e.getClass().getSimpleName());
         }
     }
 
-    // exception: wrong password should throw WrongPasswordException
+    // exception: wrong password
     @Test
     public void bad_pw_throw() {
         System.out.println("Test: login with wrong password → expect WrongPasswordException");
@@ -171,20 +180,67 @@ public class AuthenTest {
         }
     }
 
-    // exception: empty input should throw InvalidInputException
+    // exception: empty email and password
     @Test
     public void empty_both_throw() {
-        System.out.println("Test: login with empty email and password → expect InvalidInputException");
+        System.out.println("Test: login with empty email and password → expect EmptyEmailException");
 
         try {
             auth.authenticateOrThrow("", "");
-            fail("Expected InvalidInputException, but no exception was thrown");
-        } catch (AuthExceptions.InvalidInputException e) {
-            assertEquals("Invalid email format or empty password.", e.getMessage());
-            System.out.println("Result: PASS (InvalidInputException + message matched)");
+            fail("Expected EmptyEmailException, but no exception was thrown");
+        } catch (AuthExceptions.EmptyEmailException e) {
+            assertEquals("No email entered.", e.getMessage());
+            System.out.println("Result: PASS (EmptyEmailException + message matched)");
         } catch (AuthExceptions.AuthException e) {
-            fail("Expected InvalidInputException, but got: " + e.getClass().getSimpleName());
+            fail("Expected EmptyEmailException, but got: " + e.getClass().getSimpleName());
+        }
+    }
+
+    // exception: empty email
+    @Test
+    public void empty_email_throw() {
+        System.out.println("Test: login with empty email → expect EmptyEmailException");
+
+        try {
+            auth.authenticateOrThrow("", "pass1");
+            fail("Expected EmptyEmailException, but no exception was thrown");
+        } catch (AuthExceptions.EmptyEmailException e) {
+            assertEquals("No email entered.", e.getMessage());
+            System.out.println("Result: PASS (EmptyEmailException + message matched)");
+        } catch (AuthExceptions.AuthException e) {
+            fail("Expected EmptyEmailException, but got: " + e.getClass().getSimpleName());
+        }
+    }
+
+    // exception: invalid email format
+    @Test
+    public void invalid_email_throw() {
+        System.out.println("Test: login with invalid email format → expect InvalidEmailException");
+
+        try {
+            auth.authenticateOrThrow("johndoe@", "pass1");
+            fail("Expected InvalidEmailException, but no exception was thrown");
+        } catch (AuthExceptions.InvalidEmailException e) {
+            assertEquals("Invalid email. Email must be in the format name@domain.com", e.getMessage());
+            System.out.println("Result: PASS (InvalidEmailException + message matched)");
+        } catch (AuthExceptions.AuthException e) {
+            fail("Expected InvalidEmailException, but got: " + e.getClass().getSimpleName());
+        }
+    }
+
+    // exception: empty password
+    @Test
+    public void empty_pw_throw() {
+        System.out.println("Test: login with empty password → expect EmptyPasswordException");
+
+        try {
+            auth.authenticateOrThrow("johndoe@clinicdoc.com", "");
+            fail("Expected EmptyPasswordException, but no exception was thrown");
+        } catch (AuthExceptions.EmptyPasswordException e) {
+            assertEquals("No password entered.", e.getMessage());
+            System.out.println("Result: PASS (EmptyPasswordException + message matched)");
+        } catch (AuthExceptions.AuthException e) {
+            fail("Expected EmptyPasswordException, but got: " + e.getClass().getSimpleName());
         }
     }
 }
-
