@@ -1,9 +1,6 @@
 package com.example.clinicflow.presentation.patientScreens;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
-
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class BookAppointment extends AppCompatActivity{
 
@@ -40,9 +36,7 @@ public class BookAppointment extends AppCompatActivity{
     }
 
     private void setEvents(String email) {
-        binds.logout.setOnClickListener(v -> onLogoutClick(this));
-        binds.back.setOnClickListener(v -> finish());
-        binds.profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
+        binds.setBasicEvents(this, email);
     }
 
     private void setViews() {

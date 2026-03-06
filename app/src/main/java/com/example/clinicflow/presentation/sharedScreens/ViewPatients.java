@@ -1,8 +1,6 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
 
 import android.os.Bundle;
 import android.view.View;
@@ -66,9 +64,7 @@ public class ViewPatients extends AppCompatActivity{
     private void setEvents() {
         search.setOnClickListener(v -> onClickSearch());
         viewRecords.setOnClickListener(v -> onClickView());
-        binds.profile.setOnClickListener(v -> onClickEmail(this, Profile.class, userEmail));
-        binds.back.setOnClickListener(v -> finish());
-        binds.logout.setOnClickListener(v -> onLogoutClick(this));
+        binds.setBasicEvents(this, userEmail);
     }
     private void onClickView() {
         Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
