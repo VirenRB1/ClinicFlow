@@ -1,11 +1,8 @@
 package com.example.clinicflow.presentation.patientScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +11,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class MyAppointments extends AppCompatActivity{
 
-    private ImageButton profile;
-    private Button logout;
-    private Button back;
+    private BasicBinds binds;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +37,10 @@ public class MyAppointments extends AppCompatActivity{
     }
 
     private void setEvents(String email) {
-        logout.setOnClickListener(v -> onLogoutClick(this));
-        back.setOnClickListener(v -> finish());
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
+        binds.setBasicEvents(this, email);
     }
 
     private void setViews() {
-        logout = findViewById(R.id.logoutButton);
-        profile = findViewById(R.id.profileButton);
-        back = findViewById(R.id.backButton);
+        binds = setBasicBinds(this);
     }
 }

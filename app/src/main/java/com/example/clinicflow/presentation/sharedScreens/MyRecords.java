@@ -25,7 +25,7 @@ import java.util.List;
 
 public class MyRecords extends AppCompatActivity implements RecyclerViewInterface {
     List<MedicalRecord> records;
-    Button back;
+    private Button back;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

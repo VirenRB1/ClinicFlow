@@ -60,7 +60,7 @@ public class SignupScreen extends AppCompatActivity {
 
     private void setEvents() {
         signUpButton.setOnClickListener(v -> onSignUpClick());
-        backButton.setOnClickListener(v -> onBackClick());
+        backButton.setOnClickListener(v -> finish());
         dob.setOnClickListener(v -> onDobClick());
     }
 
@@ -75,10 +75,6 @@ public class SignupScreen extends AppCompatActivity {
         },
         curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
         dialog.show();
-    }
-
-    private void onBackClick() {
-        finish();
     }
 
     private void onSignUpClick() {

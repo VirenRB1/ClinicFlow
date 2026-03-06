@@ -13,6 +13,7 @@ import com.example.clinicflow.presentation.doctorScreens.DoctorScreen;
 import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 import com.example.clinicflow.presentation.staffScreens.StaffScreen;
 
+//move to business layer once business layer refactoring is done
 public class LoginNav {
 
     private final Context context;

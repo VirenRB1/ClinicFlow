@@ -1,12 +1,11 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
+import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +19,14 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.PatientLookupService;
 import com.example.clinicflow.models.Patient;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 import com.google.android.material.card.MaterialCardView;
 
 public class ViewPatients extends AppCompatActivity{
 
     private MaterialCardView patientCard;
-    private ImageButton profile;
-    private Button back;
+    private BasicBinds binds;
     private Button search;
     private Button viewRecords;
     private EditText emailAddress;
@@ -65,8 +64,7 @@ public class ViewPatients extends AppCompatActivity{
     private void setEvents() {
         search.setOnClickListener(v -> onClickSearch());
         viewRecords.setOnClickListener(v -> onClickView());
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, userEmail));
-        back.setOnClickListener(v -> finish());
+        binds.setBasicEvents(this, userEmail);
     }
     private void onClickView() {
         Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
@@ -113,8 +111,7 @@ public class ViewPatients extends AppCompatActivity{
         patientCard = findViewById(R.id.patientCard);
         viewRecords = findViewById(R.id.viewRecordsButton);
         search = findViewById(R.id.searchButton);
-        profile = findViewById(R.id.profileButton);
-        back = findViewById(R.id.backButton);
+        binds = setBasicBinds(this);
         email = findViewById(R.id.emailActual);
         name = findViewById(R.id.nameActual);
         gender = findViewById(R.id.genderActual);
