@@ -18,6 +18,8 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.business.auth.AuthExceptions;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.admin.UserSignUp;
 
 public class MainActivity extends AppCompatActivity {
     private EditText email;
@@ -69,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignupScreen.class);
+                Intent intent = new Intent(MainActivity.this, UserSignUp.class);
+                intent.putExtra(Navigation.USER_ROLE, Navigation.PATIENT);
                 startActivity(intent);
             }
         });
