@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import com.example.clinicflow.models.Users;
 // Fake temporary database
 public class FakeUserRepository implements UserRepository, Serializable {
 //Lists of doctors, patients and staffs
@@ -116,6 +117,29 @@ public class FakeUserRepository implements UserRepository, Serializable {
                 return patient;
             }
         }
+        return null;
+    }
+    // Get user by email
+    @Override
+    public Users getUserByEmail(String email) {
+        for (Doctor doctor : doctors) {
+            if (doctor.getEmail().equalsIgnoreCase(email)) {
+                return doctor;
+            }
+        }
+
+        for (Staff staff : staffs) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
+                return staff;
+            }
+        }
+
+        for (Patient patient : patients) {
+            if (patient.getEmail().equalsIgnoreCase(email)) {
+                return patient;
+            }
+        }
+
         return null;
     }
 
