@@ -41,7 +41,6 @@ public class MedicalRecordDetail extends AppCompatActivity {
         }
 
         setDetailViews();
-
         setDetails(record);
     }
 
