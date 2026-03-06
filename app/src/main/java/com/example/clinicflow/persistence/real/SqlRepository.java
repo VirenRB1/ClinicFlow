@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.example.clinicflow.models.Users;
 
 public class SqlRepository implements UserRepository {
     private final AppDbHelper dbHelper;
@@ -164,7 +165,29 @@ public class SqlRepository implements UserRepository {
         }
         return records;
     }
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Users getUserByEmail(String email) {
+        for (Doctor doctor : getAllDoctors()) {
+            if (doctor.getEmail().equalsIgnoreCase(email)) {
+                return doctor;
+            }
+        }
 
+        for (Staff staff : getAllStaffs()) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
+                return staff;
+            }
+        }
+
+        for (Patient patient : getAllPatients()) {
+            if (patient.getEmail().equalsIgnoreCase(email)) {
+                return patient;
+            }
+        }
+
+        return null;
+    }
     @Override
     public void addMedicalRecord(MedicalRecord record) {
         if (record == null) {
@@ -186,4 +209,5 @@ public class SqlRepository implements UserRepository {
             db.endTransaction();
         }
     }
+
 }
