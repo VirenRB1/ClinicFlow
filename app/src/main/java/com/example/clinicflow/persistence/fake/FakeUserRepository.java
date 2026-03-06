@@ -33,7 +33,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         initializeFakeDoctors();
         initializeFakePatients();
         initializeFakeStaffs();
-        intializeFakeMedicalRecords();
+        initializeFakeMedicalRecords();
     }
     //Add doctors
     private void initializeFakeDoctors() {
@@ -42,7 +42,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female", LocalDate.of(2001,7,4),"Neurology","LIC67890"));
         doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female", LocalDate.of(2003,3,6) ,"Pediatrics","LIC54321"));
     }
-    // Add patienta
+    // Add patients
     private void initializeFakePatients() {
         patients = new ArrayList<>();
         patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female", LocalDate.of(2000,1,1),"123456","5551234"));
@@ -57,7 +57,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicstaff.com","pass9","Female",LocalDate.of(1999,3,3),"Administrator"));
     }
     // Add medical records
-    private void intializeFakeMedicalRecords() {
+    private void initializeFakeMedicalRecords() {
         medicalRecords = new HashMap<>();
         medicalRecords.put("alicebrown@gmail.com", new ArrayList<>());
         medicalRecords.put("bobdavis@gmail.com", new ArrayList<>());
