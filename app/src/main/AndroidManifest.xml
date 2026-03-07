@@ -33,8 +33,11 @@
         <activity android:name=".presentation.doctorScreens.SetAvailability" />
         <activity android:name=".presentation.sharedScreens.MyRecords"/>
         <activity android:name=".presentation.sharedScreens.MedicalRecordDetail"/>
-        <activity android:name=".presentation.authScreens.SignupScreen"/>
         <activity android:name=".presentation.sharedScreens.Profile"/>
+        <activity android:name=".presentation.admin.UserSignUp"/>
+        <activity android:name=".presentation.admin.AddOrDeleteScreen"/>
+        <activity android:name=".presentation.admin.UserDelete"/>
+        <activity android:name=".presentation.admin.AdminScreen"/>
     </application>
 
 </manifest>

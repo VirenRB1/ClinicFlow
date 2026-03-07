@@ -1,8 +1,8 @@
-package com.example.clinicflow.presentation.authScreens;
+package com.example.clinicflow.presentation.admin;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,11 +17,10 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 
 import java.time.LocalDate;
 
-public class SignupScreen extends AppCompatActivity {
+public class UserSignUp extends AppCompatActivity {
 
     private EditText firstName;
     private EditText lastName;
@@ -33,6 +32,11 @@ public class SignupScreen extends AppCompatActivity {
     private LocalDate actDob = null;
     private EditText healthCard;
     private EditText phoneNumber;
+
+    private EditText specialization;
+    private EditText licenseNumber;
+
+    private EditText position;
     private Button signUpButton;
     private Button backButton;
 
@@ -42,13 +46,17 @@ public class SignupScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.signup);
+        setContentView(R.layout.add_user);
 
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
         objectCreation = app.getObjectCreation();
 
         setViews();
-        setEvents();
+
+        String role = getIntent().getStringExtra(Navigation.USER_ROLE);
+
+        makeVisible(role);
+        setEvents(role);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -58,8 +66,20 @@ public class SignupScreen extends AppCompatActivity {
 
     }
 
-    private void setEvents() {
-        signUpButton.setOnClickListener(v -> onSignUpClick());
+    private void makeVisible(String role) {
+        if(role.equals(Navigation.DOCTOR)) {
+            specialization.setVisibility(View.VISIBLE);
+            licenseNumber.setVisibility(View.VISIBLE);
+        } else if (role.equals(Navigation.STAFF)) {
+            position.setVisibility(View.VISIBLE);
+        } else {
+            phoneNumber.setVisibility(View.VISIBLE);
+            healthCard.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setEvents(String role) {
+        signUpButton.setOnClickListener(v -> onSignUpClick(role));
         backButton.setOnClickListener(v -> finish());
         dob.setOnClickListener(v -> onDobClick());
     }
@@ -70,53 +90,56 @@ public class SignupScreen extends AppCompatActivity {
         DatePickerDialog dialog = new DatePickerDialog(this,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 (view, year, month, dayOfMonth) -> {
-            actDob = LocalDate.of(year, month + 1, dayOfMonth);
-            dob.setText(actDob.toString());
-        },
-        curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
+                    actDob = LocalDate.of(year, month + 1, dayOfMonth);
+                    dob.setText(actDob.toString());
+                },
+                curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
         dialog.show();
     }
 
-    private void onSignUpClick() {
+    private void onSignUpClick(String role) {
         String first = cleanText(firstName);
         String last = cleanText(lastName);
         String emailAdd = cleanText(email);
         String pass = cleanText(password);
         String confirmPass = cleanText(confirmPassword);
         String genderStr = cleanText(gender);
-        String hCardStr = cleanText(healthCard);
-        String phoneStr = cleanText(phoneNumber);
+        String hCardStr = null;
+        String phoneStr = null;
+        String specializationStr = null;
+        String licenseNumberStr = null;
+        String positionStr = null;
 
-        if (!pass.equals(confirmPass)) {
-            Toast.makeText(SignupScreen.this, "Passwords do not match", Toast.LENGTH_LONG).show();
+
+        if(!pass.equals(confirmPass)){
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
             return;
         }
-
-        if(actDob == null) {
-            Toast.makeText(SignupScreen.this, "Date of birth must be set", Toast.LENGTH_LONG).show();
-            return;
+        if (role.equals(Navigation.PATIENT)){
+            hCardStr = cleanText(healthCard);
+            phoneStr = cleanText(phoneNumber);
+        } else if (role.equals(Navigation.DOCTOR)) {
+            specializationStr = cleanText(specialization);
+            licenseNumberStr = cleanText(licenseNumber);
+        } else {
+            positionStr = cleanText(position);
         }
 
-        // Basic validation: ensure health card and phone number are provided
-        if (hCardStr.isEmpty() || phoneStr.isEmpty()) {
-            Toast.makeText(SignupScreen.this, "Health card number and Phone number are required", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         try {
-            boolean added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
 
-            if(!added){
-                Toast.makeText(SignupScreen.this, "Patient could not be added", Toast.LENGTH_LONG).show();
-                return;
+            if(role.equals(Navigation.PATIENT)){
+                objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
+            } else if (role.equals(Navigation.DOCTOR)) {
+                objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationStr, licenseNumberStr);
+            } else {
+                objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
             }
 
-            Toast.makeText(SignupScreen.this, "Patient added successfully", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(SignupScreen.this, PatientScreen.class);
-            intent.putExtra(Navigation.EXTRA_USER_EMAIL, emailAdd);
-            startActivity(intent);
+            Toast.makeText(this, "Patient added successfully", Toast.LENGTH_LONG).show();
+            finish();
         } catch (Exception e) {
-            Toast.makeText(SignupScreen.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -132,9 +155,15 @@ public class SignupScreen extends AppCompatActivity {
         confirmPassword = findViewById(R.id.PasswordConfirmEditText);
         gender = findViewById(R.id.GenderEditText);
         dob = findViewById(R.id.DobEditText);
+
         healthCard = findViewById(R.id.HealthCardEditText);
         phoneNumber = findViewById(R.id.PhoneEditText);
+
         signUpButton = findViewById(R.id.signUpButton);
         backButton = findViewById(R.id.backButton);
+
+        specialization = findViewById(R.id.specializationEditText);
+        licenseNumber = findViewById(R.id.licenseNumberEditText);
+        position = findViewById(R.id.positionEditText);
     }
 }

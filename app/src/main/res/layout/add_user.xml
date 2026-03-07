@@ -130,6 +130,57 @@
         app:layout_constraintTop_toBottomOf="@+id/GenderEditText" />
 
     <EditText
+        android:id="@+id/positionEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="101dp"
+        android:ems="10"
+        android:hint="@string/position_hint"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DobEditText"
+        tools:visibility="visible"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/specializationEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="101dp"
+        android:ems="10"
+        android:hint="@string/specialization_hint"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DobEditText"
+        tools:visibility="visible"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/licenseNumberEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="101dp"
+        android:ems="10"
+        android:hint="@string/license_number_hint"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/specializationEditText"
+        tools:visibility="visible"
+        android:visibility="gone"/>
+
+    <EditText
         android:id="@+id/HealthCardEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -142,7 +193,9 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DobEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/DobEditText"
+        tools:visibility="visible"
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/PhoneEditText"
@@ -157,13 +210,15 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HealthCardEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/HealthCardEditText"
+        tools:visibility="visible"
+        android:visibility="gone"/>
     <Button
         android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="100dp"
         android:backgroundTint="@color/blue"
         android:text="@string/signup_button"
@@ -171,7 +226,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PhoneEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/DobEditText" />
 
     <Button
         android:id="@+id/backButton"

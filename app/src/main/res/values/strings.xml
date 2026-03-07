@@ -60,4 +60,17 @@
     <string name="medicalRecord">Medical Record Details</string>
     <string name="default_doc">Dr. John Doe</string>
     <string name="default_date">Feb 9, 2026</string>
+    <string name="addPatient">Add Patient</string>
+    <string name="addDoctor">Add Doctor</string>
+    <string name="addStaff">Add Staff</string>
+    <string name="position_hint">Staff Position</string>
+    <string name="specialization_hint">Specialization</string>
+    <string name="license_number_hint">License Number</string>
+    <string name="addorDeleteDoctor">Add/Delete Doctor</string>
+    <string name="addOrDeleteStaff">Add/Delete Staff</string>
+    <string name="addOrDeletePatient">Add/Delete Patient</string>
+    <string name="delete">Delete User</string>
+    <string name="search_by_email_user">Search for User By Email</string>
+    <string name="add">Add User</string>
+    <string name="choose">Choose Option</string>
 </resources>
