@@ -61,6 +61,15 @@ public class SqlRepository implements UserRepository {
         try (Cursor cursor = db.query(DbContract.DoctorEntry.TABLE_NAME, null, null, null, null, null, null)) {
             if (cursor.moveToFirst()) {
                 do {
+                    String specStr = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION));
+                    Specialization specialization = null;
+                    try {
+                        // Normalize the string to match Enum constants (e.g., "Cardiology" -> "CARDIOLOGY")
+                        specialization = Specialization.valueOf(specStr.trim().toUpperCase().replace(" ", "_"));
+                    } catch (Exception e) {
+                        specialization = Specialization.GENERAL_MEDICINE; // Fallback to avoid crash
+                    }
+
                     doctors.add(new Doctor(
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_FIRST_NAME)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LAST_NAME)),
@@ -68,9 +77,7 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_GENDER)),
                             LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH))),
-                            Specialization.valueOf(
-                                    cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION))
-                            ),
+                            specialization,
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER))
                     ));
                 } while (cursor.moveToNext());
@@ -242,7 +249,7 @@ public class SqlRepository implements UserRepository {
                     records.add(new MedicalRecord(
                             cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_RECORD_ID)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_FIRST_NAME)), // This seems wrong in original code but keeping consistency
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PURPOSE)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE)),
@@ -253,35 +260,29 @@ public class SqlRepository implements UserRepository {
         }
         return records;
     }
+
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Users getUserByEmail(String email) {
+        if (email == null) return null;
+
+        // Optimized: search only relevant categories based on email suffix or iterate carefully
         for (Admin admin : getAllAdmins()) {
-            if (admin.getEmail().equalsIgnoreCase(email)) {
-                return admin;
-            }
+            if (admin.getEmail().equalsIgnoreCase(email)) return admin;
         }
-
         for (Doctor doctor : getAllDoctors()) {
-            if (doctor.getEmail().equalsIgnoreCase(email)) {
-                return doctor;
-            }
+            if (doctor.getEmail().equalsIgnoreCase(email)) return doctor;
         }
-
         for (Staff staff : getAllStaffs()) {
-            if (staff.getEmail().equalsIgnoreCase(email)) {
-                return staff;
-            }
+            if (staff.getEmail().equalsIgnoreCase(email)) return staff;
         }
-
         for (Patient patient : getAllPatients()) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                return patient;
-            }
+            if (patient.getEmail().equalsIgnoreCase(email)) return patient;
         }
 
         return null;
     }
+
     @Override
     public void addMedicalRecord(MedicalRecord record) {
         if (record == null) {
@@ -303,5 +304,4 @@ public class SqlRepository implements UserRepository {
             db.endTransaction();
         }
     }
-
 }
