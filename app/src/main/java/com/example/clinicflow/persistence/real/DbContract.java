@@ -49,4 +49,16 @@ public final class DbContract {
         public static final String COLUMN_DOCTOR_NOTE = "doctorNote";
         public static final String COLUMN_DATE = "date";
     }
+
+    public static class AdminEntry {
+        public static final String TABLE_NAME = "admin";
+
+        public static final String COLUMN_ADMIN_ID = "admin_id";
+        public static final String COLUMN_FIRST_NAME = "firstName";
+        public static final String COLUMN_LAST_NAME = "lastName";
+        public static final String COLUMN_EMAIL = "email";
+        public static final String COLUMN_PASSWORD = "password";
+        public static final String COLUMN_GENDER = "gender";
+        public static final String COLUMN_DATE_OF_BIRTH = "dateOfBirth";
+    }
 }
