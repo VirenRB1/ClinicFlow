@@ -133,15 +133,18 @@ public class UserSignUp extends AppCompatActivity {
 
 
         try {
-
+            boolean added = false;
             if(role.equals(Navigation.PATIENT)){
-                objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
+                added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
             } else if (role.equals(Navigation.DOCTOR)) {
-                objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationEnum, licenseNumberStr);
+                added = objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationEnum, licenseNumberStr);
             } else {
-                objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
+                added = objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
             }
-
+            if(!added){
+                Toast.makeText(this, "User could not be added", Toast.LENGTH_LONG).show();
+                return;
+            }
             Toast.makeText(this, role + " added successfully", Toast.LENGTH_LONG).show();
             finish();
         } catch (Exception e) {
