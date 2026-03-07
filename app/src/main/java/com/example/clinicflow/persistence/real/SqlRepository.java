@@ -8,6 +8,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
@@ -101,6 +102,28 @@ public class SqlRepository implements UserRepository {
         return staffs;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public List<Admin> getAllAdmins() {
+        List<Admin> admins = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor cursor = db.query(DbContract.AdminEntry.TABLE_NAME, null, null, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                do {
+                    admins.add(new Admin(
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_FIRST_NAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_LAST_NAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_EMAIL)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_PASSWORD)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_GENDER)),
+                            LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH)))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        }
+        return admins;
+    }
+
     @Override
     public void addPatient(Patient patient) {
         if (patient == null) {
@@ -178,6 +201,8 @@ public class SqlRepository implements UserRepository {
                 db.delete(DbContract.DoctorEntry.TABLE_NAME, DbContract.DoctorEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
             } else if (user instanceof Staff) {
                 db.delete(DbContract.StaffEntry.TABLE_NAME, DbContract.StaffEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            } else if (user instanceof Admin) {
+                db.delete(DbContract.AdminEntry.TABLE_NAME, DbContract.AdminEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
             }
             db.setTransactionSuccessful();
         } finally {
@@ -231,6 +256,12 @@ public class SqlRepository implements UserRepository {
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Users getUserByEmail(String email) {
+        for (Admin admin : getAllAdmins()) {
+            if (admin.getEmail().equalsIgnoreCase(email)) {
+                return admin;
+            }
+        }
+
         for (Doctor doctor : getAllDoctors()) {
             if (doctor.getEmail().equalsIgnoreCase(email)) {
                 return doctor;
