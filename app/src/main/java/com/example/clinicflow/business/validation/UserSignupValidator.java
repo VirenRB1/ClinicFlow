@@ -143,6 +143,13 @@ public class UserSignupValidator {
             throws ValidationExceptions.ValidationException {
         if (specialization == null) {
             throw new ValidationExceptions.EmptyFieldException("Specialization");
+        }else{
+            for (Specialization spec : Specialization.values()) {
+                if (spec.equals(specialization)) {
+                    return;
+                }
+            }
+            throw new ValidationExceptions.InvalidSpecializationException();
         }
     }
 
