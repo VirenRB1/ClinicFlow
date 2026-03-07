@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
+import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.LocalDate;
@@ -106,7 +107,7 @@ public class UserSignUp extends AppCompatActivity {
         String genderStr = cleanText(gender);
         String hCardStr = null;
         String phoneStr = null;
-        String specializationStr = null;
+        Specialization specializationEnum = null;
         String licenseNumberStr = null;
         String positionStr = null;
 
@@ -119,8 +120,13 @@ public class UserSignUp extends AppCompatActivity {
             hCardStr = cleanText(healthCard);
             phoneStr = cleanText(phoneNumber);
         } else if (role.equals(Navigation.DOCTOR)) {
-            specializationStr = cleanText(specialization);
+            specializationEnum = parseSpecialization(cleanText(specialization));
             licenseNumberStr = cleanText(licenseNumber);
+            
+            if (specializationEnum == null && !cleanText(specialization).isEmpty()) {
+                Toast.makeText(this, "Invalid Specialization", Toast.LENGTH_LONG).show();
+                return;
+            }
         } else {
             positionStr = cleanText(position);
         }
@@ -131,15 +137,24 @@ public class UserSignUp extends AppCompatActivity {
             if(role.equals(Navigation.PATIENT)){
                 objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
             } else if (role.equals(Navigation.DOCTOR)) {
-                objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationStr, licenseNumberStr);
+                objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationEnum, licenseNumberStr);
             } else {
                 objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
             }
 
-            Toast.makeText(this, "Patient added successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, role + " added successfully", Toast.LENGTH_LONG).show();
             finish();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private Specialization parseSpecialization(String spec) {
+        if (spec == null || spec.isEmpty()) return null;
+        try {
+            return Specialization.valueOf(spec.trim().toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            return null;
         }
     }
 
