@@ -1,6 +1,7 @@
 package com.example.clinicflow.persistence.fake;
 
 import com.example.clinicflow.models.MedicalRecord;
+import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;
 
 import com.example.clinicflow.models.Doctor;
@@ -38,9 +39,9 @@ public class FakeUserRepository implements UserRepository, Serializable {
     //Add doctors
     private void initializeFakeDoctors() {
         doctors = new ArrayList<>();
-        doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male", LocalDate.of(1999,3,12) ,"Cardiology","LIC12345"));
-        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female", LocalDate.of(2001,7,4),"Neurology","LIC67890"));
-        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female", LocalDate.of(2003,3,6) ,"Pediatrics","LIC54321"));
+        doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male", LocalDate.of(1999,3,12) , Specialization.CARDIOLOGY,"LIC12345"));
+        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female", LocalDate.of(2001,7,4),Specialization.NEUROLOGY,"LIC67890"));
+        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female", LocalDate.of(2003,3,6) ,Specialization.PEDIATRICS,"LIC54321"));
     }
     // Add patients
     private void initializeFakePatients() {
