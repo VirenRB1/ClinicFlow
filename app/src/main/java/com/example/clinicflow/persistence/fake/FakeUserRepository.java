@@ -102,6 +102,27 @@ public class FakeUserRepository implements UserRepository, Serializable {
     }
 
     @Override
+    public void addDoctor(Doctor doctor) {
+        doctors.add(doctor);
+    }
+
+    @Override
+    public void addStaff(Staff staff) {
+        staffs.add(staff);
+    }
+
+    @Override
+    public void deleteUser(Users user) {
+        if (user instanceof Patient) {
+            patients.remove(user);
+        } else if (user instanceof Doctor) {
+            doctors.remove(user);
+        } else if (user instanceof Staff) {
+            staffs.remove(user);
+        }
+    }
+
+    @Override
     public void addMedicalRecord(MedicalRecord record) {
         String email = record.getEmail();
         if (!medicalRecords.containsKey(email)) {

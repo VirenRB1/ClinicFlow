@@ -126,6 +126,66 @@ public class SqlRepository implements UserRepository {
     }
 
     @Override
+    public void addDoctor(Doctor doctor) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.DoctorEntry.COLUMN_FIRST_NAME, doctor.getFirstName());
+            values.put(DbContract.DoctorEntry.COLUMN_LAST_NAME, doctor.getLastName());
+            values.put(DbContract.DoctorEntry.COLUMN_EMAIL, doctor.getEmail());
+            values.put(DbContract.DoctorEntry.COLUMN_PASSWORD, doctor.getPassword());
+            values.put(DbContract.DoctorEntry.COLUMN_GENDER, doctor.getGender());
+            values.put(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH, doctor.getDateOfBirth().toString());
+            values.put(DbContract.DoctorEntry.COLUMN_SPECIALIZATION, doctor.getSpecialization().name());
+            values.put(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER, doctor.getLicenseNumber());
+            db.insert(DbContract.DoctorEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void addStaff(Staff staff) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.StaffEntry.COLUMN_FIRST_NAME, staff.getFirstName());
+            values.put(DbContract.StaffEntry.COLUMN_LAST_NAME, staff.getLastName());
+            values.put(DbContract.StaffEntry.COLUMN_EMAIL, staff.getEmail());
+            values.put(DbContract.StaffEntry.COLUMN_PASSWORD, staff.getPassword());
+            values.put(DbContract.StaffEntry.COLUMN_GENDER, staff.getGender());
+            values.put(DbContract.StaffEntry.COLUMN_DATE_OF_BIRTH, staff.getDateOfBirth().toString());
+            values.put(DbContract.StaffEntry.COLUMN_POSITION, staff.getPosition());
+            db.insert(DbContract.StaffEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void deleteUser(Users user) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            if (user instanceof Patient) {
+                db.delete(DbContract.PatientEntry.TABLE_NAME, DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            } else if (user instanceof Doctor) {
+                db.delete(DbContract.DoctorEntry.TABLE_NAME, DbContract.DoctorEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            } else if (user instanceof Staff) {
+                db.delete(DbContract.StaffEntry.TABLE_NAME, DbContract.StaffEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Patient getPatientByEmail(String email) {
         Patient patient = null;

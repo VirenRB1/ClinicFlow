@@ -17,6 +17,12 @@ public interface UserRepository {
 
     void addPatient(Patient patient);
 
+    void addDoctor(Doctor doctor);
+
+    void addStaff(Staff staff);
+
+    void deleteUser(Users user);
+
     Patient getPatientByEmail(String email);
 
     Users getUserByEmail(String email);
