@@ -4,11 +4,13 @@ package com.example.clinicflow.presentation.authScreens;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.admin.AdminScreen;
 import com.example.clinicflow.presentation.doctorScreens.DoctorScreen;
 import com.example.clinicflow.presentation.patientScreens.PatientScreen;
 import com.example.clinicflow.presentation.staffScreens.StaffScreen;
@@ -30,6 +32,8 @@ public class LoginNav {
             intent = new Intent(context, DoctorScreen.class);
         } else if (user instanceof Staff) {
             intent = new Intent(context, StaffScreen.class);
+        } else if (user instanceof Admin) {
+            intent = new Intent(context, AdminScreen.class);
         }
 
         if (intent != null) {

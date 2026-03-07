@@ -1,5 +1,6 @@
 package com.example.clinicflow.persistence.fake;
 
+import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;
@@ -22,6 +23,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
     List<Doctor> doctors;
     List<Patient> patients;
     List<Staff> staffs;
+    List<Admin> admins;
 
     HashMap<String, List<MedicalRecord>> medicalRecords;
 
@@ -31,10 +33,16 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     //Create database
     private void createFakeData() {
+        initializeFakeAdmins();
         initializeFakeDoctors();
         initializeFakePatients();
         initializeFakeStaffs();
         initializeFakeMedicalRecords();
+    }
+
+    private void initializeFakeAdmins() {
+        admins = new ArrayList<>();
+        admins.add(new Admin("Admin","Admin","admin@clinic.com","admin","Female", LocalDate.of(1990,1,1)));
     }
     //Add doctors
     private void initializeFakeDoctors() {
@@ -95,10 +103,36 @@ public class FakeUserRepository implements UserRepository, Serializable {
         return Collections.unmodifiableList(staffs);
     }
 
+    @Override
+    public List<Admin> getAllAdmins() {
+        return Collections.unmodifiableList(admins);
+    }
+
     // Add a patient to database
     @Override
     public void addPatient(Patient patient) {
         patients.add(patient);
+    }
+
+    @Override
+    public void addDoctor(Doctor doctor) {
+        doctors.add(doctor);
+    }
+
+    @Override
+    public void addStaff(Staff staff) {
+        staffs.add(staff);
+    }
+
+    @Override
+    public void deleteUser(Users user) {
+        if (user instanceof Patient) {
+            patients.remove(user);
+        } else if (user instanceof Doctor) {
+            doctors.remove(user);
+        } else if (user instanceof Staff) {
+            staffs.remove(user);
+        }
     }
 
     @Override

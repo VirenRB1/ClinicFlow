@@ -49,4 +49,12 @@ public class ValidationExceptions {
             super("Health card number must be 9 or 10 digits.");
         }
     }
+
+    public static class InvalidSpecializationException extends ValidationException {
+        public InvalidSpecializationException() {
+            super("Invalid specialization.");
+        }
+    }
+
+
 }

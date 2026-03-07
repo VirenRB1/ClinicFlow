@@ -1,5 +1,6 @@
 package com.example.clinicflow.persistence.real;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,17 +8,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AppDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "clinic_flow.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 5;
 
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     public void onCreate(SQLiteDatabase db) {
+        createAdminTable(db);
         createPatientTable(db);
         createDoctorTable(db);
         createStaffTable(db);
         createMedicalRecordTable(db);
+        
+        // Adding the ddefault admin
+        addAdmin(db);
     }
 
     @Override
@@ -26,6 +31,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.StaffEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.DoctorEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.PatientEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DbContract.AdminEntry.TABLE_NAME);
         onCreate(db);
     }
 
@@ -85,4 +91,30 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 ");";
         db.execSQL(createMedicalRecordTableQuery);
     }
+
+    private void createAdminTable(SQLiteDatabase db) {
+        String createAdminTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AdminEntry.TABLE_NAME + " (" +
+                DbContract.AdminEntry.COLUMN_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                DbContract.AdminEntry.COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
+                DbContract.AdminEntry.COLUMN_LAST_NAME + " TEXT NOT NULL, " +
+                DbContract.AdminEntry.COLUMN_EMAIL + " VARCHAR(255) NOT NULL UNIQUE, " +
+                DbContract.AdminEntry.COLUMN_PASSWORD + " VARCHAR(255) NOT NULL, " +
+                DbContract.AdminEntry.COLUMN_GENDER + " VARCHAR(10) NOT NULL, " +
+                DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH + " TEXT NOT NULL" +
+                ");";
+        db.execSQL(createAdminTableQuery);
+    }
+
+    private void addAdmin(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        values.put(DbContract.AdminEntry.COLUMN_FIRST_NAME, "Admin");
+        values.put(DbContract.AdminEntry.COLUMN_LAST_NAME, "Admin");
+        values.put(DbContract.AdminEntry.COLUMN_EMAIL, "admin@clinic.com");
+        values.put(DbContract.AdminEntry.COLUMN_PASSWORD, "admin");
+        values.put(DbContract.AdminEntry.COLUMN_GENDER, "Female");
+        values.put(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH, "1990-01-01");
+        
+        db.insert(DbContract.AdminEntry.TABLE_NAME, null, values);
+    }
+
 }

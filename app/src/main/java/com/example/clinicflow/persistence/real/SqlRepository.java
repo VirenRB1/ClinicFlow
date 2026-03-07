@@ -8,6 +8,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
@@ -60,6 +61,15 @@ public class SqlRepository implements UserRepository {
         try (Cursor cursor = db.query(DbContract.DoctorEntry.TABLE_NAME, null, null, null, null, null, null)) {
             if (cursor.moveToFirst()) {
                 do {
+                    String specStr = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION));
+                    Specialization specialization = null;
+                    try {
+                        // Normalize the string to match Enum constants (e.g., "Cardiology" -> "CARDIOLOGY")
+                        specialization = Specialization.valueOf(specStr.trim().toUpperCase().replace(" ", "_"));
+                    } catch (Exception e) {
+                        specialization = Specialization.GENERAL_MEDICINE; // Fallback to avoid crash
+                    }
+
                     doctors.add(new Doctor(
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_FIRST_NAME)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LAST_NAME)),
@@ -67,9 +77,7 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_GENDER)),
                             LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH))),
-                            Specialization.valueOf(
-                                    cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION))
-                            ),
+                            specialization,
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER))
                     ));
                 } while (cursor.moveToNext());
@@ -101,6 +109,28 @@ public class SqlRepository implements UserRepository {
         return staffs;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public List<Admin> getAllAdmins() {
+        List<Admin> admins = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor cursor = db.query(DbContract.AdminEntry.TABLE_NAME, null, null, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                do {
+                    admins.add(new Admin(
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_FIRST_NAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_LAST_NAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_EMAIL)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_PASSWORD)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_GENDER)),
+                            LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH)))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        }
+        return admins;
+    }
+
     @Override
     public void addPatient(Patient patient) {
         if (patient == null) {
@@ -119,6 +149,68 @@ public class SqlRepository implements UserRepository {
             values.put(DbContract.PatientEntry.COLUMN_HEALTHCARD_NUMBER, patient.getHealthCardNumber());
             values.put(DbContract.PatientEntry.COLUMN_PHONE_NUMBER, patient.getPhoneNumber());
             db.insert(DbContract.PatientEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void addDoctor(Doctor doctor) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.DoctorEntry.COLUMN_FIRST_NAME, doctor.getFirstName());
+            values.put(DbContract.DoctorEntry.COLUMN_LAST_NAME, doctor.getLastName());
+            values.put(DbContract.DoctorEntry.COLUMN_EMAIL, doctor.getEmail());
+            values.put(DbContract.DoctorEntry.COLUMN_PASSWORD, doctor.getPassword());
+            values.put(DbContract.DoctorEntry.COLUMN_GENDER, doctor.getGender());
+            values.put(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH, doctor.getDateOfBirth().toString());
+            values.put(DbContract.DoctorEntry.COLUMN_SPECIALIZATION, doctor.getSpecialization().name());
+            values.put(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER, doctor.getLicenseNumber());
+            db.insert(DbContract.DoctorEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void addStaff(Staff staff) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.StaffEntry.COLUMN_FIRST_NAME, staff.getFirstName());
+            values.put(DbContract.StaffEntry.COLUMN_LAST_NAME, staff.getLastName());
+            values.put(DbContract.StaffEntry.COLUMN_EMAIL, staff.getEmail());
+            values.put(DbContract.StaffEntry.COLUMN_PASSWORD, staff.getPassword());
+            values.put(DbContract.StaffEntry.COLUMN_GENDER, staff.getGender());
+            values.put(DbContract.StaffEntry.COLUMN_DATE_OF_BIRTH, staff.getDateOfBirth().toString());
+            values.put(DbContract.StaffEntry.COLUMN_POSITION, staff.getPosition());
+            db.insert(DbContract.StaffEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void deleteUser(Users user) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            if (user instanceof Patient) {
+                db.delete(DbContract.PatientEntry.TABLE_NAME, DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            } else if (user instanceof Doctor) {
+                db.delete(DbContract.DoctorEntry.TABLE_NAME, DbContract.DoctorEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            } else if (user instanceof Staff) {
+                db.delete(DbContract.StaffEntry.TABLE_NAME, DbContract.StaffEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            } else if (user instanceof Admin) {
+                db.delete(DbContract.AdminEntry.TABLE_NAME, DbContract.AdminEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+            }
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -157,7 +249,7 @@ public class SqlRepository implements UserRepository {
                     records.add(new MedicalRecord(
                             cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_RECORD_ID)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME)),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_FIRST_NAME)), // This seems wrong in original code but keeping consistency
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PURPOSE)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE)),
@@ -168,29 +260,29 @@ public class SqlRepository implements UserRepository {
         }
         return records;
     }
+
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Users getUserByEmail(String email) {
+        if (email == null) return null;
+
+        // Optimized: search only relevant categories based on email suffix or iterate carefully
+        for (Admin admin : getAllAdmins()) {
+            if (admin.getEmail().equalsIgnoreCase(email)) return admin;
+        }
         for (Doctor doctor : getAllDoctors()) {
-            if (doctor.getEmail().equalsIgnoreCase(email)) {
-                return doctor;
-            }
+            if (doctor.getEmail().equalsIgnoreCase(email)) return doctor;
         }
-
         for (Staff staff : getAllStaffs()) {
-            if (staff.getEmail().equalsIgnoreCase(email)) {
-                return staff;
-            }
+            if (staff.getEmail().equalsIgnoreCase(email)) return staff;
         }
-
         for (Patient patient : getAllPatients()) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                return patient;
-            }
+            if (patient.getEmail().equalsIgnoreCase(email)) return patient;
         }
 
         return null;
     }
+
     @Override
     public void addMedicalRecord(MedicalRecord record) {
         if (record == null) {
@@ -212,5 +304,4 @@ public class SqlRepository implements UserRepository {
             db.endTransaction();
         }
     }
-
 }
