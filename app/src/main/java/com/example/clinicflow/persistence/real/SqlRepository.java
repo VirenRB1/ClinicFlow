@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
+import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.persistence.UserRepository;
 
@@ -66,7 +67,9 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_GENDER)),
                             LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH))),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION)),
+                            Specialization.valueOf(
+                                    cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION))
+                            ),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER))
                     ));
                 } while (cursor.moveToNext());

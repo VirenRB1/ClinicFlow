@@ -1,19 +1,20 @@
 package com.example.clinicflow.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Doctor extends Users {
-    private String specialization; // also experience
+    private Specialization specialization;  //also experience
     private String licenseNumber;
 
     public Doctor(String firstName, String lastName, String email, String password, String gender,
-                  LocalDate dob, String specialization, String licenseNumber) {
-        super(firstName, lastName, email, password, gender,dob);
-        this.specialization = specialization;
+                  LocalDate dateOfBirth, Specialization specialization, String licenseNumber) {
+        super(firstName, lastName, email, password, gender, dateOfBirth);
+        this.specialization = Objects.requireNonNull(specialization,"Specialization cannot be null");
         this.licenseNumber = licenseNumber;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
@@ -21,3 +22,4 @@ public class Doctor extends Users {
         return licenseNumber;
     }
 }
+
