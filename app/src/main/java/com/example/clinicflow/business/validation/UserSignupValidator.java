@@ -1,17 +1,35 @@
 package com.example.clinicflow.business.validation;
 
+import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;
 
 import java.time.LocalDate;
 
-public class PatientSignupValidator {
+public class UserSignupValidator {
     private final UserRepository repo;
 
-    public PatientSignupValidator(UserRepository repo) {
+    public UserSignupValidator(UserRepository repo) {
         this.repo = repo;
     }
 
-    public void validate(
+    public void userValidator(
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            String gender,
+            LocalDate dateOfBirth
+    ) throws ValidationExceptions.ValidationException {
+        validateRequiredText(firstName, "First name");
+        validateRequiredText(lastName, "Last name");
+        validateRequiredText(password, "Password");
+        validateEmail(email);
+        validateDuplicateEmail(email);
+        validateGender(gender);
+        validateDateOfBirth(dateOfBirth);
+    }
+
+    public void patientValidator(
             String firstName,
             String lastName,
             String email,
@@ -21,17 +39,39 @@ public class PatientSignupValidator {
             String healthCardNum,
             String phoneNumber
     ) throws ValidationExceptions.ValidationException {
-
-        validateRequiredText(firstName, "First name");
-        validateRequiredText(lastName, "Last name");
-        validateRequiredText(password, "Password");
-        validateEmail(email);
-        validateDuplicateEmail(email);
-        validateGender(gender);
-        validateDateOfBirth(dateOfBirth);
+        userValidator(firstName, lastName, email, password, gender, dateOfBirth);
+        
         validatePhoneNumber(phoneNumber);
         validateHealthCardNumber(healthCardNum);
     }
+
+
+    public void doctorValidator(
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            String gender,
+            LocalDate dateOfBirth,
+            Specialization specialization,
+            String licenseNumber
+    ) throws ValidationExceptions.ValidationException {
+        userValidator(firstName, lastName, email, password, gender, dateOfBirth);
+
+        validateSpecialization(specialization);
+        validateLicenseNumber(licenseNumber);
+    }
+    
+    public void staffValidator (
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            String gender,
+            LocalDate dateOfBirth) throws ValidationExceptions.ValidationException {
+        userValidator(firstName, lastName, email, password, gender, dateOfBirth);
+    }
+    
 
     private void validateRequiredText(String value, String fieldName)
             throws ValidationExceptions.EmptyFieldException {
@@ -53,17 +93,14 @@ public class PatientSignupValidator {
 
     private void validateDuplicateEmail(String email)
             throws ValidationExceptions.DuplicateEmailException {
-        if (repo.getUserByEmail(email) != null) {
+        if (repo.getPatientByEmail(email) != null) {
             throw new ValidationExceptions.DuplicateEmailException();
         }
     }
 
     private void validateGender(String gender)
             throws ValidationExceptions.ValidationException {
-        if (gender == null || gender.trim().isEmpty()) {
-            throw new ValidationExceptions.EmptyFieldException("Gender");
-        }
-
+        validateRequiredText(gender, "Gender");
         if (!gender.equalsIgnoreCase("Male")
                 && !gender.equalsIgnoreCase("Female")
                 && !gender.equalsIgnoreCase("Other")) {
@@ -78,39 +115,42 @@ public class PatientSignupValidator {
         }
 
         LocalDate today = LocalDate.now();
-
         if (dateOfBirth.isAfter(today)) {
-            throw new ValidationExceptions.InvalidDateOfBirthException(
-                    "Date of birth cannot be in the future."
-            );
+            throw new ValidationExceptions.InvalidDateOfBirthException("Date of birth cannot be in the future.");
         }
-
         if (dateOfBirth.isBefore(today.minusYears(120))) {
-            throw new ValidationExceptions.InvalidDateOfBirthException(
-                    "Age must be less than 120 years."
-            );
+            throw new ValidationExceptions.InvalidDateOfBirthException("Age must be less than 120 years.");
         }
     }
 
     private void validatePhoneNumber(String phoneNumber)
             throws ValidationExceptions.ValidationException {
-        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-            throw new ValidationExceptions.EmptyFieldException("Phone number");
-        }
-
-        if (!phoneNumber.matches("\\d{10}")) {
+        validateRequiredText(phoneNumber, "Phone number");
+        if (!phoneNumber.replaceAll("\\D", "").matches("\\d{10}")) {
             throw new ValidationExceptions.InvalidPhoneNumberException();
         }
     }
 
     private void validateHealthCardNumber(String healthCardNum)
             throws ValidationExceptions.ValidationException {
-        if (healthCardNum == null || healthCardNum.trim().isEmpty()) {
-            throw new ValidationExceptions.EmptyFieldException("Health card number");
-        }
-
-        if (!(healthCardNum.matches("\\d{9}") || healthCardNum.matches("\\d{10}"))) {
+        validateRequiredText(healthCardNum, "Health card number");
+        if (!healthCardNum.matches("\\d{9,10}")) {
             throw new ValidationExceptions.InvalidHealthCardException();
+        }
+    }
+
+    private void validateSpecialization(Specialization specialization)
+            throws ValidationExceptions.ValidationException {
+        if (specialization == null) {
+            throw new ValidationExceptions.EmptyFieldException("Specialization");
+        }
+    }
+
+    private void validateLicenseNumber(String licenseNumber)
+            throws ValidationExceptions.ValidationException {
+        validateRequiredText(licenseNumber, "License number");
+        if (licenseNumber.length() < 5) {
+            throw new ValidationExceptions.ValidationException("License number is too short.");
         }
     }
 }
