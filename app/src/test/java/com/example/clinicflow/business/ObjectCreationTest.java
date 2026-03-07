@@ -101,8 +101,8 @@ public class ObjectCreationTest {
                     "pass4",
                     "Female",
                     LocalDate.of(2000,1,1),
-                    "123456789",
-                    "1234553343"
+                    "123456",
+                    "5551234"
             );
 
             fail("Expected DuplicateEmailException");
