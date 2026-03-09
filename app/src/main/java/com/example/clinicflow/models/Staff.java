@@ -15,4 +15,7 @@ public class Staff extends Users {
         return position;
     }
 
+    public UserRole getRole(){
+        return UserRole.STAFF;
+    }
 }

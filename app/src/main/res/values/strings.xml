@@ -73,4 +73,5 @@
     <string name="search_by_email_user">Search for User By Email</string>
     <string name="add">Add User</string>
     <string name="choose">Choose Option</string>
+    <string name="user_info">User Info:</string>
 </resources>

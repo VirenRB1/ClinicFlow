@@ -1,11 +1,6 @@
 package com.example.clinicflow.models;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.time.LocalDate;
-import java.time.Period;
 
 public class Patient extends Users {
     private String healthcardNumber;
@@ -26,4 +21,7 @@ public class Patient extends Users {
         return phoneNumber;
     }
 
+    public UserRole getRole(){
+        return UserRole.PATIENT;
+    }
 }

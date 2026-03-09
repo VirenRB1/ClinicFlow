@@ -63,4 +63,5 @@ public abstract class Users {
         return Period.between(dateOfBirth, today).getYears();
     }
 
+    public abstract UserRole getRole();
 }

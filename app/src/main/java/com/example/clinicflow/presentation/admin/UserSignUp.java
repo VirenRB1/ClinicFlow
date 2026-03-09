@@ -17,6 +17,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.models.Specialization;
+import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.LocalDate;
@@ -54,7 +55,7 @@ public class UserSignUp extends AppCompatActivity {
 
         setViews();
 
-        String role = getIntent().getStringExtra(Navigation.USER_ROLE);
+        UserRole role = (UserRole) getIntent().getSerializableExtra(Navigation.USER_ROLE);
 
         makeVisible(role);
         setEvents(role);
@@ -67,19 +68,19 @@ public class UserSignUp extends AppCompatActivity {
 
     }
 
-    private void makeVisible(String role) {
-        if(role.equals(Navigation.DOCTOR)) {
+    private void makeVisible(UserRole role) {
+        if (role == UserRole.DOCTOR) {
             specialization.setVisibility(View.VISIBLE);
             licenseNumber.setVisibility(View.VISIBLE);
-        } else if (role.equals(Navigation.STAFF)) {
+        } else if (role == UserRole.STAFF) {
             position.setVisibility(View.VISIBLE);
-        } else {
+        } else if (role == UserRole.PATIENT) {
             phoneNumber.setVisibility(View.VISIBLE);
             healthCard.setVisibility(View.VISIBLE);
         }
     }
 
-    private void setEvents(String role) {
+    private void setEvents(UserRole role) {
         signUpButton.setOnClickListener(v -> onSignUpClick(role));
         backButton.setOnClickListener(v -> finish());
         dob.setOnClickListener(v -> onDobClick());
@@ -98,7 +99,7 @@ public class UserSignUp extends AppCompatActivity {
         dialog.show();
     }
 
-    private void onSignUpClick(String role) {
+    private void onSignUpClick(UserRole role) {
         String first = cleanText(firstName);
         String last = cleanText(lastName);
         String emailAdd = cleanText(email);
@@ -116,29 +117,31 @@ public class UserSignUp extends AppCompatActivity {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
             return;
         }
-        if (role.equals(Navigation.PATIENT)){
+
+        if (role == UserRole.PATIENT) {
             hCardStr = cleanText(healthCard);
             phoneStr = cleanText(phoneNumber);
-        } else if (role.equals(Navigation.DOCTOR)) {
+        } else if (role == UserRole.DOCTOR) {
             specializationEnum = parseSpecialization(cleanText(specialization));
             licenseNumberStr = cleanText(licenseNumber);
-            
+
             if (specializationEnum == null && !cleanText(specialization).isEmpty()) {
                 Toast.makeText(this, "Invalid Specialization", Toast.LENGTH_LONG).show();
                 return;
             }
-        } else {
+        } else if (role == UserRole.STAFF) {
             positionStr = cleanText(position);
         }
 
 
         try {
             boolean added = false;
-            if(role.equals(Navigation.PATIENT)){
+
+            if (role == UserRole.PATIENT) {
                 added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
-            } else if (role.equals(Navigation.DOCTOR)) {
+            } else if (role == UserRole.DOCTOR) {
                 added = objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationEnum, licenseNumberStr);
-            } else {
+            } else if (role == UserRole.STAFF) {
                 added = objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
             }
             if(!added){

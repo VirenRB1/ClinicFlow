@@ -1,6 +1,7 @@
 package com.example.clinicflow.business;
 
 import com.example.clinicflow.models.Patient;
+import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
 

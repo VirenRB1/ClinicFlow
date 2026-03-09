@@ -21,5 +21,9 @@ public class Doctor extends Users {
     public String getLicenseNumber() {
         return licenseNumber;
     }
+
+    public UserRole getRole(){
+        return UserRole.DOCTOR;
+    }
 }
 
