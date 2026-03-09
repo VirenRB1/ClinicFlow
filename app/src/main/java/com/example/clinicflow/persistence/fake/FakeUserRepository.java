@@ -175,6 +175,12 @@ public class FakeUserRepository implements UserRepository, Serializable {
             }
         }
 
+        for (Admin admin : admins) {
+            if (admin.getEmail().equalsIgnoreCase(email)) {
+                return admin;
+            }
+        }
+
         return null;
     }
 

@@ -11,6 +11,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
+import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 
@@ -25,19 +26,19 @@ public class AddOrDeleteScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.add_or_delete);
 
-        String role = getIntent().getStringExtra(Navigation.USER_ROLE);
+        UserRole role = (UserRole) getIntent().getSerializableExtra(Navigation.USER_ROLE);
         setViews();
         String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
         setEvents(role, email);
     }
 
-    private void setEvents(String role, String email) {
+    private void setEvents(UserRole role, String email) {
         binds.setBasicEvents(this, email);
         addButton.setOnClickListener(v -> onClickAdd(role));
         deleteButton.setOnClickListener(v -> onClickEmail(this, UserDelete.class, email));
     }
 
-    private void onClickAdd(String role) {
+    private void onClickAdd(UserRole role) {
         Intent intent = new Intent(this, UserSignUp.class);
         intent.putExtra(Navigation.USER_ROLE, role);
         startActivity(intent);

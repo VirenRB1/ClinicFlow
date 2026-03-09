@@ -17,6 +17,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.business.auth.AuthExceptions;
+import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.admin.UserSignUp;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UserSignUp.class);
-                intent.putExtra(Navigation.USER_ROLE, Navigation.PATIENT);
+                intent.putExtra(Navigation.USER_ROLE, UserRole.PATIENT);
                 startActivity(intent);
             }
         });

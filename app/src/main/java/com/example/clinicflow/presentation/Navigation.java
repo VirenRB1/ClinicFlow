@@ -12,11 +12,7 @@ public final class Navigation {
     public static final String EXTRA_USER_EMAIL = "user_email";
     public static final String EXTRA_PATIENT_EMAIL = "patient_email";
     public static final String EXTRA_RECORD = "Record";
-
     public static final String USER_ROLE = "user_role";
-    public static final String PATIENT = "patient";
-    public static final String DOCTOR = "doctor";
-    public static final String STAFF = "staff";
 
     public static void onLogoutClick(Activity activity){
         Intent intent = new Intent(activity, MainActivity.class);

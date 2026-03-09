@@ -3,7 +3,7 @@ package com.example.clinicflow.models;
 import java.io.Serializable;
 import java.util.Date;
 //Medical record
-//Name of doctor how wrote the record, and patient name whom it belong
+//Name of doctor how wrote the record, and patient name whom it belongs
 //Purpose of the record, date created and doctor note
 public class MedicalRecord implements Serializable {
     int recordId;
