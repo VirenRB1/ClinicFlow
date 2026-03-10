@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.example.clinicflow.models.Users;
+import java.time.LocalTime;
+import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.DoctorAvailability;
 
 public class SqlRepository implements UserRepository {
     private final AppDbHelper dbHelper;
@@ -304,4 +307,87 @@ public class SqlRepository implements UserRepository {
             db.endTransaction();
         }
     }
+
+    @Override
+    public void addAppointment(Appointment appointment) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
+        values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
+        values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE, appointment.getAppointmentDate().toString());
+        values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
+        values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
+        values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
+        values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
+        values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
+
+        db.insert(DbContract.AppointmentEntry.TABLE_NAME, null, values);
+    }
+    @Override
+    public void addDoctorAvailability(DoctorAvailability availability) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL, availability.getDoctorEmail());
+        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK, availability.getDayOfWeek());
+        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME, availability.getStartTime().toString());
+        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME, availability.getEndTime().toString());
+
+        db.insert(DbContract.DoctorAvailabilityEntry.TABLE_NAME, null, values);
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date) {
+        List<Appointment> appointments = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selection = DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ? AND " +
+                DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " = ?";
+
+        String[] selectionArgs = {
+                doctorEmail,
+                date.toString()
+        };
+
+        Cursor cursor = db.query(
+                DbContract.AppointmentEntry.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC"
+        );
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID));
+            String doctor = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL));
+            String patient = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL));
+            String appointmentDate = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE));
+            String startTime = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME));
+            String endTime = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME));
+            String status = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS));
+            String patientPurpose = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE));
+            String doctorNotes = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES));
+
+            Appointment appointment = new Appointment(
+                    id,
+                    doctor,
+                    patient,
+                    LocalDate.parse(appointmentDate),
+                    LocalTime.parse(startTime),
+                    LocalTime.parse(endTime),
+                    status,
+                    patientPurpose,
+                    doctorNotes
+            );
+
+            appointments.add(appointment);
+        }
+
+        cursor.close();
+        return appointments;
+    }
+
 }

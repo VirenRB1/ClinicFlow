@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.DoctorAvailability;
 // Fake temporary database
 public class FakeUserRepository implements UserRepository, Serializable {
 //Lists of doctors, patients and staffs
@@ -124,6 +126,9 @@ public class FakeUserRepository implements UserRepository, Serializable {
         staffs.add(staff);
     }
 
+    private final List<Appointment> appointments = new ArrayList<>();
+    private final List<DoctorAvailability> doctorAvailabilities = new ArrayList<>();
+
     @Override
     public void deleteUser(Users user) {
         if (user instanceof Patient) {
@@ -182,6 +187,29 @@ public class FakeUserRepository implements UserRepository, Serializable {
         }
 
         return null;
+    }
+    @Override
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
+
+    @Override
+    public void addDoctorAvailability(DoctorAvailability availability) {
+        doctorAvailabilities.add(availability);
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date) {
+        List<Appointment> result = new ArrayList<>();
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equals(doctorEmail)
+                    && appointment.getAppointmentDate().equals(date)) {
+                result.add(appointment);
+            }
+        }
+
+        return result;
     }
 
 }

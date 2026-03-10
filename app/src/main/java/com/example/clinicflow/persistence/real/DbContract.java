@@ -1,4 +1,5 @@
 package com.example.clinicflow.persistence.real;
+import android.provider.BaseColumns;
 
 public final class DbContract {
     private DbContract() {
@@ -60,5 +61,24 @@ public final class DbContract {
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_GENDER = "gender";
         public static final String COLUMN_DATE_OF_BIRTH = "dateOfBirth";
+    }
+    public static final class AppointmentEntry implements BaseColumns {
+        public static final String TABLE_NAME = "appointments";
+        public static final String COLUMN_DOCTOR_EMAIL = "doctor_email";
+        public static final String COLUMN_PATIENT_EMAIL = "patient_email";
+        public static final String COLUMN_APPOINTMENT_DATE = "appointment_date";
+        public static final String COLUMN_START_TIME = "start_time";
+        public static final String COLUMN_END_TIME = "end_time";
+        public static final String COLUMN_STATUS = "status";
+        public static final String COLUMN_PATIENT_PURPOSE = "patient_purpose";
+        public static final String COLUMN_DOCTOR_NOTES = "doctor_notes";
+    }
+
+    public static final class DoctorAvailabilityEntry implements BaseColumns {
+        public static final String TABLE_NAME = "doctor_availability";
+        public static final String COLUMN_DOCTOR_EMAIL = "doctor_email";
+        public static final String COLUMN_DAY_OF_WEEK = "day_of_week";
+        public static final String COLUMN_START_TIME = "start_time";
+        public static final String COLUMN_END_TIME = "end_time";
     }
 }
