@@ -6,8 +6,10 @@ import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
-
 import java.util.List;
+import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.DoctorAvailability;
+import java.time.LocalDate;
 
 public interface UserRepository {
     List<Patient> getAllPatients();
@@ -33,4 +35,10 @@ public interface UserRepository {
     List<MedicalRecord> getMedicalRecords(String patientEmail);
 
     void addMedicalRecord(MedicalRecord record);
+    void addAppointment(Appointment appointment);
+
+    void addDoctorAvailability(DoctorAvailability availability);
+
+    List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date);
+
 }
