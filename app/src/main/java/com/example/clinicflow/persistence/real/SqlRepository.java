@@ -67,10 +67,9 @@ public class SqlRepository implements UserRepository {
                     String specStr = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION));
                     Specialization specialization = null;
                     try {
-                        // Normalize the string to match Enum constants (e.g., "Cardiology" -> "CARDIOLOGY")
                         specialization = Specialization.valueOf(specStr.trim().toUpperCase().replace(" ", "_"));
                     } catch (Exception e) {
-                        specialization = Specialization.GENERAL_MEDICINE; // Fallback to avoid crash
+                        specialization = Specialization.GENERAL_MEDICINE;
                     }
 
                     doctors.add(new Doctor(
@@ -136,9 +135,7 @@ public class SqlRepository implements UserRepository {
 
     @Override
     public void addPatient(Patient patient) {
-        if (patient == null) {
-            return;
-        }
+        if (patient == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -160,6 +157,7 @@ public class SqlRepository implements UserRepository {
 
     @Override
     public void addDoctor(Doctor doctor) {
+        if (doctor == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -181,6 +179,7 @@ public class SqlRepository implements UserRepository {
 
     @Override
     public void addStaff(Staff staff) {
+        if (staff == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -201,9 +200,9 @@ public class SqlRepository implements UserRepository {
 
     @Override
     public void deleteUser(Users user) {
+        if (user == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
-
         try {
             if (user instanceof Patient) {
                 db.delete(DbContract.PatientEntry.TABLE_NAME, DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
@@ -223,11 +222,10 @@ public class SqlRepository implements UserRepository {
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Patient getPatientByEmail(String email) {
-        Patient patient = null;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try (Cursor cursor = db.query(DbContract.PatientEntry.TABLE_NAME, null, DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[]{email}, null, null, null)) {
             if (cursor.moveToFirst()) {
-                patient = new Patient(
+                return new Patient(
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_FIRST_NAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_LAST_NAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_EMAIL)),
@@ -239,7 +237,7 @@ public class SqlRepository implements UserRepository {
                 );
             }
         }
-        return patient;
+        return null;
     }
 
     @Override
@@ -252,7 +250,7 @@ public class SqlRepository implements UserRepository {
                     records.add(new MedicalRecord(
                             cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_RECORD_ID)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_FIRST_NAME)), // This seems wrong in original code but keeping consistency
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PURPOSE)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE)),
@@ -269,7 +267,6 @@ public class SqlRepository implements UserRepository {
     public Users getUserByEmail(String email) {
         if (email == null) return null;
 
-        // Optimized: search only relevant categories based on email suffix or iterate carefully
         for (Admin admin : getAllAdmins()) {
             if (admin.getEmail().equalsIgnoreCase(email)) return admin;
         }
@@ -288,9 +285,7 @@ public class SqlRepository implements UserRepository {
 
     @Override
     public void addMedicalRecord(MedicalRecord record) {
-        if (record == null) {
-            return;
-        }
+        if (record == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -310,34 +305,65 @@ public class SqlRepository implements UserRepository {
 
     @Override
     public void addAppointment(Appointment appointment) {
+        if (appointment == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
+            values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
+            values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE, appointment.getAppointmentDate().toString());
+            values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
+            values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
+            values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
+            values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
+            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
 
-        ContentValues values = new ContentValues();
-        values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
-        values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
-        values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE, appointment.getAppointmentDate().toString());
-        values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
-        values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
-        values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
-        values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
-        values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
-
-        db.insert(DbContract.AppointmentEntry.TABLE_NAME, null, values);
+            db.insert(DbContract.AppointmentEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
+
+    @Override
+    public void updateAppointment(Appointment appointment) {
+        if (appointment == null) return;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
+            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
+            
+            db.update(DbContract.AppointmentEntry.TABLE_NAME, values, DbContract.AppointmentEntry._ID + " = ?", new String[]{String.valueOf(appointment.getId())});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     @Override
     public void addDoctorAvailability(DoctorAvailability availability) {
+        if (availability == null) return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL, availability.getDoctorEmail());
+            values.put(DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK, availability.getDayOfWeek());
+            values.put(DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME, availability.getStartTime().toString());
+            values.put(DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME, availability.getEndTime().toString());
 
-        ContentValues values = new ContentValues();
-        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL, availability.getDoctorEmail());
-        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK, availability.getDayOfWeek());
-        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME, availability.getStartTime().toString());
-        values.put(DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME, availability.getEndTime().toString());
-
-        db.insert(DbContract.DoctorAvailabilityEntry.TABLE_NAME, null, values);
+            db.insert(DbContract.DoctorAvailabilityEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date) {
         List<Appointment> appointments = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -345,49 +371,87 @@ public class SqlRepository implements UserRepository {
         String selection = DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ? AND " +
                 DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " = ?";
 
-        String[] selectionArgs = {
-                doctorEmail,
-                date.toString()
-        };
+        String[] selectionArgs = { doctorEmail, date.toString() };
 
-        Cursor cursor = db.query(
+        try (Cursor cursor = db.query(
                 DbContract.AppointmentEntry.TABLE_NAME,
-                null,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC"
-        );
-
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID));
-            String doctor = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL));
-            String patient = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL));
-            String appointmentDate = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE));
-            String startTime = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME));
-            String endTime = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME));
-            String status = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS));
-            String patientPurpose = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE));
-            String doctorNotes = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES));
-
-            Appointment appointment = new Appointment(
-                    id,
-                    doctor,
-                    patient,
-                    LocalDate.parse(appointmentDate),
-                    LocalTime.parse(startTime),
-                    LocalTime.parse(endTime),
-                    status,
-                    patientPurpose,
-                    doctorNotes
-            );
-
-            appointments.add(appointment);
+                null, selection, selectionArgs, null, null,
+                DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC")) {
+            
+            while (cursor.moveToNext()) {
+                appointments.add(new Appointment(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))
+                ));
+            }
         }
-
-        cursor.close();
         return appointments;
     }
 
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek) {
+        List<DoctorAvailability> availability = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selection = DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL + " = ? AND " +
+                DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK + " = ?";
+
+        String[] selectionArgs = { doctorEmail, String.valueOf(dayOfWeek) };
+
+        try (Cursor cursor = db.query(
+                DbContract.DoctorAvailabilityEntry.TABLE_NAME,
+                null, selection, selectionArgs, null, null, null)) {
+
+            while (cursor.moveToNext()) {
+                availability.add(new DoctorAvailability(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK)),
+                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME)))
+                ));
+            }
+        }
+        return availability;
+    }
+
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<Appointment> getAppointmentsForPatient(String patientEmail) {
+        List<Appointment> appointments = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selection = DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL + " = ?";
+        String[] selectionArgs = { patientEmail };
+
+        try (Cursor cursor = db.query(
+                DbContract.AppointmentEntry.TABLE_NAME,
+                null, selection, selectionArgs, null, null,
+                DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
+                DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC")) {
+            
+            while (cursor.moveToNext()) {
+                appointments.add(new Appointment(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))
+                ));
+            }
+        }
+        return appointments;
+    }
 }
