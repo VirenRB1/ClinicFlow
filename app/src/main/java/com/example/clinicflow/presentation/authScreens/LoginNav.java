@@ -4,10 +4,7 @@ package com.example.clinicflow.presentation.authScreens;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.clinicflow.models.Admin;
-import com.example.clinicflow.models.Doctor;
-import com.example.clinicflow.models.Patient;
-import com.example.clinicflow.models.Staff;
+import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.admin.AdminScreen;
@@ -26,13 +23,13 @@ public class LoginNav {
 
     public Intent sendToLanding(Users user, String email) {
         Intent intent = null;
-        if (user instanceof Patient) {
+        if (user.getRole() == UserRole.PATIENT) {
             intent = new Intent(context, PatientScreen.class);
-        } else if (user instanceof Doctor) {
+        } else if (user.getRole() == UserRole.DOCTOR) {
             intent = new Intent(context, DoctorScreen.class);
-        } else if (user instanceof Staff) {
+        } else if (user.getRole() == UserRole.STAFF) {
             intent = new Intent(context, StaffScreen.class);
-        } else if (user instanceof Admin) {
+        } else if (user.getRole() == UserRole.ADMIN) {
             intent = new Intent(context, AdminScreen.class);
         }
 

@@ -1,8 +1,9 @@
 package com.example.clinicflow.models;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class TimeSlot {
+public class TimeSlot implements Serializable {
     private LocalTime startTime;
     private LocalTime endTime;
     private boolean available;

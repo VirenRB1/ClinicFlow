@@ -11,7 +11,9 @@ public final class Navigation {
 
     public static final String EXTRA_USER_EMAIL = "user_email";
     public static final String EXTRA_PATIENT_EMAIL = "patient_email";
+    public static final String EXTRA_DOCTOR_EMAIL = "doctor_email";
     public static final String EXTRA_RECORD = "Record";
+    public static final String EXTRA_SLOT = "slot";
     public static final String USER_ROLE = "user_role";
 
     public static void onLogoutClick(Activity activity){

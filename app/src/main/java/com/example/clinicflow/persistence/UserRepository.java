@@ -35,10 +35,16 @@ public interface UserRepository {
     List<MedicalRecord> getMedicalRecords(String patientEmail);
 
     void addMedicalRecord(MedicalRecord record);
+    
     void addAppointment(Appointment appointment);
+    
+    void updateAppointment(Appointment appointment);
 
     void addDoctorAvailability(DoctorAvailability availability);
 
+    List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek);
+
     List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date);
 
+    List<Appointment> getAppointmentsForPatient(String patientEmail);
 }

@@ -74,4 +74,23 @@
     <string name="add">Add User</string>
     <string name="choose">Choose Option</string>
     <string name="user_info">User Info:</string>
+    <string name="day">Day of Week</string>
+    <string name="end_time_hint">Enter End Time</string>
+    <string name="start_time_hint">Enter Start Time</string>
+    <string name="submit">Submit</string>
+    <string name="select_doctor">Select Doctor</string>
+    <string name="select_date">Select Date</string>
+    <string name="find_slots">Find Time Slots</string>
+    <string name="avail_slots">Available Slots</string>
+    <string name="slot_detail">Select a Time Slot</string>
+    <string name="no_slots">No Available Slots</string>
+    <string name="default_slot">9:00-10:00</string>
+    <string name="default_time">9:00</string>
+    <string name="dash">-</string>
+    <string name="confirmApt">Confirm Appointment</string>
+    <string name="confirm">Confirm</string>
+    <string name="apt_info">Appointment Info</string>
+    <string name="start_time">Start Time:</string>
+    <string name="end_time">End Time:</string>
+    <string name="date">Date:</string>
 </resources>

@@ -28,6 +28,8 @@ public class FakeUserRepository implements UserRepository, Serializable {
     List<Admin> admins;
 
     HashMap<String, List<MedicalRecord>> medicalRecords;
+    private final List<Appointment> appointments = new ArrayList<>();
+    private final List<DoctorAvailability> doctorAvailabilities = new ArrayList<>();
 
     public FakeUserRepository() {
         createFakeData();
@@ -126,9 +128,6 @@ public class FakeUserRepository implements UserRepository, Serializable {
         staffs.add(staff);
     }
 
-    private final List<Appointment> appointments = new ArrayList<>();
-    private final List<DoctorAvailability> doctorAvailabilities = new ArrayList<>();
-
     @Override
     public void deleteUser(Users user) {
         if (user instanceof Patient) {
@@ -194,8 +193,29 @@ public class FakeUserRepository implements UserRepository, Serializable {
     }
 
     @Override
+    public void updateAppointment(Appointment appointment) {
+        for (int i = 0; i < appointments.size(); i++) {
+            if (appointments.get(i).getId() == appointment.getId()) {
+                appointments.set(i, appointment);
+                return;
+            }
+        }
+    }
+
+    @Override
     public void addDoctorAvailability(DoctorAvailability availability) {
         doctorAvailabilities.add(availability);
+    }
+
+    @Override
+    public List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek) {
+        List<DoctorAvailability> result = new ArrayList<>();
+        for (DoctorAvailability availability : doctorAvailabilities) {
+            if (availability.getDoctorEmail().equals(doctorEmail) && availability.getDayOfWeek() == dayOfWeek) {
+                result.add(availability);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -209,6 +229,17 @@ public class FakeUserRepository implements UserRepository, Serializable {
             }
         }
 
+        return result;
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsForPatient(String patientEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail)) {
+                result.add(appointment);
+            }
+        }
         return result;
     }
 

@@ -12,7 +12,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="5dp"
-        app:cardBackgroundColor="@color/light_red"
+        app:cardBackgroundColor="@color/light_green"
         app:cardCornerRadius="20dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,12 +25,12 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/doctorName"
+                android:id="@+id/startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/default_doc"
+                android:text="@string/default_time"
                 android:textAlignment="center"
                 android:textColor="@color/blue"
                 android:textSize="30sp"
@@ -39,17 +39,32 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/dateTime"
+                android:id="@+id/dash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="6dp"
-                android:text="@string/default_date"
+                android:layout_marginStart="70dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/dash"
                 android:textAlignment="center"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/doctorName" />
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/startTime"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/default_time"
+                android:textAlignment="center"
+                android:textColor="@color/blue"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/startTime"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/arrow"
