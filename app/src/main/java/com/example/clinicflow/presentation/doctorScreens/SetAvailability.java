@@ -22,7 +22,6 @@ import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.LocalTime;
-import java.util.Locale;
 
 public class SetAvailability extends AppCompatActivity{
 
@@ -93,8 +92,7 @@ public class SetAvailability extends AppCompatActivity{
         String [] labels = new String[TIME_OPTIONS.length];
         int i = 0;
         for (Integer time : TIME_OPTIONS) {
-            Locale l = Locale.getDefault();
-            labels[i] = String.format(l, "%02d:00", time);
+            labels[i] = String.format("%02d:00", time);
             i++;
         }
         return labels;

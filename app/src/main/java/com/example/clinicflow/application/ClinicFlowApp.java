@@ -2,6 +2,7 @@ package com.example.clinicflow.application;
 
 import android.content.Context;
 
+import com.example.clinicflow.business.AppointmentService;
 import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.business.DocAvailabilityService;
 import com.example.clinicflow.business.MedicalHistory;
@@ -20,6 +21,7 @@ public class ClinicFlowApp extends android.app.Application {
     private MedicalHistory medicalHistory;
     private LookupService lookupService;
     private DocAvailabilityService doctorAvailabilityService;
+    private AppointmentService appointmentService;
 
     @Override
     public void onCreate() {
@@ -32,6 +34,11 @@ public class ClinicFlowApp extends android.app.Application {
         lookupService = new LookupService(userRepository);
         medicalHistory = new MedicalHistory(userRepository);
         doctorAvailabilityService = new DocAvailabilityService(userRepository);
+        appointmentService = new AppointmentService(userRepository);
+    }
+
+    public AppointmentService getAppointmentService() {
+        return appointmentService;
     }
     public DocAvailabilityService getDoctorAvailabilityService() {
         return doctorAvailabilityService;
