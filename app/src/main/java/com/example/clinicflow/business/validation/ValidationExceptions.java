@@ -55,6 +55,31 @@ public class ValidationExceptions {
             super("Invalid specialization.");
         }
     }
+    
+    public static class InvalidStartAndEndTimeException extends ValidationException {
+        public InvalidStartAndEndTimeException() {
+            super("Start time must be before end time.");
+        }
+    
+    }
+
+    public static class AvailabilityOverlapException extends ValidationException {
+        public AvailabilityOverlapException() {
+            super("The new availability overlaps with an existing one.");
+        }
+    }
+
+    public static class AppointmentConflictException extends ValidationException {
+        public AppointmentConflictException() {
+            super("This time slot is no longer available.");
+        }
+    }
+
+    public static class InvalidAppointmentDateException extends ValidationException {
+        public InvalidAppointmentDateException() {
+            super("Appointment date cannot be in the past.");
+        }
+    }
 
 
 }
