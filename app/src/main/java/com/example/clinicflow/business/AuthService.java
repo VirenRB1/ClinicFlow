@@ -14,9 +14,13 @@ public class AuthService {
     private final UserAuthenticator authenticator;
 
     public AuthService(UserRepository userRepository) {
+        this(userRepository, new CredentialsValidator(), new UniversalAuthenticator());
+    }
+
+    public AuthService(UserRepository userRepository, CredentialsValidator validator, UserAuthenticator authenticator) {
         this.repo = userRepository;
-        this.validator = new CredentialsValidator();
-        this.authenticator = new UniversalAuthenticator();
+        this.validator = validator;
+        this.authenticator = authenticator;
     }
 
     public Users authenticate(String email, String password) {
