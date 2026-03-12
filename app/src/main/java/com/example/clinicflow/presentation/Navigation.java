@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.example.clinicflow.presentation.authScreens.MainActivity;
-import com.example.clinicflow.presentation.sharedScreens.MyRecords;
 
 public final class Navigation {
     private Navigation() {}

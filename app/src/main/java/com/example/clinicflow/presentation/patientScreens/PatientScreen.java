@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.sharedScreens.MyRecords;
+import com.example.clinicflow.presentation.sharedScreens.MyAppointments;
 import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class PatientScreen extends AppCompatActivity {
@@ -54,7 +54,7 @@ public class PatientScreen extends AppCompatActivity {
     }
 
     private void onRecordClick(String email, boolean showNotes) {
-        Intent intent = new Intent(this, MyRecords.class);
+        Intent intent = new Intent(this, MyAppointments.class);
         intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
         intent.putExtra(Navigation.NOTES, showNotes);
         startActivity(intent);

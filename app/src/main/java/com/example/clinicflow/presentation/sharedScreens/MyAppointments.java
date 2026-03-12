@@ -25,7 +25,7 @@ import com.example.clinicflow.presentation.RecyclerViewInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyRecords extends AppCompatActivity implements RecyclerViewInterface {
+public class MyAppointments extends AppCompatActivity implements RecyclerViewInterface {
     List<Appointment> appointments;
 
     protected void onCreate(Bundle savedInstanceState){
@@ -100,7 +100,7 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
 
     @Override
     public void onRecordClick(int position) {
-        Intent intent = new Intent(MyRecords.this, AppointmentDetail.class);
+        Intent intent = new Intent(MyAppointments.this, AppointmentDetail.class);
 
         intent.putExtra(Navigation.EXTRA_APPT, appointments.get(position));
         intent.putExtra(Navigation.EXTRA_USER_EMAIL, getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL));

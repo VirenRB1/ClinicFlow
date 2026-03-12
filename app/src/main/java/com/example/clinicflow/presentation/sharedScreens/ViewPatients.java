@@ -68,7 +68,7 @@ public class ViewPatients extends AppCompatActivity{
         binds.setBasicEvents(this, userEmail);
     }
     private void onClickView() {
-        Intent intent = new Intent(this, MyRecords.class);
+        Intent intent = new Intent(this, MyAppointments.class);
         intent.putExtra(Navigation.EXTRA_USER_EMAIL, userEmail);
         intent.putExtra(Navigation.EXTRA_PATIENT_EMAIL, email.getText().toString());
         intent.putExtra(Navigation.NOTES, true);
