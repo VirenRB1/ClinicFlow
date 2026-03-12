@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.models.Appointment;
-import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.format.DateTimeFormatter;
@@ -52,13 +51,7 @@ public class AppointmentDetail extends AppCompatActivity {
     }
     private String getUserName(String email){
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
-
-        Doctor doctor = app.getLookupService().findDoctorByEmail(email);
-        if(doctor == null){
-            return "No Doctor Found";
-        }
-
-        return doctor.getFullName();
+        return app.getLookupService().getFullName(email);
     }
 
     private void setDetails(Appointment record, boolean show) {

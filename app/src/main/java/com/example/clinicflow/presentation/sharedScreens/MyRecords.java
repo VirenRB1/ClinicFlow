@@ -46,13 +46,11 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
         AppointmentService appointmentService = app.getAppointmentService();
         LookupService lookupService = app.getLookupService();
 
-
-        List <String> doctorNames = findNames(lookupService);
-
         boolean showNotes = getIntent().getBooleanExtra(Navigation.NOTES, false);
         // Since we are only showing notes when accessing to view past appointments
         appointments = apptsToShow(showNotes, appointmentService, finalEmail);
 
+        List <String> doctorNames = findNames(lookupService);
 
         AppointmentAdapter adapter = new AppointmentAdapter(this,appointments, doctorNames, this);
 
@@ -84,10 +82,12 @@ public class MyRecords extends AppCompatActivity implements RecyclerViewInterfac
     private List<String> findNames(LookupService lookupService) {
         List<String> names = new ArrayList<>();
 
-        for(Appointment a : appointments) {
-            names.add(lookupService.getFullName(a.getDoctorEmail()));
+        if (appointments != null) {
+            for (Appointment a : appointments) {
+                names.add(lookupService.getFullName(a.getDoctorEmail()));
+            }
         }
-            return names;
+        return names;
     }
 
     private void showDetails(List<Appointment> appointments, TextView emptyStateText) {

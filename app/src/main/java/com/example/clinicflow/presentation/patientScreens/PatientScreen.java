@@ -47,23 +47,16 @@ public class PatientScreen extends AppCompatActivity {
 
     private void setEvents(String email) {
         logout.setOnClickListener(v -> onLogoutClick(this));
-        myApts.setOnClickListener(v -> onAptsClick(email));
+        myApts.setOnClickListener(v -> onRecordClick(email, false));
         bookApt.setOnClickListener(v -> onClickEmail(this, BookAppointment.class, email));
-        myRecs.setOnClickListener(v -> onRecordClick(email));
+        myRecs.setOnClickListener(v -> onRecordClick(email, true));
         profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
     }
 
-    private void onAptsClick(String email) {
-        Intent intent = new Intent(this, MyAppointments.class);
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
-        intent.putExtra(Navigation.NOTES, false);
-        startActivity(intent);
-    }
-
-    private void onRecordClick(String email) {
+    private void onRecordClick(String email, boolean showNotes) {
         Intent intent = new Intent(this, MyRecords.class);
         intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
-        intent.putExtra(Navigation.NOTES, true);
+        intent.putExtra(Navigation.NOTES, showNotes);
         startActivity(intent);
     }
 
