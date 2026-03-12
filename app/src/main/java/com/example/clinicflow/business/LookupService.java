@@ -26,6 +26,13 @@ public class LookupService {
         return (Doctor) userRepository.getUserByEmail(email);
     }
 
+    public String getFullName(String email) {
+        Users user = findUserByEmail(email);
+        if (user == null) {
+            return "No User Found";
+        }
+        return user.getFullName();
+    }
 
     //need implementation
     public List<Doctor> getDoctors() {

@@ -9,13 +9,13 @@
 
 
     <TextView
-        android:id="@+id/myRecordsTitle"
+        android:id="@+id/appointmentsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginEnd="90dp"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/my_records"
+        android:text="@string/appointments"
         android:textAlignment="center"
         android:textColor="@color/blue"
         android:textSize="28sp"
@@ -31,13 +31,13 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="50dp"
-        android:text="@string/my_rec_detail"
+        android:text="@string/my_apt_detail"
         android:textAlignment="center"
         android:textColor="@color/blue"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myRecordsTitle" />
+        app:layout_constraintTop_toBottomOf="@id/appointmentsTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordsRecyclerView"

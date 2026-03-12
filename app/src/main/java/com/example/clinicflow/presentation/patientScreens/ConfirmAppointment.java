@@ -19,6 +19,7 @@ import com.example.clinicflow.business.validation.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.LocalDate;
@@ -62,7 +63,7 @@ public class ConfirmAppointment extends AppCompatActivity {
 
         setTexts();
         setEvents();
-
+        BasicBinds.setWindowInsets(this);
     }
 
     private void setTexts() {

@@ -7,9 +7,6 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +14,10 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.business.AppointmentService;
 import com.example.clinicflow.models.TimeSlot;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.components.RecyclerViewInterface;
-import com.example.clinicflow.presentation.components.TimeSlotAdapter;
+import com.example.clinicflow.presentation.RecyclerViewInterface;
+import com.example.clinicflow.presentation.adapters.TimeSlotAdapter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -61,11 +59,7 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
 
         loadSlots();
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     @Override

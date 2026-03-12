@@ -40,17 +40,6 @@ public final class DbContract {
         public static final String COLUMN_POSITION = "position";
     }
 
-    public static class MedicalRecordEntry {
-        public static final String TABLE_NAME = "medical_records";
-        public static final String COLUMN_RECORD_ID = "record_id";
-        public static final String COLUMN_PATIENT_NAME = "patientName";
-        public static final String COLUMN_DOCTOR_NAME = "doctorName";
-        public static final String COLUMN_PATIENT_EMAIL = "patientEmail";
-        public static final String COLUMN_PURPOSE = "purpose";
-        public static final String COLUMN_DOCTOR_NOTE = "doctorNote";
-        public static final String COLUMN_DATE = "date";
-    }
-
     public static class AdminEntry {
         public static final String TABLE_NAME = "admin";
 

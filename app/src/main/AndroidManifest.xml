@@ -25,14 +25,13 @@
         <activity android:name=".presentation.doctorScreens.DoctorScreen" />
         <activity android:name=".presentation.staffScreens.StaffScreen" />
         <activity android:name=".presentation.patientScreens.BookAppointment" />
-        <activity android:name=".presentation.patientScreens.MyAppointments" />
         <activity android:name=".presentation.staffScreens.ManageAppointments" />
         <activity android:name=".presentation.sharedScreens.ViewPatients" />
         <activity android:name=".presentation.staffScreens.ViewDoctors" />
         <activity android:name=".presentation.doctorScreens.MySchedule" />
         <activity android:name=".presentation.doctorScreens.SetAvailability" />
-        <activity android:name=".presentation.sharedScreens.MyRecords"/>
-        <activity android:name=".presentation.sharedScreens.MedicalRecordDetail"/>
+        <activity android:name=".presentation.sharedScreens.MyAppointments"/>
+        <activity android:name=".presentation.sharedScreens.AppointmentDetail"/>
         <activity android:name=".presentation.sharedScreens.Profile"/>
         <activity android:name=".presentation.admin.UserSignUp"/>
         <activity android:name=".presentation.admin.AddOrDeleteScreen"/>

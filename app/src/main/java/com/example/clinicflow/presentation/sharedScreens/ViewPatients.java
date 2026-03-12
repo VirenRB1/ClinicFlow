@@ -2,6 +2,7 @@ package com.example.clinicflow.presentation.sharedScreens;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,9 +12,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
@@ -54,11 +52,7 @@ public class ViewPatients extends AppCompatActivity{
 
         setEvents();
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     private void setEvents() {
@@ -67,7 +61,11 @@ public class ViewPatients extends AppCompatActivity{
         binds.setBasicEvents(this, userEmail);
     }
     private void onClickView() {
-        Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
+        Intent intent = new Intent(this, MyAppointments.class);
+        intent.putExtra(Navigation.EXTRA_USER_EMAIL, userEmail);
+        intent.putExtra(Navigation.EXTRA_PATIENT_EMAIL, email.getText().toString());
+        intent.putExtra(Navigation.NOTES, true);
+        startActivity(intent);
     }
 
     private void onClickSearch() {
