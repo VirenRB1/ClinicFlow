@@ -168,7 +168,7 @@ public class SqlRepository implements UserRepository {
             values.put(DbContract.DoctorEntry.COLUMN_PASSWORD, doctor.getPassword());
             values.put(DbContract.DoctorEntry.COLUMN_GENDER, doctor.getGender());
             values.put(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH, doctor.getDateOfBirth().toString());
-            values.put(DbContract.DoctorEntry.COLUMN_SPECIALIZATION, doctor.getSpecialization().name());
+                values.put(DbContract.DoctorEntry.COLUMN_SPECIALIZATION, doctor.getSpecialization().name());
             values.put(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER, doctor.getLicenseNumber());
             db.insert(DbContract.DoctorEntry.TABLE_NAME, null, values);
             db.setTransactionSuccessful();
