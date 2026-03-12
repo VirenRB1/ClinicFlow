@@ -40,7 +40,7 @@ public class ObjectServiceSQLRepoIT {
     }
 
     @Test
-    public void addUpdateDeletePatient() throws ValidationExceptions.ValidationException {
+    public void addDeletePatient() throws ValidationExceptions.ValidationException {
         object.addPatientToDatabase(
             "Earth",
             "Elle",
@@ -67,7 +67,7 @@ public class ObjectServiceSQLRepoIT {
     }
 
     @Test
-    public void addUpdateDeleteDoctor() throws ValidationExceptions.ValidationException {
+    public void addDeleteDoctor() throws ValidationExceptions.ValidationException {
         object.addDoctorToDatabase(
                 "Sam",
                 "Mendez",
@@ -95,7 +95,7 @@ public class ObjectServiceSQLRepoIT {
     }
 
     @Test
-    public void addUpdateDeleteStaff() throws ValidationExceptions.ValidationException {
+    public void addDeleteStaff() throws ValidationExceptions.ValidationException {
         object.addStaffToDatabase(
                 "Nune",
                 "Anda",
