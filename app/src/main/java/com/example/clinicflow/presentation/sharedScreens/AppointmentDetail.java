@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.format.DateTimeFormatter;
@@ -33,7 +34,7 @@ public class AppointmentDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.medical_record_detail);
+        setContentView(R.layout.appointment_detail);
 
         Button backBtn = findViewById(R.id.backButton);
         backBtn.setOnClickListener(v -> finish());
@@ -48,6 +49,7 @@ public class AppointmentDetail extends AppCompatActivity {
         boolean showNotes = getIntent().getBooleanExtra(Navigation.NOTES, false);
         setDetailViews();
         setDetails(record, showNotes);
+        BasicBinds.setWindowInsets(this);
     }
     private String getUserName(String email){
         ClinicFlowApp app = (ClinicFlowApp) getApplication();

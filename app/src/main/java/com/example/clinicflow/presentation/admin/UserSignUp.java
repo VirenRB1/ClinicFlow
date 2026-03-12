@@ -9,15 +9,13 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.UserRole;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 
 import java.time.LocalDate;
@@ -60,12 +58,7 @@ public class UserSignUp extends AppCompatActivity {
         makeVisible(role);
         setEvents(role);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
+        BasicBinds.setWindowInsets(this);
     }
 
     private void makeVisible(UserRole role) {

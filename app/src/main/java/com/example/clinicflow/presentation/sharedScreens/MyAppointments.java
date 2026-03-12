@@ -7,9 +7,6 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +15,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.business.AppointmentService;
 import com.example.clinicflow.business.LookupService;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.adapters.AppointmentAdapter;
 import com.example.clinicflow.presentation.RecyclerViewInterface;
@@ -31,7 +29,7 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.my_records);
+        setContentView(R.layout.appointments);
 
         RecyclerView recyclerView = findViewById(R.id.recordsRecyclerView);
         TextView emptyStateText = findViewById(R.id.emptyStateText);
@@ -47,7 +45,7 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         LookupService lookupService = app.getLookupService();
 
         boolean showNotes = getIntent().getBooleanExtra(Navigation.NOTES, false);
-        // Since we are only showing notes when accessing to view past appointments
+
         appointments = apptsToShow(showNotes, appointmentService, finalEmail);
 
         List <String> doctorNames = findNames(lookupService);
@@ -60,11 +58,7 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
 
         showDetails(appointments, emptyStateText);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     private List<Appointment> apptsToShow(boolean showNotes, AppointmentService appointmentService, String finalEmail) {

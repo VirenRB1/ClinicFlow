@@ -94,4 +94,6 @@
     <string name="end_time">End Time:</string>
     <string name="date">Date:</string>
     <string name="appt_details">Appointment Details</string>
+    <string name="appointments">Appointments</string>
+    <string name="my_apt_detail">Click an Appointment to View Details</string>
 </resources>

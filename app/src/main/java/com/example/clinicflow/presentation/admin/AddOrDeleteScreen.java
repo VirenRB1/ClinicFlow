@@ -25,7 +25,7 @@ public class AddOrDeleteScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.add_or_delete);
-
+        BasicBinds.setWindowInsets(this);
         UserRole role = (UserRole) getIntent().getSerializableExtra(Navigation.USER_ROLE);
         setViews();
         String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);

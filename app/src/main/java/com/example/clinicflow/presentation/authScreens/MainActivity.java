@@ -9,9 +9,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
@@ -19,6 +16,7 @@ import com.example.clinicflow.business.AuthService;
 import com.example.clinicflow.business.auth.AuthExceptions;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.Navigation;
 import com.example.clinicflow.presentation.admin.UserSignUp;
 
@@ -78,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     private void setViews() {
