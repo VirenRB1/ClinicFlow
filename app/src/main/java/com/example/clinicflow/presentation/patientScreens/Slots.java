@@ -18,8 +18,8 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.business.AppointmentService;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.components.RecyclerViewInterface;
-import com.example.clinicflow.presentation.components.TimeSlotAdapter;
+import com.example.clinicflow.presentation.RecyclerViewInterface;
+import com.example.clinicflow.presentation.adapters.TimeSlotAdapter;
 
 import java.time.LocalDate;
 import java.util.List;

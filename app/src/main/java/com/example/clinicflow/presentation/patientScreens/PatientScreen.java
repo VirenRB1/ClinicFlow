@@ -3,6 +3,7 @@ package com.example.clinicflow.presentation.patientScreens;
 import static com.example.clinicflow.presentation.Navigation.onClickEmail;
 import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -46,10 +47,24 @@ public class PatientScreen extends AppCompatActivity {
 
     private void setEvents(String email) {
         logout.setOnClickListener(v -> onLogoutClick(this));
-        myApts.setOnClickListener(v -> onClickEmail(this, MyAppointments.class, email));
+        myApts.setOnClickListener(v -> onAptsClick(email));
         bookApt.setOnClickListener(v -> onClickEmail(this, BookAppointment.class, email));
-        myRecs.setOnClickListener(v -> onClickEmail(this, MyRecords.class, email));
+        myRecs.setOnClickListener(v -> onRecordClick(email));
         profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
+    }
+
+    private void onAptsClick(String email) {
+        Intent intent = new Intent(this, MyAppointments.class);
+        intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
+        intent.putExtra(Navigation.NOTES, false);
+        startActivity(intent);
+    }
+
+    private void onRecordClick(String email) {
+        Intent intent = new Intent(this, MyRecords.class);
+        intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
+        intent.putExtra(Navigation.NOTES, true);
+        startActivity(intent);
     }
 
     private void setViews() {

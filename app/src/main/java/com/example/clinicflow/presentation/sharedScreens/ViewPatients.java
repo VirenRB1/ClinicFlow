@@ -2,6 +2,7 @@ package com.example.clinicflow.presentation.sharedScreens;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +68,11 @@ public class ViewPatients extends AppCompatActivity{
         binds.setBasicEvents(this, userEmail);
     }
     private void onClickView() {
-        Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
+        Intent intent = new Intent(this, MyRecords.class);
+        intent.putExtra(Navigation.EXTRA_USER_EMAIL, userEmail);
+        intent.putExtra(Navigation.EXTRA_PATIENT_EMAIL, email.getText().toString());
+        intent.putExtra(Navigation.NOTES, true);
+        startActivity(intent);
     }
 
     private void onClickSearch() {

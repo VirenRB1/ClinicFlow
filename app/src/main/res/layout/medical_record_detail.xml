@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +11,7 @@
         android:id="@+id/detailTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/medicalRecord"
+        android:text="@string/appt_details"
         android:textSize="30sp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -71,6 +71,36 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/detailDoctorName" />
 
+                <TextView
+                    android:id="@+id/startTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/default_time"
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/endTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/default_time"
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/startTime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -109,9 +139,12 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/detailDoctorNoteTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:text="@string/notes_title"
             android:textColor="@color/blue"
             android:textSize="20sp"
@@ -121,6 +154,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="12dp"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:layout_weight="1"
             android:fillViewport="true"
             app:layout_constraintHeight_default="wrap">
@@ -129,6 +164,8 @@
                 android:id="@+id/detailDoctorNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:visibility="visible"
+                android:visibility="gone"
                 android:text="@string/default_doc_note"
                 android:textSize="16sp" />
         </ScrollView>

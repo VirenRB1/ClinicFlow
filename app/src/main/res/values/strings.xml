@@ -93,4 +93,5 @@
     <string name="start_time">Start Time:</string>
     <string name="end_time">End Time:</string>
     <string name="date">Date:</string>
+    <string name="appt_details">Appointment Details</string>
 </resources>

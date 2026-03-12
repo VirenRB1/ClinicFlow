@@ -32,7 +32,7 @@
         <activity android:name=".presentation.doctorScreens.MySchedule" />
         <activity android:name=".presentation.doctorScreens.SetAvailability" />
         <activity android:name=".presentation.sharedScreens.MyRecords"/>
-        <activity android:name=".presentation.sharedScreens.MedicalRecordDetail"/>
+        <activity android:name=".presentation.sharedScreens.AppointmentDetail"/>
         <activity android:name=".presentation.sharedScreens.Profile"/>
         <activity android:name=".presentation.admin.UserSignUp"/>
         <activity android:name=".presentation.admin.AddOrDeleteScreen"/>

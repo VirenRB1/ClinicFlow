@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation.components;
+package com.example.clinicflow.presentation.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,55 +11,56 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.models.MedicalRecord;
+import com.example.clinicflow.models.TimeSlot;
+import com.example.clinicflow.presentation.RecyclerViewInterface;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdapter.MyViewHolder> {
-    private final RecyclerViewInterface recyclerViewInterface;
+public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyViewHolder> {
+
+    private RecyclerViewInterface recyclerViewInterface;
+
     Context context;
 
-    List<MedicalRecord> records;
+    List<TimeSlot> slots;
 
-    public MedicalRecordAdapter(Context context, List<MedicalRecord> records, RecyclerViewInterface recyclerViewInterface){
+    public TimeSlotAdapter(Context context, List<TimeSlot> slots, RecyclerViewInterface recyclerViewInterface){
         this.context = context;
-        this.records = records;
+        this.slots = slots;
         this.recyclerViewInterface = recyclerViewInterface;
     }
+
     @NonNull
     @Override
-    public MedicalRecordAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TimeSlotAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.my_medical_record, parent, false);
+        View view = inflater.inflate(R.layout.time_slot, parent, false);
 
-        return new MedicalRecordAdapter.MyViewHolder(view, recyclerViewInterface);
+        return new TimeSlotAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicalRecordAdapter.MyViewHolder holder, int position) {
-        holder.doc.setText(records.get(position).getDoctorName());
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        holder.date.setText(formatter.format(records.get(position).getDate()));
+    public void onBindViewHolder(@NonNull TimeSlotAdapter.MyViewHolder holder, int position) {
+        holder.start.setText(slots.get(position).getStartTime().toString());
+        holder.end.setText(slots.get(position).getEndTime().toString());
     }
 
     @Override
     public int getItemCount() {
-        return records == null ? 0 : records.size();
+        return slots == null ? 0 : slots.size();
     }
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageview;
 
-        TextView doc, date;
+        TextView start, end;
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             imageview = itemView.findViewById(R.id.arrow);
-            doc = itemView.findViewById(R.id.doctorName);
-            date = itemView.findViewById(R.id.dateTime);
+            start = itemView.findViewById(R.id.startTime);
+            end = itemView.findViewById(R.id.endTime);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,3 +77,4 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
         }
     }
 }
+
