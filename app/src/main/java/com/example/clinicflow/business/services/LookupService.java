@@ -19,11 +19,13 @@ public class LookupService {
     }
 
     public Patient findPatientByEmail(String email) {
-        return (Patient) userRepository.getUserByEmail(email);
+        Users user = userRepository.getUserByEmail(email);
+        return (user instanceof Patient) ? (Patient) user : null;
     }
 
     public Doctor findDoctorByEmail(String email) {
-        return (Doctor) userRepository.getUserByEmail(email);
+        Users user = userRepository.getUserByEmail(email);
+        return (user instanceof Doctor) ? (Doctor) user : null;
     }
 
     public String getFullName(String email) {
@@ -34,7 +36,6 @@ public class LookupService {
         return user.getFullName();
     }
 
-    //need implementation
     public List<Doctor> getDoctors() {
         return userRepository.getAllDoctors();
     }

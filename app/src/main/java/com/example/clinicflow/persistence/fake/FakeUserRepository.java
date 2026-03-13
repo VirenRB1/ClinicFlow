@@ -1,7 +1,7 @@
 package com.example.clinicflow.persistence.fake;
 
 import com.example.clinicflow.models.Admin;
-import com.example.clinicflow.models.Specialization;
+import com.example.clinicflow.persistence.UserFactory;
 import com.example.clinicflow.persistence.UserRepository;
 
 import com.example.clinicflow.models.Doctor;
@@ -10,17 +10,16 @@ import com.example.clinicflow.models.Staff;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
+
 // Fake temporary database
 public class FakeUserRepository implements UserRepository, Serializable {
-//Lists of doctors, patients and staffs
+    // Lists of doctors, patients and staffs
     List<Doctor> doctors;
     List<Patient> patients;
     List<Staff> staffs;
@@ -32,40 +31,16 @@ public class FakeUserRepository implements UserRepository, Serializable {
         createFakeData();
     }
 
-    //Create database
+    // Create database
     private void createFakeData() {
-        initializeFakeAdmins();
-        initializeFakeDoctors();
-        initializeFakePatients();
-        initializeFakeStaffs();
+        admins = UserFactory.getDefaultAdmins();
+        doctors = UserFactory.getDefaultDoctors();
+        patients = UserFactory.getDefaultPatients();
+        staffs = UserFactory.getDefaultStaffs();
+        appointments.addAll(UserFactory.getDefaultPastAppointments());
     }
 
-    private void initializeFakeAdmins() {
-        admins = new ArrayList<>();
-        admins.add(new Admin("Admin","Admin","admin@clinic.com","admin","Female", LocalDate.of(1990,1,1)));
-    }
-    //Add doctors
-    private void initializeFakeDoctors() {
-        doctors = new ArrayList<>();
-        doctors.add(new Doctor("John","Doe","johndoe@clinicdoc.com","pass1","Male", LocalDate.of(1999,3,12) , Specialization.CARDIOLOGY,"LIC12345"));
-        doctors.add(new Doctor("Jane","Smith","janesmith@clinicdoc.com","pass2","Female", LocalDate.of(2001,7,4),Specialization.NEUROLOGY,"LIC67890"));
-        doctors.add(new Doctor("Emily","Johnson","emilyjohnson@clinicdoc.com","pass3","Female", LocalDate.of(2003,3,6) ,Specialization.PEDIATRICS,"LIC54321"));
-    }
-    // Add patients
-    private void initializeFakePatients() {
-        patients = new ArrayList<>();
-        patients.add(new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female", LocalDate.of(2000,1,1),"123456789","2045551234"));
-        patients.add(new Patient("Bob","Davis","bobdavis@gmail.com","pass5","Male",LocalDate.of(1999,3,12),"654321789","2045555678"));
-        patients.add(new Patient("Charlie","Wilson","charliewilson@gmail.com","pass6","Male", LocalDate.of(2001,7,4), "789012789","2045559012"));
-    }
-    // Add staffs
-    private void initializeFakeStaffs() {
-        staffs = new ArrayList<>();
-        staffs.add(new Staff("Eve","Miller","evemiller@clinicstaff.com","pass7","Female",LocalDate.of(2003,3,6),"Receptionist"));
-        staffs.add(new Staff("Frank","Garcia","frankgarcia@clinicstaff.com","pass8","Male",LocalDate.of(2001,7,4),"Receptionist"));
-        staffs.add(new Staff("Grace","Martinez","gracemartinez@clinicstaff.com","pass9","Female",LocalDate.of(1999,3,3),"Administrator"));
-    }
-    //  Get methods
+    // Get methods
     @Override
     public List<Patient> getAllPatients() {
         return Collections.unmodifiableList(patients);
@@ -123,6 +98,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         }
         return null;
     }
+
     // Get user by email
     @Override
     public Users getUserByEmail(String email) {
@@ -152,6 +128,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
         return null;
     }
+
     @Override
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
@@ -207,5 +184,4 @@ public class FakeUserRepository implements UserRepository, Serializable {
         }
         return result;
     }
-
 }
