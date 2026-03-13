@@ -12,8 +12,15 @@ import com.example.clinicflow.persistence.UserFactory;
 
 import java.util.List;
 
+/**
+ * Factory class responsible for populating the SQLite database with initial seed data.
+ */
 public class DbFactory {
 
+    /**
+     * Populates the database with all default users and appointments.
+     * @param db The SQLite database instance.
+     */
     public static void populateFakeData(SQLiteDatabase db) {
         populateAdmins(db);
         populateDoctors(db);
@@ -22,6 +29,10 @@ public class DbFactory {
         addPastAppointments(db);
     }
 
+    /**
+     * Inserts default administrators into the database.
+     * @param db The SQLite database instance.
+     */
     private static void populateAdmins(SQLiteDatabase db) {
         List<Admin> admins = UserFactory.getDefaultAdmins();
         for (Admin admin : admins) {
@@ -36,6 +47,10 @@ public class DbFactory {
         }
     }
 
+    /**
+     * Inserts default doctors into the database.
+     * @param db The SQLite database instance.
+     */
     private static void populateDoctors(SQLiteDatabase db) {
         List<Doctor> doctors = UserFactory.getDefaultDoctors();
         for (Doctor doctor : doctors) {
@@ -52,6 +67,10 @@ public class DbFactory {
         }
     }
 
+    /**
+     * Inserts default patients into the database.
+     * @param db The SQLite database instance.
+     */
     private static void populatePatients(SQLiteDatabase db) {
         List<Patient> patients = UserFactory.getDefaultPatients();
         for (Patient patient : patients) {
@@ -68,6 +87,10 @@ public class DbFactory {
         }
     }
 
+    /**
+     * Inserts default staff members into the database.
+     * @param db The SQLite database instance.
+     */
     private static void populateStaffs(SQLiteDatabase db) {
         List<Staff> staffs = UserFactory.getDefaultStaffs();
         for (Staff staff : staffs) {
@@ -83,6 +106,10 @@ public class DbFactory {
         }
     }
 
+    /**
+     * Inserts default past appointments into the database.
+     * @param db The SQLite database instance.
+     */
     private static void addPastAppointments(SQLiteDatabase db) {
         List<Appointment> pastAppointments = UserFactory.getDefaultPastAppointments();
         for (Appointment appointment : pastAppointments) {

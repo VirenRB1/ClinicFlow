@@ -12,15 +12,26 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Service class handling business logic related to appointments.
+ */
 public class AppointmentService {
     private final UserRepository userRepository;
     private final int SLOT_DURATION_MINUTES = 30;
 
+    /**
+     * Constructs an AppointmentService with a user repository.
+     * @param userRepository The repository to use for data access.
+     */
     public AppointmentService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    //Get all upcoming appointments for a patient
+    /**
+     * Retrieves all upcoming confirmed appointments for a specific patient.
+     * @param patientEmail The email of the patient.
+     * @return A sorted list of upcoming confirmed appointments.
+     */
     public List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail) {
         List<Appointment> allAppointments = userRepository.getAppointmentsForPatient(patientEmail);
         List<Appointment> upcoming = new ArrayList<>();
@@ -40,7 +51,11 @@ public class AppointmentService {
         return upcoming;
     }
 
-   //Retrieve all the past appointments for a patient
+    /**
+     * Retrieves all past appointments for a specific patient.
+     * @param patientEmail The email of the patient.
+     * @return A sorted list of past appointments (completed or expired).
+     */
     public List<Appointment> getPastAppointmentsForPatient(String patientEmail) {
         List<Appointment> allAppointments = userRepository.getAppointmentsForPatient(patientEmail);
         List<Appointment> past = new ArrayList<>();
@@ -50,7 +65,7 @@ public class AppointmentService {
         for (int i = 0; i < allAppointments.size(); i++) {
             Appointment appt = allAppointments.get(i);
             boolean isPastTime = !isAfterNow(appt.getAppointmentDate(), appt.getStartTime(), today, now);
-            if ("Completed".equalsIgnoreCase(appt.getStatus()) || (isPastTime && ! "Cancelled".equalsIgnoreCase(appt.getStatus()))) {
+            if ("Completed".equalsIgnoreCase(appt.getStatus()) || (isPastTime && !"Cancelled".equalsIgnoreCase(appt.getStatus()))) {
                 past.add(appt);
             }
         }
@@ -59,10 +74,22 @@ public class AppointmentService {
         return past;
     }
 
+    /**
+     * Checks if a specific date and time are in the future relative to the current moment.
+     * @param apptDate Date to check.
+     * @param startTime Start time to check.
+     * @param today Current date.
+     * @param now Current time.
+     * @return True if the date/time is after now, false otherwise.
+     */
     private boolean isAfterNow(LocalDate apptDate, LocalTime startTime, LocalDate today, LocalTime now) {
         return apptDate.isAfter(today) || (apptDate.equals(today) && startTime.isAfter(now));
     }
 
+    /**
+     * Sorts a list of appointments chronologically by date and then start time.
+     * @param list The list of appointments to sort.
+     */
     private void sortAppointments(List<Appointment> list) {
         list.sort(new Comparator<Appointment>() {
             @Override
@@ -74,7 +101,12 @@ public class AppointmentService {
         });
     }
 
-    //Get all available time slots for a doctor on a specific date
+    /**
+     * Gets all available 30-minute time slots for a doctor on a given date.
+     * @param doctorEmail The doctor's email.
+     * @param date The requested date.
+     * @return A list of available TimeSlot objects.
+     */
     public List<TimeSlot> getAvailableTimeSlots(String doctorEmail, LocalDate date) {
         List<Appointment> appointments = userRepository.getAppointmentsForDoctorOnDate(doctorEmail, date);
         List<DoctorAvailability> doctorAvailabilities = userRepository.getDoctorAvailability(doctorEmail, date.getDayOfWeek().getValue());
@@ -97,7 +129,11 @@ public class AppointmentService {
         return availableSlots;
     }
 
-    //Book an appointment for a patient
+    /**
+     * Books a new appointment after validating the date and doctor availability.
+     * @param appointment The appointment details to book.
+     * @throws ValidationExceptions.ValidationException If the date is invalid or if there's a conflict.
+     */
     public void bookAppointment(Appointment appointment) throws ValidationExceptions.ValidationException {
         if (appointment.getAppointmentDate().isBefore(LocalDate.now())) {
             throw new ValidationExceptions.InvalidAppointmentDateException();
@@ -125,6 +161,12 @@ public class AppointmentService {
         userRepository.addAppointment(appointment);
     }
 
+    /**
+     * Generates all possible time slots based on doctor availability and existing appointments.
+     * @param availabilities The doctor's shifts.
+     * @param appointments Already booked appointments.
+     * @return A list of all potential time slots.
+     */
     private List<TimeSlot> generateTimeSlots(List<DoctorAvailability> availabilities, List<Appointment> appointments) {
         List<TimeSlot> timeSlots = new ArrayList<>();
         for (DoctorAvailability availability : availabilities) {
@@ -144,7 +186,13 @@ public class AppointmentService {
         return timeSlots;
     }
 
-    // Helper method to check if a time slot is within the doctor's availability
+    /**
+     * Checks if a given time range falls within any of the doctor's availability windows.
+     * @param availabilities The doctor's scheduled availabilities.
+     * @param start Requested start time.
+     * @param end Requested end time.
+     * @return True if the slot is within availability, false otherwise.
+     */
     private boolean isWithinAvailability(List<DoctorAvailability> availabilities, LocalTime start, LocalTime end) {
         for (DoctorAvailability avail : availabilities) {
             if ((start.isAfter(avail.getStartTime()) || start.equals(avail.getStartTime())) &&
@@ -155,7 +203,13 @@ public class AppointmentService {
         return false;
     }
 
-    // Helper method to check if a time slot is free
+    /**
+     * Checks if a requested time slot is free of existing, non-cancelled appointments.
+     * @param appointments List of existing appointments for the day.
+     * @param start Requested start time.
+     * @param end Requested end time.
+     * @return True if the slot is free, false otherwise.
+     */
     private boolean isSlotFree(List<Appointment> appointments, LocalTime start, LocalTime end) {
         for (Appointment appt : appointments) {
             if (!"Cancelled".equalsIgnoreCase(appt.getStatus())) {

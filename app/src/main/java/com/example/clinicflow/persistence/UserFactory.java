@@ -12,14 +12,23 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Factory class for generating default/fake user and appointment data.
+ */
 public class UserFactory {
 
+    /**
+     * @return A list of default admin users.
+     */
     public static List<Admin> getDefaultAdmins() {
         List<Admin> admins = new ArrayList<>();
         admins.add(new Admin("Admin", "Admin", "admin@clinic.com", "admin", "Female", LocalDate.of(1990, 1, 1)));
         return admins;
     }
 
+    /**
+     * @return A list of default doctor users.
+     */
     public static List<Doctor> getDefaultDoctors() {
         List<Doctor> doctors = new ArrayList<>();
         doctors.add(new Doctor("John", "Doe", "johndoe@clinicdoc.com", "pass1", "Male", LocalDate.of(1999, 3, 12), Specialization.CARDIOLOGY, "LIC12345"));
@@ -28,6 +37,9 @@ public class UserFactory {
         return doctors;
     }
 
+    /**
+     * @return A list of default patient users.
+     */
     public static List<Patient> getDefaultPatients() {
         List<Patient> patients = new ArrayList<>();
         patients.add(new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female", LocalDate.of(2000, 1, 1), "123456789", "2045551234"));
@@ -36,6 +48,9 @@ public class UserFactory {
         return patients;
     }
 
+    /**
+     * @return A list of default staff members.
+     */
     public static List<Staff> getDefaultStaffs() {
         List<Staff> staffs = new ArrayList<>();
         staffs.add(new Staff("Eve", "Miller", "evemiller@clinicstaff.com", "pass7", "Female", LocalDate.of(2003, 3, 6), "Receptionist"));
@@ -44,6 +59,9 @@ public class UserFactory {
         return staffs;
     }
 
+    /**
+     * @return A list of default past appointments for demonstration.
+     */
     public static List<Appointment> getDefaultPastAppointments() {
         List<Appointment> appointments = new ArrayList<>();
         appointments.add(new Appointment("johndoe@clinicdoc.com", "alicebrown@gmail.com", LocalDate.of(2023, 3, 15), LocalTime.of(10, 0), LocalTime.of(10, 30), "Completed", "Severe Headache", "Prescribed Medication"));

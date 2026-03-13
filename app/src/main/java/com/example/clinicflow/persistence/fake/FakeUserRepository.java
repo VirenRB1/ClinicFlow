@@ -17,9 +17,13 @@ import com.example.clinicflow.models.Users;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
 
-// Fake temporary database
+/**
+ * In-memory implementation of UserRepository for testing and development purposes.
+ * Implements Serializable to allow state to be passed between activities if needed.
+ */
 public class FakeUserRepository implements UserRepository, Serializable {
-    // Lists of doctors, patients and staffs
+    
+    // In-memory collections of users and clinic data
     List<Doctor> doctors;
     List<Patient> patients;
     List<Staff> staffs;
@@ -27,11 +31,16 @@ public class FakeUserRepository implements UserRepository, Serializable {
     private final List<Appointment> appointments = new ArrayList<>();
     private final List<DoctorAvailability> doctorAvailabilities = new ArrayList<>();
 
+    /**
+     * Constructs the fake repository and initializes it with default test data.
+     */
     public FakeUserRepository() {
         createFakeData();
     }
 
-    // Create database
+    /**
+     * populates internal lists using the UserFactory.
+     */
     private void createFakeData() {
         admins = UserFactory.getDefaultAdmins();
         doctors = UserFactory.getDefaultDoctors();
@@ -40,43 +49,69 @@ public class FakeUserRepository implements UserRepository, Serializable {
         appointments.addAll(UserFactory.getDefaultPastAppointments());
     }
 
-    // Get methods
+    /**
+     * @return An unmodifiable view of all patients.
+     */
     @Override
     public List<Patient> getAllPatients() {
         return Collections.unmodifiableList(patients);
     }
 
+    /**
+     * @return An unmodifiable view of all doctors.
+     */
     @Override
     public List<Doctor> getAllDoctors() {
         return Collections.unmodifiableList(doctors);
     }
 
+    /**
+     * @return An unmodifiable view of all staff.
+     */
     @Override
     public List<Staff> getAllStaffs() {
         return Collections.unmodifiableList(staffs);
     }
 
+    /**
+     * @return An unmodifiable view of all admins.
+     */
     @Override
     public List<Admin> getAllAdmins() {
         return Collections.unmodifiableList(admins);
     }
 
-    // Add a patient to database
+    /**
+     * Adds a patient to the in-memory list.
+     * @param patient The patient to add.
+     */
     @Override
     public void addPatient(Patient patient) {
         patients.add(patient);
     }
 
+    /**
+     * Adds a doctor to the in-memory list.
+     * @param doctor The doctor to add.
+     */
     @Override
     public void addDoctor(Doctor doctor) {
         doctors.add(doctor);
     }
 
+    /**
+     * Adds a staff member to the in-memory list.
+     * @param staff The staff to add.
+     */
     @Override
     public void addStaff(Staff staff) {
         staffs.add(staff);
     }
 
+    /**
+     * Removes a user from the appropriate in-memory list.
+     * @param user The user object to remove.
+     */
     @Override
     public void deleteUser(Users user) {
         if (user instanceof Patient) {
@@ -88,7 +123,11 @@ public class FakeUserRepository implements UserRepository, Serializable {
         }
     }
 
-    // Get a patient by email
+    /**
+     * Finds a patient by email.
+     * @param email The email to search for.
+     * @return The Patient object or null.
+     */
     @Override
     public Patient getPatientByEmail(String email) {
         for (Patient patient : patients) {
@@ -99,7 +138,11 @@ public class FakeUserRepository implements UserRepository, Serializable {
         return null;
     }
 
-    // Get user by email
+    /**
+     * Finds any user type by email.
+     * @param email The email to search for.
+     * @return The User object or null.
+     */
     @Override
     public Users getUserByEmail(String email) {
         for (Doctor doctor : doctors) {
@@ -129,26 +172,31 @@ public class FakeUserRepository implements UserRepository, Serializable {
         return null;
     }
 
+    /**
+     * Adds a new appointment to the list.
+     * @param appointment The appointment details.
+     */
     @Override
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
 
-    @Override
-    public void updateAppointment(Appointment appointment) {
-        for (int i = 0; i < appointments.size(); i++) {
-            if (appointments.get(i).getId() == appointment.getId()) {
-                appointments.set(i, appointment);
-                return;
-            }
-        }
-    }
 
+    /**
+     * Adds a doctor availability slot.
+     * @param availability The availability details.
+     */
     @Override
     public void addDoctorAvailability(DoctorAvailability availability) {
         doctorAvailabilities.add(availability);
     }
 
+    /**
+     * Retrieves availability slots for a doctor on a specific day of the week.
+     * @param doctorEmail The doctor's email.
+     * @param dayOfWeek The day of the week (1-7).
+     * @return A list of matching availability slots.
+     */
     @Override
     public List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek) {
         List<DoctorAvailability> result = new ArrayList<>();
@@ -160,6 +208,12 @@ public class FakeUserRepository implements UserRepository, Serializable {
         return result;
     }
 
+    /**
+     * Retrieves appointments for a doctor on a specific date.
+     * @param doctorEmail The doctor's email.
+     * @param date The date to search for.
+     * @return A list of matching appointments.
+     */
     @Override
     public List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date) {
         List<Appointment> result = new ArrayList<>();
@@ -174,6 +228,11 @@ public class FakeUserRepository implements UserRepository, Serializable {
         return result;
     }
 
+    /**
+     * Retrieves all appointments for a patient.
+     * @param patientEmail The patient's email.
+     * @return A list of matching appointments.
+     */
     @Override
     public List<Appointment> getAppointmentsForPatient(String patientEmail) {
         List<Appointment> result = new ArrayList<>();

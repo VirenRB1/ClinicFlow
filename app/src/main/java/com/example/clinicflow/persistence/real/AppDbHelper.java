@@ -2,20 +2,31 @@ package com.example.clinicflow.persistence.real;
 
 import static com.example.clinicflow.persistence.real.DbFactory.populateFakeData;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * SQLite helper class for managing database creation and version management.
+ */
 public class AppDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "clinic_flow.db";
     public static final int DATABASE_VERSION = 8;
 
+    /**
+     * Constructs a new database helper.
+     * @param context The application context.
+     */
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Called when the database is created for the first time.
+     * Creates all required tables and populates seed data.
+     * @param db The database.
+     */
     public void onCreate(SQLiteDatabase db) {
         createAdminTable(db);
         createPatientTable(db);
@@ -26,6 +37,12 @@ public class AppDbHelper extends SQLiteOpenHelper {
         populateFakeData(db);
     }
 
+    /**
+     * Called when the database needs to be upgraded.
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.StaffEntry.TABLE_NAME);
@@ -37,6 +54,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Creates the patients table.
+     */
     private void createPatientTable(SQLiteDatabase db) {
         String createPatientTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.PatientEntry.TABLE_NAME + " (" +
                 DbContract.PatientEntry.COLUMN_FIRST_NAME + " VARCHAR(255) NOT NULL, " +
@@ -51,6 +71,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL(createPatientTableQuery);
     }
 
+    /**
+     * Creates the doctors table.
+     */
     private void createDoctorTable(SQLiteDatabase db) {
         String createDoctorTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.DoctorEntry.TABLE_NAME + " (" +
                 DbContract.DoctorEntry.COLUMN_FIRST_NAME + " VARCHAR(255) NOT NULL, " +
@@ -65,6 +88,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL(createDoctorTableQuery);
     }
 
+    /**
+     * Creates the staffs table.
+     */
     private void createStaffTable(SQLiteDatabase db) {
         String createStaffTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.StaffEntry.TABLE_NAME + " (" +
                 DbContract.StaffEntry.COLUMN_FIRST_NAME + " VARCHAR(255) NOT NULL, " +
@@ -78,6 +104,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL(createStaffTableQuery);
     }
 
+    /**
+     * Creates the admin table.
+     */
     private void createAdminTable(SQLiteDatabase db) {
         String createAdminTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AdminEntry.TABLE_NAME + " (" +
                 DbContract.AdminEntry.COLUMN_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -91,6 +120,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL(createAdminTableQuery);
     }
 
+    /**
+     * Creates the appointments table.
+     */
     private void createAppointmentTable(SQLiteDatabase db) {
         String createAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AppointmentEntry.TABLE_NAME + " (" +
                 DbContract.AppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -106,6 +138,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL(createAppointmentTableQuery);
     }
 
+    /**
+     * Creates the doctor availability table.
+     */
     private void createDoctorAvailabilityTable(SQLiteDatabase db) {
         String createDoctorAvailabilityTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.DoctorAvailabilityEntry.TABLE_NAME + " (" +
                 DbContract.DoctorAvailabilityEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

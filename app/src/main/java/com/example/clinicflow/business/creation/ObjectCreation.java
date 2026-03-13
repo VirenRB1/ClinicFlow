@@ -11,18 +11,27 @@ import com.example.clinicflow.persistence.UserRepository;
 
 import java.time.LocalDate;
 
-// Add an object in database
+/**
+ * Business class responsible for creating and deleting users in the system.
+ * Handles validation before data persistence.
+ */
 public class ObjectCreation {
 
     private final UserRepository DATABASE;
     private final UserSignupValidator VALIDATOR;
 
+    /**
+     * Constructs ObjectCreation with a specific user repository.
+     * @param userRepository The repository used for user data persistence.
+     */
     public ObjectCreation(UserRepository userRepository) {
         this.DATABASE = userRepository;
         this.VALIDATOR = new UserSignupValidator(userRepository);
     }
 
-    // Add patient with validation
+    /**
+     * Validates and adds a new patient to the database.
+     */
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
                                         LocalDate dateOfBirth, String healthCardNum, String phoneNumber)
             throws ValidationExceptions.ValidationException {
@@ -45,6 +54,11 @@ public class ObjectCreation {
         return true;
     }
     
+    /**
+     * Validates and adds a new doctor to the database.
+     * @return True if the doctor was successfully added.
+     * @throws ValidationExceptions.ValidationException If any input fails validation.
+     */
     public boolean addDoctorToDatabase(String firstName, String lastName, String email, String password, String gender,
                                        LocalDate dateOfBirth, Specialization specialization, String licenseNumber)
             throws ValidationExceptions.ValidationException {
@@ -64,6 +78,11 @@ public class ObjectCreation {
         return true;
     }
 
+    /**
+     * Validates and adds a new staff member to the database.
+     * @return True if the staff member was successfully added.
+     * @throws ValidationExceptions.ValidationException If any input fails validation.
+     */
     public boolean addStaffToDatabase(String firstName, String lastName, String email, String password, String gender,
                                       LocalDate dateOfBirth, String position)
             throws ValidationExceptions.ValidationException {
@@ -81,6 +100,11 @@ public class ObjectCreation {
         return true;
     }
     
+    /**
+     * Deletes a user from the system by their email.
+     * @param email The email of the user to delete.
+     * @return True if a user was found and deleted, false otherwise.
+     */
     public boolean deleteUser(String email) {
         Users user = DATABASE.getUserByEmail(email);
         if (user == null) {
@@ -89,6 +113,4 @@ public class ObjectCreation {
         DATABASE.deleteUser(user);
         return true;
     }
-
-        
 }

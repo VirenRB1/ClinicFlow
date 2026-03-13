@@ -17,20 +17,31 @@ import com.example.clinicflow.persistence.UserRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import com.example.clinicflow.models.Users;
 import java.time.LocalTime;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
 
+/**
+ * Implementation of UserRepository using a SQLite database.
+ * Handles all database operations for users, appointments, and availability.
+ */
 public class SqlRepository implements UserRepository {
     private final AppDbHelper dbHelper;
 
+    /**
+     * Constructor for SqlRepository.
+     * @param context The application context.
+     */
     public SqlRepository(Context context) {
         this.dbHelper = new AppDbHelper(context);
     }
 
+    /**
+     * Retrieves all patients from the database.
+     * @return A list of all patients.
+     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Patient> getAllPatients() {
@@ -55,6 +66,10 @@ public class SqlRepository implements UserRepository {
         return patients;
     }
 
+    /**
+     * Retrieves all doctors from the database.
+     * @return A list of all doctors.
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public List<Doctor> getAllDoctors() {
@@ -87,6 +102,10 @@ public class SqlRepository implements UserRepository {
         return doctors;
     }
 
+    /**
+     * Retrieves all staff members from the database.
+     * @return A list of all staff.
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public List<Staff> getAllStaffs() {
@@ -110,6 +129,10 @@ public class SqlRepository implements UserRepository {
         return staffs;
     }
 
+    /**
+     * Retrieves all admins from the database.
+     * @return A list of all admins.
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public List<Admin> getAllAdmins() {
@@ -132,6 +155,10 @@ public class SqlRepository implements UserRepository {
         return admins;
     }
 
+    /**
+     * Adds a new patient to the database.
+     * @param patient The patient to add.
+     */
     @Override
     public void addPatient(Patient patient) {
         if (patient == null) return;
@@ -154,6 +181,10 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    /**
+     * Adds a new doctor to the database.
+     * @param doctor The doctor to add.
+     */
     @Override
     public void addDoctor(Doctor doctor) {
         if (doctor == null) return;
@@ -176,6 +207,10 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    /**
+     * Adds a new staff member to the database.
+     * @param staff The staff to add.
+     */
     @Override
     public void addStaff(Staff staff) {
         if (staff == null) return;
@@ -197,6 +232,10 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    /**
+     * Deletes a user from the database.
+     * @param user The user to delete.
+     */
     @Override
     public void deleteUser(Users user) {
         if (user == null) return;
@@ -218,6 +257,11 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    /**
+     * Retrieves a patient by email.
+     * @param email The email address.
+     * @return The Patient if found, null otherwise.
+     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Patient getPatientByEmail(String email) {
@@ -239,6 +283,11 @@ public class SqlRepository implements UserRepository {
         return null;
     }
 
+    /**
+     * Retrieves a user by email, searching through all user types.
+     * @param email The email address.
+     * @return The User if found, null otherwise.
+     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Users getUserByEmail(String email) {
@@ -260,6 +309,10 @@ public class SqlRepository implements UserRepository {
         return null;
     }
 
+    /**
+     * Adds a new appointment to the database.
+     * @param appointment The appointment to add.
+     */
     @Override
     public void addAppointment(Appointment appointment) {
         if (appointment == null) return;
@@ -283,23 +336,10 @@ public class SqlRepository implements UserRepository {
         }
     }
 
-    @Override
-    public void updateAppointment(Appointment appointment) {
-        if (appointment == null) return;
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.beginTransaction();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
-            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
-            
-            db.update(DbContract.AppointmentEntry.TABLE_NAME, values, DbContract.AppointmentEntry._ID + " = ?", new String[]{String.valueOf(appointment.getId())});
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
-    }
-
+    /**
+     * Adds doctor availability to the database.
+     * @param availability The availability details.
+     */
     @Override
     public void addDoctorAvailability(DoctorAvailability availability) {
         if (availability == null) return;
@@ -319,6 +359,12 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    /**
+     * Retrieves appointments for a doctor on a specific date.
+     * @param doctorEmail The doctor's email.
+     * @param date The date.
+     * @return List of appointments.
+     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date) {
@@ -352,6 +398,12 @@ public class SqlRepository implements UserRepository {
         return appointments;
     }
 
+    /**
+     * Retrieves availability for a doctor on a specific day of the week.
+     * @param doctorEmail The doctor's email.
+     * @param dayOfWeek The day of the week.
+     * @return List of availability.
+     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek) {
@@ -380,6 +432,11 @@ public class SqlRepository implements UserRepository {
         return availability;
     }
 
+    /**
+     * Retrieves all appointments for a patient.
+     * @param patientEmail The patient's email.
+     * @return List of appointments.
+     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Appointment> getAppointmentsForPatient(String patientEmail) {
