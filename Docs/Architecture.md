@@ -31,12 +31,15 @@
     - **adapters**
         - `AppointmentAdapter`, `TimeSlotAdapter`
 - **Files Not in Subpackages**
-    - `Navigation`, `BasicBinds`
+    - `Navigation`
+    - `BasicBinds`
+    - `NavigationExtras`
 
 **How it works**
 - Any Activity that needs can retrieve any shared service from ClinicFlowApp that they need.
 - When an Activity needs to use business logic, it calls the necessary method through that shared service it retrieved from ClinicFlowApp
-- Navigation assists in navigation from one screen to another
+- Navigation assists in navigation from one activity to another
+- NavigationExtras houses the Intent extra keys used for passing data between activities
 - BasicBinds binds the logout, back, and profile buttons to their respective IDs and then sets the onClickListeners for them. Only screens that have all 3 of these buttons use this
 
 ---
@@ -103,7 +106,6 @@
 - `presentation` → `business`
 - `business` → `persistence` (depends on `UserRepository` interface)
 - `FakeUserRepository` → implements `UserRepository`
-- `RealUserRepository` → implements `UserRepository`
 - `presentation`, `business`, `persistence` → use `models`
 - `ClinicFlowApp` → provides shared services instead of direct access to persistence layer
 ---
