@@ -34,7 +34,6 @@ public class LookupServiceTest {
     @Test
     public void testFindUserByEmail_UserExists() {
         String email = "test@example.com";
-        // Using a concrete implementation to avoid Mockito environment issues
         Users user = new Patient("John", "Doe", email, "pass", "Male", LocalDate.of(1990, 1, 1), "123", "456");
         when(mockUserRepository.getUserByEmail(email)).thenReturn(user);
 
@@ -67,6 +66,16 @@ public class LookupServiceTest {
     }
 
     @Test
+    public void testFindPatientByEmail_DoesNotExist() {
+        String email = "notfound@example.com";
+        when(mockUserRepository.getUserByEmail(email)).thenReturn(null);
+
+        Patient result = lookupService.findPatientByEmail(email);
+
+        assertNull(result);
+    }
+
+    @Test
     public void testFindPatientByEmail_IsNotPatient_ThrowsClassCastException() {
         String email = "doctor@example.com";
         Doctor doctor = new Doctor("John", "Doe", email, "pass", "Male", LocalDate.of(1990, 1, 1), Specialization.CARDIOLOGY, "LIC123");
@@ -88,12 +97,43 @@ public class LookupServiceTest {
     }
 
     @Test
+    public void testFindDoctorByEmail_DoesNotExist() {
+        String email = "notfound@example.com";
+        when(mockUserRepository.getUserByEmail(email)).thenReturn(null);
+
+        Doctor result = lookupService.findDoctorByEmail(email);
+
+        assertNull(result);
+    }
+
+    @Test
     public void testFindDoctorByEmail_IsNotDoctor_ThrowsClassCastException() {
         String email = "patient@example.com";
         Patient patient = new Patient("Alice", "Brown", email, "pass", "Female", LocalDate.of(2000, 1, 1), "123456", "5551234");
         when(mockUserRepository.getUserByEmail(email)).thenReturn(patient);
 
         assertThrows(ClassCastException.class, () -> lookupService.findDoctorByEmail(email));
+    }
+
+    @Test
+    public void testGetFullName_UserExists() {
+        String email = "test@example.com";
+        Users user = new Patient("John", "Doe", email, "pass", "Male", LocalDate.of(1990, 1, 1), "123", "456");
+        when(mockUserRepository.getUserByEmail(email)).thenReturn(user);
+
+        String result = lookupService.getFullName(email);
+
+        assertEquals("John Doe", result);
+    }
+
+    @Test
+    public void testGetFullName_UserDoesNotExist() {
+        String email = "notfound@example.com";
+        when(mockUserRepository.getUserByEmail(email)).thenReturn(null);
+
+        String result = lookupService.getFullName(email);
+
+        assertEquals("No User Found", result);
     }
 
     @Test

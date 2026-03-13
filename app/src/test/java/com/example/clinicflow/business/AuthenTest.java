@@ -23,6 +23,12 @@ public class AuthenTest {
         auth = new AuthService(repo);
     }
 
+    @Test
+    public void testDefaultConstructor() {
+        AuthService authService = new AuthService(new FakeUserRepository());
+        assertNotNull(authService);
+    }
+
     // non-existing email
     @Test
     public void no_email() {
