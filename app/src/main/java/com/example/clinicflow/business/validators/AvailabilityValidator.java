@@ -7,9 +7,13 @@ import java.time.LocalTime;
 
 public class AvailabilityValidator {
     public void validateAvailability(DoctorAvailability availability) throws ValidationExceptions.ValidationException {
+        int dayOfWeek = availability.getDayOfWeek();
         LocalTime startTime = availability.getStartTime();
         LocalTime endTime = availability.getEndTime();
-        
+
+        if (dayOfWeek < 1 || dayOfWeek > 7) {
+            throw new ValidationExceptions.ValidationException("Invalid day of the week.");
+        }
         if (startTime == null || endTime == null) {
             throw new ValidationExceptions.EmptyFieldException("Start/End Time");
         }
