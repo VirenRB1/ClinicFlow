@@ -1,22 +1,29 @@
 package com.example.clinicflow.models;
-// Doctor account
-//Contain specialization in doctor job and a unique license number
+
+import java.time.LocalDate;
+import java.util.Objects;
+
 public class Doctor extends Users {
-    private String specialization; // also experience
+    private Specialization specialization;  //also experience
     private String licenseNumber;
 
     public Doctor(String firstName, String lastName, String email, String password, String gender,
-            int age, String specialization, String licenseNumber) {
-        super(firstName, lastName, email, password, gender, age);
-        this.specialization = specialization;
+                  LocalDate dateOfBirth, Specialization specialization, String licenseNumber) {
+        super(firstName, lastName, email, password, gender, dateOfBirth);
+        this.specialization = Objects.requireNonNull(specialization,"Specialization cannot be null");
         this.licenseNumber = licenseNumber;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
     public String getLicenseNumber() {
         return licenseNumber;
     }
+
+    public UserRole getRole(){
+        return UserRole.DOCTOR;
+    }
 }
+

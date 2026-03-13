@@ -5,8 +5,9 @@
 ### `com.example.clinicflow`
 **Application / Composition Root**
 - **`ClinicFlowApp`** (`android.app.Application`)
-  - Creates and owns a single `UserRepository` instance for the lifetime of the app.
-  - Allows files in presentation to use `getUserRepository()` so Activities can retrieve the shared repository.
+    - Creates and owns a single `UserRepository` instance for the lifetime of the app.
+    - Creates and initializes a series of business services (AuthService, LoopupService, AppointmentService, DocAvailabilityService) and a ObjectCreation class which is needed for user signup and deletion
+    - Allows files in presentation to use `get[Service]` so Activities can retrieve the necessary service that is initialized at app start.
 
 ---
 
@@ -14,27 +15,32 @@
 **Responsibility:** Handles navigation between screens. Handles what to display and for whom.
 
 **Key components**
-- **Activities/Screens**
-    - **Patient Screens**
-        - `PatientScreen`, `PatientProfile`, `MyAppointments`, `BookAppointment`, ` MyRecords `
-    - **Doctor Screens**
-        - `DoctorScreen`, `DoctorProfile`, `MySchedule`, `SetAvailability`, ` Patient Records `
-    - **Staff Screens**
-        - `StaffScreen`, `StaffProfile`, `ViewDoctors`, `ManageAppointments`, `ViewPatients`
-    - **Shared Screens**
-        - `MainActivity`
-        - ` MyRecords `
-            - `MedicalRecordDetail`
-            - Doctors and staff can access this page via ` Patient Records` and ` View Patients `
-    - **Other**
-        - `SignupScreen`
-    - **UI helpers**
-        - `RecyclerViewInterface`
-        - `MedicalRecordAdapter`
+- **subpackages**
+    - **authScreens**
+        - `LoginNav`, `MainActivity`
+    - **adminScreens**
+        - `AddOrDeleteScreen`, `AdminScreen`, `UserDelete`, `UserSignUp`
+    - **patientScreens**
+        - `PatientScreen`, `ConfirmAppointment`, `BookAppointment`, ` Slots `
+    - **doctorScreens**
+        - `DoctorScreen`, `MySchedule`, `SetAvailability`
+    - **staffScreens**
+        - `StaffScreen`, `ViewDoctors`, `ManageAppointments`
+    - **sharedScreens**
+        - `MyAppointments`, `AppointmentDetail`, `Profile`, `ViewPatients`
+    - **adapters**
+        - `AppointmentAdapter`, `TimeSlotAdapter`
+- **Files Not in Subpackages**
+    - `Navigation`
+    - `BasicBinds`
+    - `NavigationExtras`
 
 **How it works**
-- Any Activity that needs can retrieve the shared repository instance by obtaining the `ClinicFlowApp` and calling `getUserRepository()`.
-- When an Activity needs to use business logic, it instantiates the required business class (e.g., `AuthService`, `MedicalHistory`, `ObjectCreation`) and passes the repository into it.
+- Any Activity that needs can retrieve any shared service from ClinicFlowApp that they need.
+- When an Activity needs to use business logic, it calls the necessary method through that shared service it retrieved from ClinicFlowApp
+- Navigation assists in navigation from one activity to another
+- NavigationExtras houses the Intent extra keys used for passing data between activities
+- BasicBinds binds the logout, back, and profile buttons to their respective IDs and then sets the onClickListeners for them. Only screens that have all 3 of these buttons use this
 
 ---
 
@@ -42,36 +48,37 @@
 **Responsibility:** Implements application use-cases and rules using the UserRepository interface.
 
 **Key components**
-- **`AuthService`**
-  - Uses an `authenticate` method to:
-    1. Check basic email format
-    2. Determine which role/type of email was entered
-    3. Call the appropriate `validate[Role]` method
-    4. If the user exists in the repository’s stored data for that role, return the corresponding `User` object
-- **`MedicalHistory`**
-  - Is responsible for communicating with UserRepository when patient records need to be viewed.
-  - Retrieves a sorted list of `MedicalRecord` objects for a patient using the patient’s full name.
-- **`ObjectCreation`**
-  - Supports patient sign-up.
-  - Accepts patient details:
-    - `String firstName`, `String lastName`, `String email`, `String password`, `String gender`,
-      `int age`, `int healthCardNum`, `int phoneNumber`
-  - Checks if the patient already exists in the repository; if not, adds them.
-  - Signing up logs the user in. They can logout and log back in so as long as the app is running.
-
+- **subpackages**
+    - **validators**
+        - `UserAuthenticator Interface`
+        - `UniversalAuthenticator`
+        - `CredentialsValidator`
+        - `AvailabilityValidator`
+        - `UserSignupValidator`
+    - **services**
+        - `AppointmentService`
+        - `DocAvailabilityService`
+        - `LookupService`
+        - `AuthService`
+    - **exceptions**
+        - `AuthExceptions`, `ValidationExceptions`
+    - **creation**
+        - `ObjectCreation`
 ---
 
-### `Persistence` and `Fake`
-**Responsibility:** Stores different users (`Patients`, `Doctors`, `Staff`) and the medical records of patients.
+### `Persistence`(`Fake` & `Real`)
+**Responsibility:** Stores different users (`Patients`, `Doctors`, `Staff`), `Appointments` (Past and Future), `DoctorAvailability`
 
 **Key components**
 - **`UserRepository` (interface)**
-  - Defines data operations for Users and MedicalRecords.
-- **`FakeUserRepository` (implementation)**
-  - Stores Users using an **ArrayList**.
-  - Stores MedicalRecords using a **HashMap**.
-  - Implements `UserRepository` so the rest of the application can depend on the abstraction.
-
+    - Defines data operations.
+- **subpackages**
+    - **fake**
+        - **`FakeUserRepository` (implementation)**
+            - Stores data using arraylists and hashmaps
+    - **real**
+        - **`RealUserRepository` (implementation)**
+            - Stores data using SQL tables
 ---
 
 ### `Models`
@@ -79,26 +86,26 @@
 
 **Key components**
 - **`Users` (abstract class)** with shared fields:
-  - `String firstName`
-  - `String lastName`
-  - `String email`
-  - `String password`
-  - `String gender`
-  - `int age`
+    - `String firstName`
+    - `String lastName`
+    - `String email`
+    - `String password`
+    - `String gender`
+    - `int age`
 - **Role-specific objects that implement `Users`**
-  - `Patient`, `Doctor`, `Staff`
-- **Other**
-  - `MedicalRecord`
+    - `Patient`, `Doctor`, `Staff`, `Admin`
+- `Appointment`
+- `DoctorAvailability`
+- `TimeSlot`
 
 ---
 
 ## High-Level Overview of Component Interaction
 
-### General Flow
+### Dependency
 - `presentation` → `business`
 - `business` → `persistence` (depends on `UserRepository` interface)
 - `FakeUserRepository` → implements `UserRepository`
 - `presentation`, `business`, `persistence` → use `models`
-- `ClinicFlowApp` → provides shared `UserRepository`
-
+- `ClinicFlowApp` → provides shared services instead of direct access to persistence layer
 ---
