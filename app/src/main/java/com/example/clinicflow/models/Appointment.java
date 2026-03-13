@@ -93,16 +93,8 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public void setDoctorEmail(String doctorEmail) {
-        this.doctorEmail = doctorEmail;
-    }
-
     public void setPatientEmail(String patientEmail) {
         this.patientEmail = patientEmail;
-    }
-
-    public void setAppointmentDate(LocalDate appointmentDate) {
-        this.appointmentDate = appointmentDate;
     }
 
     public void setStartTime(LocalTime startTime) {
@@ -115,13 +107,5 @@ public class Appointment implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public void setPatientPurpose(String patientPurpose) {
-        this.patientPurpose = patientPurpose;
-    }
-
-    public void setDoctorNotes(String doctorNotes) {
-        this.doctorNotes = doctorNotes;
     }
 }

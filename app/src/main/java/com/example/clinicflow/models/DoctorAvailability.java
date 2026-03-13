@@ -55,14 +55,6 @@ public class DoctorAvailability {
         this.id = id;
     }
 
-    public void setDoctorEmail(String doctorEmail) {
-        this.doctorEmail = doctorEmail;
-    }
-
-    public void setDayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }

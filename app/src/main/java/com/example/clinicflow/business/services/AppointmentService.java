@@ -59,21 +59,6 @@ public class AppointmentService {
         return past;
     }
 
- //Complete and appointment and add a doctor note
-    public void completeAppointment(Appointment appointment, String doctorNote) {
-        appointment.setStatus("Completed");
-        appointment.setDoctorNotes(doctorNote);
-        userRepository.updateAppointment(appointment);
-    }
-
-    /**
-     * Updates an appointment status to completed or cancelled. Cancell will be implemented in IT3
-     */
-    public void updateAppointmentStatus(Appointment appointment, String newStatus) {
-        appointment.setStatus(newStatus);
-        userRepository.updateAppointment(appointment);
-    }
-
     private boolean isAfterNow(LocalDate apptDate, LocalTime startTime, LocalDate today, LocalTime now) {
         return apptDate.isAfter(today) || (apptDate.equals(today) && startTime.isAfter(now));
     }
