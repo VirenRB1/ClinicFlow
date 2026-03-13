@@ -1,7 +1,8 @@
-package com.example.clinicflow.business.validation;
+package com.example.clinicflow.business.validators;
 
 import static org.junit.Assert.assertThrows;
 
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
 
 import org.junit.Before;

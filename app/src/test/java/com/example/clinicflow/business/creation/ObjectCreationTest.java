@@ -1,8 +1,8 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.creation;
 
 import static org.junit.Assert.*;
 
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;

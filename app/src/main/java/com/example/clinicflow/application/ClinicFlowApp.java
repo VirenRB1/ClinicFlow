@@ -2,11 +2,11 @@ package com.example.clinicflow.application;
 
 import android.content.Context;
 
-import com.example.clinicflow.business.AppointmentService;
-import com.example.clinicflow.business.AuthService;
-import com.example.clinicflow.business.DocAvailabilityService;
-import com.example.clinicflow.business.ObjectCreation;
-import com.example.clinicflow.business.LookupService;
+import com.example.clinicflow.business.services.AppointmentService;
+import com.example.clinicflow.business.services.AuthService;
+import com.example.clinicflow.business.services.DocAvailabilityService;
+import com.example.clinicflow.business.creation.ObjectCreation;
+import com.example.clinicflow.business.services.LookupService;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.SqlRepository;
 

@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.clinicflow.business.ObjectCreation;
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.creation.ObjectCreation;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.models.Doctor;

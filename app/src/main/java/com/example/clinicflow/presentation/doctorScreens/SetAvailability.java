@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
-import com.example.clinicflow.business.DocAvailabilityService;
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.services.DocAvailabilityService;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;

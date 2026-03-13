@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
-import com.example.clinicflow.business.AppointmentService;
-import com.example.clinicflow.business.LookupService;
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.services.AppointmentService;
+import com.example.clinicflow.business.services.LookupService;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;

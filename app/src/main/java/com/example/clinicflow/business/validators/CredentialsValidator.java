@@ -1,4 +1,6 @@
-package com.example.clinicflow.business.auth;
+package com.example.clinicflow.business.validators;
+
+import com.example.clinicflow.business.exceptions.AuthExceptions;
 
 public class CredentialsValidator {
 

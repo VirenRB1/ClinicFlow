@@ -1,11 +1,11 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import com.example.clinicflow.business.auth.AuthExceptions;
-import com.example.clinicflow.business.auth.CredentialsValidator;
-import com.example.clinicflow.business.auth.UserAuthenticator;
+import com.example.clinicflow.business.exceptions.AuthExceptions;
+import com.example.clinicflow.business.validators.CredentialsValidator;
+import com.example.clinicflow.business.validators.UserAuthenticator;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;

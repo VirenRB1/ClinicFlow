@@ -1,7 +1,7 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.creation;
 
-import com.example.clinicflow.business.validation.UserSignupValidator;
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.validators.UserSignupValidator;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;

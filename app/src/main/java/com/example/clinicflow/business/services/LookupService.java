@@ -1,4 +1,4 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;

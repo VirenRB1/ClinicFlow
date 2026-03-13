@@ -1,6 +1,6 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.models.TimeSlot;

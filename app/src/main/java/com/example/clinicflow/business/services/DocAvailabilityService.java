@@ -1,9 +1,9 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.UserRepository;
-import com.example.clinicflow.business.validation.AvailabilityValidator;
+import com.example.clinicflow.business.validators.AvailabilityValidator;
 
 import java.time.LocalTime;
 import java.util.List;

@@ -1,12 +1,11 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
 
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.UserRepository;
 

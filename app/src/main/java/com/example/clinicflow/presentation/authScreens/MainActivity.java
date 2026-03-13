@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
-import com.example.clinicflow.business.AuthService;
-import com.example.clinicflow.business.auth.AuthExceptions;
+import com.example.clinicflow.business.services.AuthService;
+import com.example.clinicflow.business.exceptions.AuthExceptions;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.BasicBinds;

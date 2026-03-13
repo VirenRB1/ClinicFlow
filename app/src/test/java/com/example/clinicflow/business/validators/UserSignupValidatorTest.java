@@ -1,5 +1,6 @@
-package com.example.clinicflow.business.validation;
+package com.example.clinicflow.business.validators;
 
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;

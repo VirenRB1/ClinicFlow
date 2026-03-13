@@ -1,9 +1,9 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
-import com.example.clinicflow.business.auth.AuthExceptions;
-import com.example.clinicflow.business.auth.CredentialsValidator;
-import com.example.clinicflow.business.auth.UniversalAuthenticator;
-import com.example.clinicflow.business.auth.UserAuthenticator;
+import com.example.clinicflow.business.exceptions.AuthExceptions;
+import com.example.clinicflow.business.validators.CredentialsValidator;
+import com.example.clinicflow.business.validators.UniversalAuthenticator;
+import com.example.clinicflow.business.validators.UserAuthenticator;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
 

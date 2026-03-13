@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
-import com.example.clinicflow.business.ObjectCreation;
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.creation.ObjectCreation;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.presentation.BasicBinds;

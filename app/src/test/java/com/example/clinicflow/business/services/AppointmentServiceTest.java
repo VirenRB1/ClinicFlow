@@ -1,4 +1,4 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.models.TimeSlot;
@@ -18,7 +18,6 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

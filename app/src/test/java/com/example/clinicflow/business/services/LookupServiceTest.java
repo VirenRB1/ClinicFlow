@@ -1,4 +1,4 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -1,8 +1,10 @@
-package com.example.clinicflow.business.auth;
+package com.example.clinicflow.business.validators;
 
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import com.example.clinicflow.business.exceptions.AuthExceptions;
 
 public class CredentialsValidatorTest {
 

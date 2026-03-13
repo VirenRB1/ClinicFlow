@@ -1,8 +1,8 @@
-package com.example.clinicflow.business;
+package com.example.clinicflow.business.services;
 
 import static org.junit.Assert.*;
 
-import com.example.clinicflow.business.auth.AuthExceptions;
+import com.example.clinicflow.business.exceptions.AuthExceptions;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;

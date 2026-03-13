@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
-import com.example.clinicflow.business.AppointmentService;
+import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;

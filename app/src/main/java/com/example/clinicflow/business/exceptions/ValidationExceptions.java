@@ -1,4 +1,4 @@
-package com.example.clinicflow.business.validation;
+package com.example.clinicflow.business.exceptions;
 
 public class ValidationExceptions {
 

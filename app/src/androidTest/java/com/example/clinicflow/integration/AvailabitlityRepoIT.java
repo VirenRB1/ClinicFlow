@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.clinicflow.business.DocAvailabilityService;
-import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.business.services.DocAvailabilityService;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.AppDbHelper;
