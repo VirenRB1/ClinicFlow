@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation.components;
+package com.example.clinicflow.presentation.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,36 +11,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.models.MedicalRecord;
+import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.presentation.RecyclerViewInterface;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdapter.MyViewHolder> {
+public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder> {
     private final RecyclerViewInterface recyclerViewInterface;
     Context context;
+    List<Appointment> records;
+    List<String> names;
 
-    List<MedicalRecord> records;
-
-    public MedicalRecordAdapter(Context context, List<MedicalRecord> records, RecyclerViewInterface recyclerViewInterface){
+    public AppointmentAdapter(Context context, List<Appointment> records, List<String> names, RecyclerViewInterface recyclerViewInterface){
         this.context = context;
         this.records = records;
+        this.names = names;
         this.recyclerViewInterface = recyclerViewInterface;
     }
     @NonNull
     @Override
-    public MedicalRecordAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AppointmentAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.my_medical_record, parent, false);
 
-        return new MedicalRecordAdapter.MyViewHolder(view, recyclerViewInterface);
+        return new AppointmentAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicalRecordAdapter.MyViewHolder holder, int position) {
-        holder.doc.setText(records.get(position).getDoctorName());
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        holder.date.setText(formatter.format(records.get(position).getDate()));
+    public void onBindViewHolder(@NonNull AppointmentAdapter.MyViewHolder holder, int position) {
+        holder.doc.setText(names.get(position));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        holder.date.setText(records.get(position).getAppointmentDate().format(formatter));
     }
 
     @Override
@@ -50,7 +52,6 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-
         ImageView imageview;
 
         TextView doc, date;
@@ -68,7 +69,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
                         int pos = getBindingAdapterPosition();
 
                         if(pos != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onRecordClick(pos);
+                            recyclerViewInterface.onItemClick(pos);
                         }
                     }
                 }

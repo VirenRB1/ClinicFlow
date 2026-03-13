@@ -1,21 +1,20 @@
 package com.example.clinicflow.presentation.patientScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.presentation.Navigation;
-import com.example.clinicflow.presentation.sharedScreens.MyRecords;
+import com.example.clinicflow.presentation.BasicBinds;
+import com.example.clinicflow.presentation.NavigationExtras;
+import com.example.clinicflow.presentation.sharedScreens.MyAppointments;
 import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class PatientScreen extends AppCompatActivity {
@@ -33,23 +32,26 @@ public class PatientScreen extends AppCompatActivity {
 
         setViews();
 
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
 
         setEvents(email);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     private void setEvents(String email) {
-        logout.setOnClickListener(v -> onLogoutClick(this));
-        myApts.setOnClickListener(v -> onClickEmail(this, MyAppointments.class, email));
-        bookApt.setOnClickListener(v -> onClickEmail(this, BookAppointment.class, email));
-        myRecs.setOnClickListener(v -> onClickEmail(this, MyRecords.class, email));
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
+        logout.setOnClickListener(v -> logoutToMain(this));
+        myApts.setOnClickListener(v -> onRecordClick(email, false));
+        bookApt.setOnClickListener(v -> navigateWithUserEmail(this, BookAppointment.class, email));
+        myRecs.setOnClickListener(v -> onRecordClick(email, true));
+        profile.setOnClickListener(v -> navigateWithUserEmail(this, Profile.class, email));
+    }
+
+    private void onRecordClick(String email, boolean showNotes) {
+        Intent intent = new Intent(this, MyAppointments.class);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, email);
+        intent.putExtra(NavigationExtras.NOTES, showNotes);
+        startActivity(intent);
     }
 
     private void setViews() {

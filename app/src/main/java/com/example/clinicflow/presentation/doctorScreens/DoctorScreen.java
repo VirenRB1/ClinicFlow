@@ -1,7 +1,7 @@
 package com.example.clinicflow.presentation.doctorScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,12 +9,10 @@ import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.R;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.BasicBinds;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.sharedScreens.Profile;
 import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
@@ -33,23 +31,19 @@ public class DoctorScreen extends AppCompatActivity {
 
         setViews();
 
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
 
         setEvents(email);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     private void setEvents(String email) {
-        logout.setOnClickListener(v -> onLogoutClick(this));
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
-        mySchd.setOnClickListener(v -> onClickEmail(this, MySchedule.class, email));
-        setAvail.setOnClickListener(v -> onClickEmail(this, SetAvailability.class, email));
-        patientRecs.setOnClickListener(v -> onClickEmail(this, ViewPatients.class, email));
+        logout.setOnClickListener(v -> logoutToMain(this));
+        profile.setOnClickListener(v -> navigateWithUserEmail(this, Profile.class, email));
+        mySchd.setOnClickListener(v -> navigateWithUserEmail(this, MySchedule.class, email));
+        setAvail.setOnClickListener(v -> navigateWithUserEmail(this, SetAvailability.class, email));
+        patientRecs.setOnClickListener(v -> navigateWithUserEmail(this, ViewPatients.class, email));
     }
 
     private void setViews() {

@@ -1,9 +1,10 @@
 package com.example.clinicflow.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Appointment {
+public class Appointment implements Serializable {
     private int id;
     private String doctorEmail;
     private String patientEmail;

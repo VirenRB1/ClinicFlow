@@ -1,4 +1,4 @@
-package com.example.clinicflow.presentation.components;
+package com.example.clinicflow.presentation.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.models.TimeSlot;
+import com.example.clinicflow.presentation.RecyclerViewInterface;
 
 import java.util.List;
 
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyViewHolder> {
 
-    private RecyclerViewInterface recyclerViewInterface;
+    private final RecyclerViewInterface recyclerViewInterface;
 
     Context context;
 
@@ -68,7 +69,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
                         int pos = getBindingAdapterPosition();
 
                         if(pos != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onRecordClick(pos);
+                            recyclerViewInterface.onItemClick(pos);
                         }
                     }
                 }

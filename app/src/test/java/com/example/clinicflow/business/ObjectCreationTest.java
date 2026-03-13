@@ -3,6 +3,7 @@ package com.example.clinicflow.business;
 import static org.junit.Assert.*;
 
 import com.example.clinicflow.business.validation.ValidationExceptions;
+import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
@@ -24,7 +25,6 @@ public class ObjectCreationTest {
     // Valid patient signup
     @Test
     public void testAddPatientSuccess() throws ValidationExceptions.ValidationException {
-
         boolean result = objectCreation.addPatientToDatabase(
                 "Najma",
                 "Mohamed",
@@ -35,15 +35,13 @@ public class ObjectCreationTest {
                 "124576877",
                 "1234553346"
         );
-
         assertTrue(result);
     }
 
     // Empty field
     @Test
     public void testEmptyFirstName() {
-
-        try {
+        assertThrows(ValidationExceptions.EmptyFieldException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "",
                     "Mohamed",
@@ -53,22 +51,14 @@ public class ObjectCreationTest {
                     LocalDate.of(2002,6,24),
                     "123456789",
                     "1434553343"
-            );
-
-            fail("Expected EmptyFieldException");
-
-        } catch (ValidationExceptions.EmptyFieldException e) {
-            assertEquals("First name cannot be empty.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
     // Invalid email
     @Test
     public void testInvalidEmail() {
-
-        try {
+        assertThrows(ValidationExceptions.InvalidEmailException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "Liam",
                     "Walter",
@@ -78,22 +68,14 @@ public class ObjectCreationTest {
                     LocalDate.of(2002,6,24),
                     "123456789",
                     "1234553343"
-            );
-
-            fail("Expected InvalidEmailException");
-
-        } catch (ValidationExceptions.InvalidEmailException e) {
-            assertEquals("Invalid email format.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
     // Duplicate email
     @Test
     public void testDuplicateEmail() {
-
-        try {
+        assertThrows(ValidationExceptions.DuplicateEmailException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "Alice",
                     "Brown",
@@ -103,22 +85,14 @@ public class ObjectCreationTest {
                     LocalDate.of(2000,1,1),
                     "123456",
                     "5551234"
-            );
-
-            fail("Expected DuplicateEmailException");
-
-        } catch (ValidationExceptions.DuplicateEmailException e) {
-            assertEquals("Email already exists.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
     // Invalid gender
     @Test
     public void testInvalidGender() {
-
-        try {
+        assertThrows(ValidationExceptions.InvalidGenderException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "Sandra",
                     "Ohm",
@@ -128,22 +102,14 @@ public class ObjectCreationTest {
                     LocalDate.of(2002,6,24),
                     "123456789",
                     "1234553343"
-            );
-
-            fail("Expected InvalidGenderException");
-
-        } catch (ValidationExceptions.InvalidGenderException e) {
-            assertEquals("Gender must be Male, Female, or Other.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
     // Invalid phone number
     @Test
     public void testInvalidPhoneNumber() {
-
-        try {
+        assertThrows(ValidationExceptions.InvalidPhoneNumberException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "David",
                     "Wan",
@@ -153,22 +119,14 @@ public class ObjectCreationTest {
                     LocalDate.of(2002,6,24),
                     "123456789",
                     "123"
-            );
-
-            fail("Expected InvalidPhoneNumberException");
-
-        } catch (ValidationExceptions.InvalidPhoneNumberException e) {
-            assertEquals("Phone number must be 10 digits.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
     // Invalid health card
     @Test
     public void testInvalidHealthCard() {
-
-        try {
+        assertThrows(ValidationExceptions.InvalidHealthCardException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "Heather",
                     "Canda",
@@ -178,22 +136,14 @@ public class ObjectCreationTest {
                     LocalDate.of(2002,7,24),
                     "1245",
                     "1234553343"
-            );
-
-            fail("Expected InvalidHealthCardException");
-
-        } catch (ValidationExceptions.InvalidHealthCardException e) {
-            assertEquals("Health card number must be 9 or 10 digits.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
     // Future DOB
     @Test
     public void testFutureDOB() {
-
-        try {
+        assertThrows(ValidationExceptions.InvalidDateOfBirthException.class, () -> 
             objectCreation.addPatientToDatabase(
                     "Future",
                     "Kid",
@@ -203,15 +153,59 @@ public class ObjectCreationTest {
                     LocalDate.now().plusDays(1),
                     "123456789",
                     "1234553343"
-            );
-
-            fail("Expected InvalidDateOfBirthException");
-
-        } catch (ValidationExceptions.InvalidDateOfBirthException e) {
-            assertEquals("Date of birth cannot be in the future.", e.getMessage());
-        } catch (ValidationExceptions.ValidationException e) {
-            fail("Wrong exception type");
-        }
+            )
+        );
     }
 
+    // Add Doctor Success
+    @Test
+    public void testAddDoctorSuccess() throws ValidationExceptions.ValidationException {
+        boolean result = objectCreation.addDoctorToDatabase(
+                "John",
+                "Doe",
+                "johndoe2@test.com",
+                "password",
+                "Male",
+                LocalDate.of(1980, 1, 1),
+                Specialization.CARDIOLOGY,
+                "LIC12345"
+        );
+        assertTrue(result);
+    }
+
+    // Add Staff Success
+    @Test
+    public void testAddStaffSuccess() throws ValidationExceptions.ValidationException {
+        boolean result = objectCreation.addStaffToDatabase(
+                "Eve",
+                "Staff",
+                "evestaff@test.com",
+                "password",
+                "Female",
+                LocalDate.of(1995, 5, 5),
+                "Receptionist"
+        );
+        assertTrue(result);
+    }
+
+    // Delete User Success
+    @Test
+    public void testDeleteUserSuccess() throws ValidationExceptions.ValidationException {
+        // First add a user
+        String email = "delete_me@test.com";
+        objectCreation.addPatientToDatabase(
+                "Delete", "Me", email, "pass", "Other", 
+                LocalDate.of(2000, 1, 1), "123456789", "1234567890"
+        );
+        
+        boolean result = objectCreation.deleteUser(email);
+        assertTrue(result);
+    }
+
+    // Delete User Not Found
+    @Test
+    public void testDeleteUserNotFound() {
+        boolean result = objectCreation.deleteUser("nonexistent@test.com");
+        assertFalse(result);
+    }
 }

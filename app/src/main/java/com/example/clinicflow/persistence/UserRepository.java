@@ -2,7 +2,6 @@ package com.example.clinicflow.persistence;
 
 import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.Doctor;
-import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
@@ -31,10 +30,6 @@ public interface UserRepository {
     Patient getPatientByEmail(String email);
 
     Users getUserByEmail(String email);
-
-    List<MedicalRecord> getMedicalRecords(String patientEmail);
-
-    void addMedicalRecord(MedicalRecord record);
     
     void addAppointment(Appointment appointment);
     

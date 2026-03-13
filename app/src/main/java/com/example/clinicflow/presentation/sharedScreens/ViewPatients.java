@@ -2,28 +2,25 @@ package com.example.clinicflow.presentation.sharedScreens;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.LookupService;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.google.android.material.card.MaterialCardView;
 
-public class ViewPatients extends AppCompatActivity{
+public class ViewPatients extends AppCompatActivity {
 
     private MaterialCardView patientCard;
     private BasicBinds binds;
@@ -34,7 +31,7 @@ public class ViewPatients extends AppCompatActivity{
     private TextView name;
     private TextView gender;
     private TextView age;
-    private TextView hc;
+    private TextView healthCard;
     private TextView phone;
 
     private String userEmail;
@@ -45,20 +42,13 @@ public class ViewPatients extends AppCompatActivity{
         EdgeToEdge.enable(this);
         setContentView(R.layout.view_patients);
 
-        ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        lookupService = app.getLookupService();
+        lookupService = ((ClinicFlowApp) getApplication()).getLookupService();
 
         setViews();
-
-        userEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
-
+        userEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         setEvents();
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        BasicBinds.setWindowInsets(this);
     }
 
     private void setEvents() {
@@ -66,28 +56,22 @@ public class ViewPatients extends AppCompatActivity{
         viewRecords.setOnClickListener(v -> onClickView());
         binds.setBasicEvents(this, userEmail);
     }
-    private void onClickView() {
-        Navigation.openRecords(this, emailAddress.getText().toString().trim(), userEmail);
-    }
 
     private void onClickSearch() {
-        String enteredEmail = emailAddress.getText().toString().trim();
-
-        if(enteredEmail.isEmpty()) {
-            Toast.makeText(this, "Please enter a Patient email", Toast.LENGTH_LONG).show();
+        Patient patient = lookupService.findPatientByEmail(emailAddress.getText().toString().trim());
+        if (patient != null) {
+            setPatient(patient);
+        } else {
             hide();
-            return;
         }
+    }
 
-        Patient patient = lookupService.findPatientByEmail(enteredEmail);
-
-        if(patient == null) {
-            Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
-            hide();
-            return;
-        }
-
-        setPatient(patient);
+    private void onClickView() {
+        Intent intent = new Intent(this, MyAppointments.class);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, userEmail);
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, email.getText().toString());
+        intent.putExtra(NavigationExtras.NOTES, true);
+        startActivity(intent);
     }
 
     private void setPatient(Patient patient) {
@@ -95,16 +79,15 @@ public class ViewPatients extends AppCompatActivity{
         name.setText(patient.getFullName());
         gender.setText(patient.getGender());
         age.setText(String.valueOf(patient.getAge()));
-        hc.setText(patient.getHealthCardNumber());
+        healthCard.setText(patient.getHealthCardNumber());
         phone.setText(patient.getPhoneNumber());
-
         viewRecords.setVisibility(View.VISIBLE);
         patientCard.setVisibility(View.VISIBLE);
     }
 
     private void hide() {
-        patientCard.setVisibility(View.INVISIBLE);
-        viewRecords.setVisibility(View.INVISIBLE);
+        patientCard.setVisibility(View.GONE);
+        viewRecords.setVisibility(View.GONE);
     }
 
     private void setViews() {
@@ -116,7 +99,7 @@ public class ViewPatients extends AppCompatActivity{
         name = findViewById(R.id.nameActual);
         gender = findViewById(R.id.genderActual);
         age = findViewById(R.id.ageActual);
-        hc = findViewById(R.id.healthCardActual);
+        healthCard = findViewById(R.id.healthCardActual);
         phone = findViewById(R.id.phoneActual);
         emailAddress = findViewById(R.id.editTextEmailAddress);
     }

@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi;
 
 import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.Doctor;
-import com.example.clinicflow.models.MedicalRecord;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.Staff;
@@ -241,28 +240,6 @@ public class SqlRepository implements UserRepository {
     }
 
     @Override
-    public List<MedicalRecord> getMedicalRecords(String patientEmail) {
-        List<MedicalRecord> records = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        try (Cursor cursor = db.query(DbContract.MedicalRecordEntry.TABLE_NAME, null, DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL + " = ?", new String[]{patientEmail}, null, null, null)) {
-            if (cursor.moveToFirst()) {
-                do {
-                    records.add(new MedicalRecord(
-                            cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_RECORD_ID)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_PURPOSE)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE)),
-                            new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DbContract.MedicalRecordEntry.COLUMN_DATE)))
-                    ));
-                } while (cursor.moveToNext());
-            }
-        }
-        return records;
-    }
-
-    @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Users getUserByEmail(String email) {
         if (email == null) return null;
@@ -281,26 +258,6 @@ public class SqlRepository implements UserRepository {
         }
 
         return null;
-    }
-
-    @Override
-    public void addMedicalRecord(MedicalRecord record) {
-        if (record == null) return;
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.beginTransaction();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME, record.getPatientName());
-            values.put(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME, record.getDoctorName());
-            values.put(DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL, record.getEmail());
-            values.put(DbContract.MedicalRecordEntry.COLUMN_PURPOSE, record.getPurpose());
-            values.put(DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE, record.getDoctorNote());
-            values.put(DbContract.MedicalRecordEntry.COLUMN_DATE, record.getDate().getTime());
-            db.insert(DbContract.MedicalRecordEntry.TABLE_NAME, null, values);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
     }
 
     @Override

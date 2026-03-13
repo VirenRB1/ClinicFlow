@@ -19,7 +19,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
         createPatientTable(db);
         createDoctorTable(db);
         createStaffTable(db);
-        createMedicalRecordTable(db);
         db.execSQL(SQL_CREATE_APPOINTMENT_TABLE);
         db.execSQL(SQL_CREATE_DOCTOR_AVAILABILITY_TABLE);
         // Adding the ddefault admin
@@ -28,7 +27,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DbContract.MedicalRecordEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.StaffEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.DoctorEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.PatientEntry.TABLE_NAME);
@@ -77,22 +75,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 DbContract.StaffEntry.COLUMN_POSITION + " VARCHAR(255) NOT NULL" +
                 ");";
         db.execSQL(createStaffTableQuery);
-    }
-
-    private void createMedicalRecordTable(SQLiteDatabase db) {
-        String createMedicalRecordTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.MedicalRecordEntry.TABLE_NAME
-                + " (" +
-                DbContract.MedicalRecordEntry.COLUMN_RECORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                DbContract.MedicalRecordEntry.COLUMN_PATIENT_NAME + " TEXT NOT NULL, " +
-                DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NAME + " TEXT NOT NULL, " +
-                DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL + " VARCHAR(255) NOT NULL, " +
-                DbContract.MedicalRecordEntry.COLUMN_PURPOSE + " VARCHAR(255) NOT NULL, " +
-                DbContract.MedicalRecordEntry.COLUMN_DOCTOR_NOTE + " TEXT NOT NULL, " +
-                DbContract.MedicalRecordEntry.COLUMN_DATE + " DATE NOT NULL," +
-                "FOREIGN KEY(" + DbContract.MedicalRecordEntry.COLUMN_PATIENT_EMAIL + ") REFERENCES "
-                + DbContract.PatientEntry.TABLE_NAME + "(" + DbContract.PatientEntry.COLUMN_EMAIL + ")" +
-                ");";
-        db.execSQL(createMedicalRecordTableQuery);
     }
 
     private void createAdminTable(SQLiteDatabase db) {
