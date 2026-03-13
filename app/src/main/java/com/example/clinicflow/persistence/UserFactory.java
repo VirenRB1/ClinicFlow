@@ -30,9 +30,9 @@ public class UserFactory {
 
     public static List<Patient> getDefaultPatients() {
         List<Patient> patients = new ArrayList<>();
-        patients.add(new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female", LocalDate.of(2000, 1, 1), "123456", "5551234"));
-        patients.add(new Patient("Bob", "Davis", "bobdavis@gmail.com", "pass5", "Male", LocalDate.of(1999, 3, 12), "654321", "5555678"));
-        patients.add(new Patient("Charlie", "Wilson", "charliewilson@gmail.com", "pass6", "Male", LocalDate.of(2001, 7, 4), "789012", "5559012"));
+        patients.add(new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female", LocalDate.of(2000, 1, 1), "123456789", "2045551234"));
+        patients.add(new Patient("Bob", "Davis", "bobdavis@gmail.com", "pass5", "Male", LocalDate.of(1999, 3, 12), "987654321", "4315555678"));
+        patients.add(new Patient("Charlie", "Wilson", "charliewilson@gmail.com", "pass6", "Male", LocalDate.of(2001, 7, 4), "789012123", "4315559012"));
         return patients;
     }
 
