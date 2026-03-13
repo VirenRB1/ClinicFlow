@@ -1,5 +1,7 @@
 package com.example.clinicflow.persistence.real;
 
+import static com.example.clinicflow.persistence.real.DbFactory.populateFakeData;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AppDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "clinic_flow.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 8;
 
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -19,10 +21,9 @@ public class AppDbHelper extends SQLiteOpenHelper {
         createPatientTable(db);
         createDoctorTable(db);
         createStaffTable(db);
-        db.execSQL(SQL_CREATE_APPOINTMENT_TABLE);
-        db.execSQL(SQL_CREATE_DOCTOR_AVAILABILITY_TABLE);
-        // Adding the ddefault admin
-        addAdmin(db);
+        createAppointmentTable(db);
+        createDoctorAvailabilityTable(db);
+        populateFakeData(db);
     }
 
     @Override
@@ -31,8 +32,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.DoctorEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.PatientEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.AdminEntry.TABLE_NAME);
-        db.execSQL(SQL_DROP_APPOINTMENT_TABLE);
-        db.execSQL(SQL_DROP_DOCTOR_AVAILABILITY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DbContract.AppointmentEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DbContract.DoctorAvailabilityEntry.TABLE_NAME);
         onCreate(db);
     }
 
@@ -90,44 +91,30 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL(createAdminTableQuery);
     }
 
-    private void addAdmin(SQLiteDatabase db) {
-        ContentValues values = new ContentValues();
-        values.put(DbContract.AdminEntry.COLUMN_FIRST_NAME, "Admin");
-        values.put(DbContract.AdminEntry.COLUMN_LAST_NAME, "Admin");
-        values.put(DbContract.AdminEntry.COLUMN_EMAIL, "admin@clinic.com");
-        values.put(DbContract.AdminEntry.COLUMN_PASSWORD, "admin");
-        values.put(DbContract.AdminEntry.COLUMN_GENDER, "Female");
-        values.put(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH, "1990-01-01");
-        
-        db.insert(DbContract.AdminEntry.TABLE_NAME, null, values);
+    private void createAppointmentTable(SQLiteDatabase db) {
+        String createAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AppointmentEntry.TABLE_NAME + " (" +
+                DbContract.AppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
+                DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL + " TEXT NOT NULL, " +
+                DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " TEXT NOT NULL, " +
+                DbContract.AppointmentEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
+                DbContract.AppointmentEntry.COLUMN_END_TIME + " TEXT NOT NULL, " +
+                DbContract.AppointmentEntry.COLUMN_STATUS + " TEXT NOT NULL, " +
+                DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE + " TEXT DEFAULT '', " +
+                DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES + " TEXT" +
+                ");";
+        db.execSQL(createAppointmentTableQuery);
     }
-    private static final String SQL_CREATE_APPOINTMENT_TABLE =
-            "CREATE TABLE " + DbContract.AppointmentEntry.TABLE_NAME + " (" +
-                    DbContract.AppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
-                    DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL + " TEXT NOT NULL, " +
-                    DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " TEXT NOT NULL, " +
-                    DbContract.AppointmentEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
-                    DbContract.AppointmentEntry.COLUMN_END_TIME + " TEXT NOT NULL, " +
-                    DbContract.AppointmentEntry.COLUMN_STATUS + " TEXT NOT NULL, " +
-                    DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE + " TEXT DEFAULT '', " +
-                    DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES + " TEXT DEFAULT ''" +
-                    ");";
 
-    private static final String SQL_CREATE_DOCTOR_AVAILABILITY_TABLE =
-            "CREATE TABLE " + DbContract.DoctorAvailabilityEntry.TABLE_NAME + " (" +
-                    DbContract.DoctorAvailabilityEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
-                    DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK + " INTEGER NOT NULL, " +
-                    DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
-                    DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME + " TEXT NOT NULL" +
-                    ");";
+    private void createDoctorAvailabilityTable(SQLiteDatabase db) {
+        String createDoctorAvailabilityTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.DoctorAvailabilityEntry.TABLE_NAME + " (" +
+                DbContract.DoctorAvailabilityEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
+                DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK + " INTEGER NOT NULL, " +
+                DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
+                DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME + " TEXT NOT NULL" +
+                ");";
 
-    private static final String SQL_DROP_APPOINTMENT_TABLE =
-            "DROP TABLE IF EXISTS " + DbContract.AppointmentEntry.TABLE_NAME;
-
-    private static final String SQL_DROP_DOCTOR_AVAILABILITY_TABLE =
-            "DROP TABLE IF EXISTS " + DbContract.DoctorAvailabilityEntry.TABLE_NAME;
-
-
+        db.execSQL(createDoctorAvailabilityTableQuery);
+    }
 }

@@ -93,6 +93,7 @@ public class DbFactory {
             values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
+            values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
             values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
             db.insertWithOnConflict(DbContract.AppointmentEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
