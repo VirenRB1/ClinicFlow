@@ -52,6 +52,24 @@ public class AvailabitlityRepoIT {
         assertEquals(1, availabilities.size());
     }
 
+    @Test(expected = ValidationExceptions.AvailabilityOverlapException.class)
+    public void overlappingAvailabilityThrowsException() throws Exception {
 
+        DoctorAvailability first = new DoctorAvailability(
+                "doctorOv@gmail.com",
+                3,
+                LocalTime.of(9,0),
+                LocalTime.of(12,0)
+        );
 
+        DoctorAvailability second = new DoctorAvailability(
+                "doctorOv@gmail.com",
+                3,
+                LocalTime.of(10,0),
+                LocalTime.of(13,0)
+        );
+
+        service.addDoctorAvailability(first);
+        service.addDoctorAvailability(second);
+    }
 }
