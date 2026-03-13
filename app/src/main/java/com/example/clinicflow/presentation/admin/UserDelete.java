@@ -18,7 +18,7 @@ import com.example.clinicflow.business.LookupService;
 import com.example.clinicflow.business.ObjectCreation;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.google.android.material.card.MaterialCardView;
 
 public class UserDelete extends AppCompatActivity{
@@ -46,7 +46,7 @@ public class UserDelete extends AppCompatActivity{
         objectCreation = app.getObjectCreation();
 
         setViews();
-        userEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        userEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
 
         setEvents();
 
@@ -73,18 +73,15 @@ public class UserDelete extends AppCompatActivity{
         if(enteredEmail.isEmpty()) {
             Toast.makeText(this, "Please enter a email", Toast.LENGTH_LONG).show();
             hide();
-            return;
+        } else {
+            Users user = lookupService.findUserByEmail(enteredEmail);
+            if(user == null) {
+                Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
+                hide();
+            } else {
+                setUser(user);
+            }
         }
-
-        Users user = lookupService.findUserByEmail(enteredEmail);
-
-        if(user == null) {
-            Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
-            hide();
-            return;
-        }
-
-        setUser(user);
     }
 
     private void setUser(Users user) {

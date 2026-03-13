@@ -1,7 +1,7 @@
 package com.example.clinicflow.presentation.staffScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.sharedScreens.Profile;
 import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
@@ -31,7 +31,7 @@ public class StaffScreen extends AppCompatActivity {
 
         setViews();
 
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
 
         setEvents(email);
 
@@ -39,11 +39,11 @@ public class StaffScreen extends AppCompatActivity {
     }
 
     private void setEvents(String email) {
-        logout.setOnClickListener(v -> onLogoutClick(this));
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
-        manage.setOnClickListener(v -> onClickEmail(this, ManageAppointments.class, email));
-        viewPatients.setOnClickListener(v -> onClickEmail(this, ViewPatients.class, email));
-        viewDocs.setOnClickListener(v -> onClickEmail(this, ViewDoctors.class, email));
+        logout.setOnClickListener(v -> logoutToMain(this));
+        profile.setOnClickListener(v -> navigateWithUserEmail(this, Profile.class, email));
+        manage.setOnClickListener(v -> navigateWithUserEmail(this, ManageAppointments.class, email));
+        viewPatients.setOnClickListener(v -> navigateWithUserEmail(this, ViewPatients.class, email));
+        viewDocs.setOnClickListener(v -> navigateWithUserEmail(this, ViewDoctors.class, email));
     }
 
     private void setViews() {

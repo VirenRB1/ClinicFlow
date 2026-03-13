@@ -16,9 +16,10 @@ import com.example.clinicflow.business.DocAvailabilityService;
 import com.example.clinicflow.business.validation.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 
 import java.time.LocalTime;
+import java.util.Locale;
 
 public class SetAvailability extends AppCompatActivity{
 
@@ -53,7 +54,7 @@ public class SetAvailability extends AppCompatActivity{
         doctorAvailabilityService = ((ClinicFlowApp) getApplication()).getDoctorAvailabilityService();
 
         setViews();
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         setSpinners();
         setEvents(email);
 
@@ -83,10 +84,8 @@ public class SetAvailability extends AppCompatActivity{
 
     private String[] makeLabels() {
         String [] labels = new String[TIME_OPTIONS.length];
-        int i = 0;
-        for (Integer time : TIME_OPTIONS) {
-            labels[i] = String.format("%02d:00", time);
-            i++;
+        for (int i = 0; i < TIME_OPTIONS.length; i++) {
+            labels[i] = String.format(Locale.getDefault(), "%02d:00", TIME_OPTIONS[i]);
         }
         return labels;
     }
@@ -106,11 +105,6 @@ public class SetAvailability extends AppCompatActivity{
     }
 
     private void onSubmitClick(String email) {
-        if(dayOfWeek.getText().toString().isEmpty() || startTime.getText().toString().isEmpty() || endTime.getText().toString().isEmpty()) {
-            Toast.makeText(this, "All fields must be filled", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         DoctorAvailability doctorAvailability = new DoctorAvailability(
                 email,
                 selectedDay,
@@ -126,7 +120,6 @@ public class SetAvailability extends AppCompatActivity{
         } catch (ValidationExceptions.ValidationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void setViews() {

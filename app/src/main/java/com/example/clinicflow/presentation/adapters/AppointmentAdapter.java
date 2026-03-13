@@ -69,7 +69,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                         int pos = getBindingAdapterPosition();
 
                         if(pos != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onRecordClick(pos);
+                            recyclerViewInterface.onItemClick(pos);
                         }
                     }
                 }
