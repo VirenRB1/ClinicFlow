@@ -10,10 +10,10 @@ public class DoctorAvailability {
     private LocalTime endTime;
 
     public DoctorAvailability(int id,
-                              String doctorEmail,
-                              int dayOfWeek,
-                              LocalTime startTime,
-                              LocalTime endTime) {
+            String doctorEmail,
+            int dayOfWeek,
+            LocalTime startTime,
+            LocalTime endTime) {
         this.id = id;
         this.doctorEmail = doctorEmail;
         this.dayOfWeek = dayOfWeek;
@@ -22,9 +22,9 @@ public class DoctorAvailability {
     }
 
     public DoctorAvailability(String doctorEmail,
-                              int dayOfWeek,
-                              LocalTime startTime,
-                              LocalTime endTime) {
+            int dayOfWeek,
+            LocalTime startTime,
+            LocalTime endTime) {
         this.doctorEmail = doctorEmail;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;

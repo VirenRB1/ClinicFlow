@@ -16,6 +16,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     /**
      * Constructs a new database helper.
+     * 
      * @param context The application context.
      */
     public AppDbHelper(Context context) {
@@ -25,6 +26,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     /**
      * Called when the database is created for the first time.
      * Creates all required tables and populates seed data.
+     * 
      * @param db The database.
      */
     public void onCreate(SQLiteDatabase db) {
@@ -39,7 +41,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     /**
      * Called when the database needs to be upgraded.
-     * @param db The database.
+     * 
+     * @param db         The database.
      * @param oldVersion The old database version.
      * @param newVersion The new database version.
      */
@@ -124,7 +127,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
      * Creates the appointments table.
      */
     private void createAppointmentTable(SQLiteDatabase db) {
-        String createAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AppointmentEntry.TABLE_NAME + " (" +
+        String createAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AppointmentEntry.TABLE_NAME
+                + " (" +
                 DbContract.AppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
                 DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL + " TEXT NOT NULL, " +
@@ -142,7 +146,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
      * Creates the doctor availability table.
      */
     private void createDoctorAvailabilityTable(SQLiteDatabase db) {
-        String createDoctorAvailabilityTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.DoctorAvailabilityEntry.TABLE_NAME + " (" +
+        String createDoctorAvailabilityTableQuery = "CREATE TABLE IF NOT EXISTS "
+                + DbContract.DoctorAvailabilityEntry.TABLE_NAME + " (" +
                 DbContract.DoctorAvailabilityEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
                 DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK + " INTEGER NOT NULL, " +

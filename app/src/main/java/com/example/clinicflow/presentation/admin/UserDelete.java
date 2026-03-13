@@ -63,12 +63,12 @@ public class UserDelete extends AppCompatActivity {
     private void onClickDelete() {
         String enteredEmail = emailAddress.getText().toString().trim();
         boolean deleted = objectCreation.deleteUser(enteredEmail);
-        
+
         if (!deleted) {
             Toast.makeText(this, "User could not be deleted", Toast.LENGTH_LONG).show();
             return;
         }
-        
+
         Toast.makeText(this, "User deleted successfully", Toast.LENGTH_LONG).show();
         emailAddress.setText(""); // Clear the search field
         hide(); // Hide the information card
@@ -95,7 +95,7 @@ public class UserDelete extends AppCompatActivity {
         email.setText(user.getEmail());
         name.setText(user.getFullName());
         gender.setText(user.getGender());
-        
+
         try {
             age.setText(String.valueOf(user.getAge()));
         } catch (IllegalStateException e) {

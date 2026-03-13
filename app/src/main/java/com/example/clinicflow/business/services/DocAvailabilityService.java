@@ -17,6 +17,7 @@ public class DocAvailabilityService {
 
     /**
      * Constructs the service with required dependencies.
+     * 
      * @param userRepository The repository for availability data.
      */
     public DocAvailabilityService(UserRepository userRepository) {
@@ -25,17 +26,19 @@ public class DocAvailabilityService {
     }
 
     /**
-     * Adds a new availability shift for a doctor after validation and overlap checks.
+     * Adds a new availability shift for a doctor after validation and overlap
+     * checks.
+     * 
      * @param availability The new shift to add.
-     * @throws ValidationExceptions.ValidationException If the shift is invalid or overlaps with existing ones.
+     * @throws ValidationExceptions.ValidationException If the shift is invalid or
+     *                                                  overlaps with existing ones.
      */
     public void addDoctorAvailability(DoctorAvailability availability) throws ValidationExceptions.ValidationException {
         validator.validateAvailability(availability);
 
         List<DoctorAvailability> existingAvailabilities = userRepository.getDoctorAvailability(
-                availability.getDoctorEmail(), 
-                availability.getDayOfWeek()
-        );
+                availability.getDoctorEmail(),
+                availability.getDayOfWeek());
 
         for (DoctorAvailability existing : existingAvailabilities) {
             if (isOverlapping(availability, existing)) {
@@ -48,7 +51,8 @@ public class DocAvailabilityService {
 
     /**
      * Checks if two availability slots for the same day overlap.
-     * @param newAvail The new requested availability.
+     * 
+     * @param newAvail      The new requested availability.
      * @param existingAvail An already existing availability.
      * @return True if they overlap, false otherwise.
      */

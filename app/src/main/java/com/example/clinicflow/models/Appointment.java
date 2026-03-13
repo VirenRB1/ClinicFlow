@@ -16,14 +16,14 @@ public class Appointment implements Serializable {
     private String doctorNotes;
 
     public Appointment(int id,
-                       String doctorEmail,
-                       String patientEmail,
-                       LocalDate appointmentDate,
-                       LocalTime startTime,
-                       LocalTime endTime,
-                       String status,
-                       String patientPurpose,
-                       String doctorNotes) {
+            String doctorEmail,
+            String patientEmail,
+            LocalDate appointmentDate,
+            LocalTime startTime,
+            LocalTime endTime,
+            String status,
+            String patientPurpose,
+            String doctorNotes) {
         this.id = id;
         this.doctorEmail = doctorEmail;
         this.patientEmail = patientEmail;
@@ -36,13 +36,13 @@ public class Appointment implements Serializable {
     }
 
     public Appointment(String doctorEmail,
-                       String patientEmail,
-                       LocalDate appointmentDate,
-                       LocalTime startTime,
-                       LocalTime endTime,
-                       String status,
-                       String patientPurpose,
-                       String doctorNotes) {
+            String patientEmail,
+            LocalDate appointmentDate,
+            LocalTime startTime,
+            LocalTime endTime,
+            String status,
+            String patientPurpose,
+            String doctorNotes) {
         this.doctorEmail = doctorEmail;
         this.patientEmail = patientEmail;
         this.appointmentDate = appointmentDate;

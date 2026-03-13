@@ -32,6 +32,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Constructor for SqlRepository.
+     * 
      * @param context The application context.
      */
     public SqlRepository(Context context) {
@@ -40,6 +41,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves all patients from the database.
+     * 
      * @return A list of all patients.
      */
     @Override
@@ -56,10 +58,12 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_GENDER)),
-                            LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_DATE_OF_BIRTH))),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_HEALTHCARD_NUMBER)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_PHONE_NUMBER))
-                    ));
+                            LocalDate.parse(cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_DATE_OF_BIRTH))),
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_HEALTHCARD_NUMBER)),
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_PHONE_NUMBER))));
                 } while (cursor.moveToNext());
             }
         }
@@ -68,6 +72,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves all doctors from the database.
+     * 
      * @return A list of all doctors.
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -78,7 +83,8 @@ public class SqlRepository implements UserRepository {
         try (Cursor cursor = db.query(DbContract.DoctorEntry.TABLE_NAME, null, null, null, null, null, null)) {
             if (cursor.moveToFirst()) {
                 do {
-                    String specStr = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION));
+                    String specStr = cursor
+                            .getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION));
                     Specialization specialization = null;
                     try {
                         specialization = Specialization.valueOf(specStr.trim().toUpperCase().replace(" ", "_"));
@@ -92,10 +98,11 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_GENDER)),
-                            LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH))),
+                            LocalDate.parse(cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH))),
                             specialization,
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER))
-                    ));
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER))));
                 } while (cursor.moveToNext());
             }
         }
@@ -104,6 +111,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves all staff members from the database.
+     * 
      * @return A list of all staff.
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -120,9 +128,9 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_GENDER)),
-                            LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_DATE_OF_BIRTH))),
-                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_POSITION))
-                    ));
+                            LocalDate.parse(cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_DATE_OF_BIRTH))),
+                            cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_POSITION))));
                 } while (cursor.moveToNext());
             }
         }
@@ -131,6 +139,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves all admins from the database.
+     * 
      * @return A list of all admins.
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -147,8 +156,8 @@ public class SqlRepository implements UserRepository {
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_EMAIL)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_PASSWORD)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_GENDER)),
-                            LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH)))
-                    ));
+                            LocalDate.parse(cursor.getString(
+                                    cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH)))));
                 } while (cursor.moveToNext());
             }
         }
@@ -157,11 +166,13 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Adds a new patient to the database.
+     * 
      * @param patient The patient to add.
      */
     @Override
     public void addPatient(Patient patient) {
-        if (patient == null) return;
+        if (patient == null)
+            return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -183,11 +194,13 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Adds a new doctor to the database.
+     * 
      * @param doctor The doctor to add.
      */
     @Override
     public void addDoctor(Doctor doctor) {
-        if (doctor == null) return;
+        if (doctor == null)
+            return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -198,7 +211,7 @@ public class SqlRepository implements UserRepository {
             values.put(DbContract.DoctorEntry.COLUMN_PASSWORD, doctor.getPassword());
             values.put(DbContract.DoctorEntry.COLUMN_GENDER, doctor.getGender());
             values.put(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH, doctor.getDateOfBirth().toString());
-                values.put(DbContract.DoctorEntry.COLUMN_SPECIALIZATION, doctor.getSpecialization().name());
+            values.put(DbContract.DoctorEntry.COLUMN_SPECIALIZATION, doctor.getSpecialization().name());
             values.put(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER, doctor.getLicenseNumber());
             db.insert(DbContract.DoctorEntry.TABLE_NAME, null, values);
             db.setTransactionSuccessful();
@@ -209,11 +222,13 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Adds a new staff member to the database.
+     * 
      * @param staff The staff to add.
      */
     @Override
     public void addStaff(Staff staff) {
-        if (staff == null) return;
+        if (staff == null)
+            return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -234,22 +249,28 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Deletes a user from the database.
+     * 
      * @param user The user to delete.
      */
     @Override
     public void deleteUser(Users user) {
-        if (user == null) return;
+        if (user == null)
+            return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             if (user instanceof Patient) {
-                db.delete(DbContract.PatientEntry.TABLE_NAME, DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+                db.delete(DbContract.PatientEntry.TABLE_NAME, DbContract.PatientEntry.COLUMN_EMAIL + " = ?",
+                        new String[] { user.getEmail() });
             } else if (user instanceof Doctor) {
-                db.delete(DbContract.DoctorEntry.TABLE_NAME, DbContract.DoctorEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+                db.delete(DbContract.DoctorEntry.TABLE_NAME, DbContract.DoctorEntry.COLUMN_EMAIL + " = ?",
+                        new String[] { user.getEmail() });
             } else if (user instanceof Staff) {
-                db.delete(DbContract.StaffEntry.TABLE_NAME, DbContract.StaffEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+                db.delete(DbContract.StaffEntry.TABLE_NAME, DbContract.StaffEntry.COLUMN_EMAIL + " = ?",
+                        new String[] { user.getEmail() });
             } else if (user instanceof Admin) {
-                db.delete(DbContract.AdminEntry.TABLE_NAME, DbContract.AdminEntry.COLUMN_EMAIL + " = ?", new String[]{user.getEmail()});
+                db.delete(DbContract.AdminEntry.TABLE_NAME, DbContract.AdminEntry.COLUMN_EMAIL + " = ?",
+                        new String[] { user.getEmail() });
             }
             db.setTransactionSuccessful();
         } finally {
@@ -259,6 +280,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves a patient by email.
+     * 
      * @param email The email address.
      * @return The Patient if found, null otherwise.
      */
@@ -266,7 +288,8 @@ public class SqlRepository implements UserRepository {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Patient getPatientByEmail(String email) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        try (Cursor cursor = db.query(DbContract.PatientEntry.TABLE_NAME, null, DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[]{email}, null, null, null)) {
+        try (Cursor cursor = db.query(DbContract.PatientEntry.TABLE_NAME, null,
+                DbContract.PatientEntry.COLUMN_EMAIL + " = ?", new String[] { email }, null, null, null)) {
             if (cursor.moveToFirst()) {
                 return new Patient(
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_FIRST_NAME)),
@@ -274,10 +297,11 @@ public class SqlRepository implements UserRepository {
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_EMAIL)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_PASSWORD)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_GENDER)),
-                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_DATE_OF_BIRTH))),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_HEALTHCARD_NUMBER)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_PHONE_NUMBER))
-                );
+                        LocalDate.parse(cursor
+                                .getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_DATE_OF_BIRTH))),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_HEALTHCARD_NUMBER)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PatientEntry.COLUMN_PHONE_NUMBER)));
             }
         }
         return null;
@@ -285,25 +309,31 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves a user by email, searching through all user types.
+     * 
      * @param email The email address.
      * @return The User if found, null otherwise.
      */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Users getUserByEmail(String email) {
-        if (email == null) return null;
+        if (email == null)
+            return null;
 
         for (Admin admin : getAllAdmins()) {
-            if (admin.getEmail().equalsIgnoreCase(email)) return admin;
+            if (admin.getEmail().equalsIgnoreCase(email))
+                return admin;
         }
         for (Doctor doctor : getAllDoctors()) {
-            if (doctor.getEmail().equalsIgnoreCase(email)) return doctor;
+            if (doctor.getEmail().equalsIgnoreCase(email))
+                return doctor;
         }
         for (Staff staff : getAllStaffs()) {
-            if (staff.getEmail().equalsIgnoreCase(email)) return staff;
+            if (staff.getEmail().equalsIgnoreCase(email))
+                return staff;
         }
         for (Patient patient : getAllPatients()) {
-            if (patient.getEmail().equalsIgnoreCase(email)) return patient;
+            if (patient.getEmail().equalsIgnoreCase(email))
+                return patient;
         }
 
         return null;
@@ -311,18 +341,21 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Adds a new appointment to the database.
+     * 
      * @param appointment The appointment to add.
      */
     @Override
     public void addAppointment(Appointment appointment) {
-        if (appointment == null) return;
+        if (appointment == null)
+            return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
             values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
             values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
-            values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE, appointment.getAppointmentDate().toString());
+            values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE,
+                    appointment.getAppointmentDate().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
@@ -338,11 +371,13 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Adds doctor availability to the database.
+     * 
      * @param availability The availability details.
      */
     @Override
     public void addDoctorAvailability(DoctorAvailability availability) {
-        if (availability == null) return;
+        if (availability == null)
+            return;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -361,8 +396,9 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves appointments for a doctor on a specific date.
+     * 
      * @param doctorEmail The doctor's email.
-     * @param date The date.
+     * @param date        The date.
      * @return List of appointments.
      */
     @Override
@@ -380,19 +416,24 @@ public class SqlRepository implements UserRepository {
                 DbContract.AppointmentEntry.TABLE_NAME,
                 null, selection, selectionArgs, null, null,
                 DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC")) {
-            
+
             while (cursor.moveToNext()) {
                 appointments.add(new Appointment(
                         cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                        LocalDate.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                        LocalTime.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor
+                                .getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))
-                ));
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))));
             }
         }
         return appointments;
@@ -400,8 +441,9 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves availability for a doctor on a specific day of the week.
+     * 
      * @param doctorEmail The doctor's email.
-     * @param dayOfWeek The day of the week.
+     * @param dayOfWeek   The day of the week.
      * @return List of availability.
      */
     @Override
@@ -422,11 +464,14 @@ public class SqlRepository implements UserRepository {
             while (cursor.moveToNext()) {
                 availability.add(new DoctorAvailability(
                         cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK)),
-                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME)))
-                ));
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_DOCTOR_EMAIL)),
+                        cursor.getInt(
+                                cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_DAY_OF_WEEK)),
+                        LocalTime.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.DoctorAvailabilityEntry.COLUMN_END_TIME)))));
             }
         }
         return availability;
@@ -434,6 +479,7 @@ public class SqlRepository implements UserRepository {
 
     /**
      * Retrieves all appointments for a patient.
+     * 
      * @param patientEmail The patient's email.
      * @return List of appointments.
      */
@@ -450,20 +496,25 @@ public class SqlRepository implements UserRepository {
                 DbContract.AppointmentEntry.TABLE_NAME,
                 null, selection, selectionArgs, null, null,
                 DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
-                DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC")) {
-            
+                        DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC")) {
+
             while (cursor.moveToNext()) {
                 appointments.add(new Appointment(
                         cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                        LocalDate.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                        LocalTime.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor
+                                .getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
                         cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))
-                ));
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))));
             }
         }
         return appointments;

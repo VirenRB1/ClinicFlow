@@ -13,12 +13,14 @@ import com.example.clinicflow.persistence.UserFactory;
 import java.util.List;
 
 /**
- * Factory class responsible for populating the SQLite database with initial seed data.
+ * Factory class responsible for populating the SQLite database with initial
+ * seed data.
  */
 public class DbFactory {
 
     /**
      * Populates the database with all default users and appointments.
+     * 
      * @param db The SQLite database instance.
      */
     public static void populateFakeData(SQLiteDatabase db) {
@@ -31,6 +33,7 @@ public class DbFactory {
 
     /**
      * Inserts default administrators into the database.
+     * 
      * @param db The SQLite database instance.
      */
     private static void populateAdmins(SQLiteDatabase db) {
@@ -49,6 +52,7 @@ public class DbFactory {
 
     /**
      * Inserts default doctors into the database.
+     * 
      * @param db The SQLite database instance.
      */
     private static void populateDoctors(SQLiteDatabase db) {
@@ -69,6 +73,7 @@ public class DbFactory {
 
     /**
      * Inserts default patients into the database.
+     * 
      * @param db The SQLite database instance.
      */
     private static void populatePatients(SQLiteDatabase db) {
@@ -89,6 +94,7 @@ public class DbFactory {
 
     /**
      * Inserts default staff members into the database.
+     * 
      * @param db The SQLite database instance.
      */
     private static void populateStaffs(SQLiteDatabase db) {
@@ -108,6 +114,7 @@ public class DbFactory {
 
     /**
      * Inserts default past appointments into the database.
+     * 
      * @param db The SQLite database instance.
      */
     private static void addPastAppointments(SQLiteDatabase db) {
@@ -116,13 +123,15 @@ public class DbFactory {
             ContentValues values = new ContentValues();
             values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
             values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
-            values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE, appointment.getAppointmentDate().toString());
+            values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE,
+                    appointment.getAppointmentDate().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
             values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
             values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
             values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
-            db.insertWithOnConflict(DbContract.AppointmentEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            db.insertWithOnConflict(DbContract.AppointmentEntry.TABLE_NAME, null, values,
+                    SQLiteDatabase.CONFLICT_IGNORE);
         }
     }
 }

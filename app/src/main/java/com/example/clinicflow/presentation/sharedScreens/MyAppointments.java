@@ -92,8 +92,10 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
     public void onItemClick(int position) {
         Intent intent = new Intent(this, AppointmentDetail.class);
         intent.putExtra(NavigationExtras.EXTRA_APPT, appointments.get(position));
-        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL));
-        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL));
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL,
+                getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL));
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL,
+                getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL));
         intent.putExtra(NavigationExtras.NOTES, showNotes);
         startActivity(intent);
     }

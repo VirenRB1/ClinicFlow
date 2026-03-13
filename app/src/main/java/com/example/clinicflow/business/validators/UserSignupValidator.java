@@ -14,6 +14,7 @@ public class UserSignupValidator {
 
     /**
      * Constructs the validator with a repository to check for existing records.
+     * 
      * @param repo The user repository.
      */
     public UserSignupValidator(UserRepository repo) {
@@ -22,13 +23,15 @@ public class UserSignupValidator {
 
     /**
      * Validates common user information.
-     * @param firstName User's first name.
-     * @param lastName User's last name.
-     * @param email User's email address.
-     * @param password User's password.
-     * @param gender User's gender.
+     * 
+     * @param firstName   User's first name.
+     * @param lastName    User's last name.
+     * @param email       User's email address.
+     * @param password    User's password.
+     * @param gender      User's gender.
      * @param dateOfBirth User's date of birth.
-     * @throws ValidationExceptions.ValidationException If any common field is invalid.
+     * @throws ValidationExceptions.ValidationException If any common field is
+     *                                                  invalid.
      */
     public void userValidator(
             String firstName,
@@ -36,8 +39,7 @@ public class UserSignupValidator {
             String email,
             String password,
             String gender,
-            LocalDate dateOfBirth
-    ) throws ValidationExceptions.ValidationException {
+            LocalDate dateOfBirth) throws ValidationExceptions.ValidationException {
         validateRequiredText(firstName, "First name");
         validateRequiredText(lastName, "Last name");
         validateRequiredText(password, "Password");
@@ -49,14 +51,15 @@ public class UserSignupValidator {
 
     /**
      * Validates patient-specific information along with common user fields.
-     * @param firstName Patient's first name.
-     * @param lastName Patient's last name.
-     * @param email Patient's email.
-     * @param password Patient's password.
-     * @param gender Patient's gender.
-     * @param dateOfBirth Patient's date of birth.
+     * 
+     * @param firstName     Patient's first name.
+     * @param lastName      Patient's last name.
+     * @param email         Patient's email.
+     * @param password      Patient's password.
+     * @param gender        Patient's gender.
+     * @param dateOfBirth   Patient's date of birth.
      * @param healthCardNum Patient's health card number.
-     * @param phoneNumber Patient's phone number.
+     * @param phoneNumber   Patient's phone number.
      * @throws ValidationExceptions.ValidationException If any field is invalid.
      */
     public void patientValidator(
@@ -67,25 +70,24 @@ public class UserSignupValidator {
             String gender,
             LocalDate dateOfBirth,
             String healthCardNum,
-            String phoneNumber
-    ) throws ValidationExceptions.ValidationException {
+            String phoneNumber) throws ValidationExceptions.ValidationException {
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
-        
+
         validatePhoneNumber(phoneNumber);
         validateHealthCardNumber(healthCardNum);
     }
 
-
     /**
      * Validates doctor-specific information along with common user fields.
-     * @param firstName Doctor's first name.
-     * @param lastName Doctor's last name.
-     * @param email Doctor's email.
-     * @param password Doctor's password.
-     * @param gender Doctor's gender.
-     * @param dateOfBirth Doctor's date of birth.
+     * 
+     * @param firstName      Doctor's first name.
+     * @param lastName       Doctor's last name.
+     * @param email          Doctor's email.
+     * @param password       Doctor's password.
+     * @param gender         Doctor's gender.
+     * @param dateOfBirth    Doctor's date of birth.
      * @param specialization Doctor's medical specialization.
-     * @param licenseNumber Doctor's medical license number.
+     * @param licenseNumber  Doctor's medical license number.
      * @throws ValidationExceptions.ValidationException If any field is invalid.
      */
     public void doctorValidator(
@@ -96,25 +98,25 @@ public class UserSignupValidator {
             String gender,
             LocalDate dateOfBirth,
             Specialization specialization,
-            String licenseNumber
-    ) throws ValidationExceptions.ValidationException {
+            String licenseNumber) throws ValidationExceptions.ValidationException {
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
 
         validateSpecialization(specialization);
         validateLicenseNumber(licenseNumber);
     }
-    
+
     /**
      * Validates staff-specific information along with common user fields.
-     * @param firstName Staff's first name.
-     * @param lastName Staff's last name.
-     * @param email Staff's email.
-     * @param password Staff's password.
-     * @param gender Staff's gender.
+     * 
+     * @param firstName   Staff's first name.
+     * @param lastName    Staff's last name.
+     * @param email       Staff's email.
+     * @param password    Staff's password.
+     * @param gender      Staff's gender.
      * @param dateOfBirth Staff's date of birth.
      * @throws ValidationExceptions.ValidationException If any field is invalid.
      */
-    public void staffValidator (
+    public void staffValidator(
             String firstName,
             String lastName,
             String email,
@@ -123,11 +125,11 @@ public class UserSignupValidator {
             LocalDate dateOfBirth) throws ValidationExceptions.ValidationException {
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
     }
-    
 
     /**
      * Validates that a string is not null or empty.
-     * @param value The string value to check.
+     * 
+     * @param value     The string value to check.
      * @param fieldName The name of the field for the exception message.
      * @throws ValidationExceptions.EmptyFieldException If the string is empty.
      */
@@ -140,8 +142,10 @@ public class UserSignupValidator {
 
     /**
      * Validates that an email is in a valid format.
+     * 
      * @param email The email string to check.
-     * @throws ValidationExceptions.ValidationException If the email is empty or invalid.
+     * @throws ValidationExceptions.ValidationException If the email is empty or
+     *                                                  invalid.
      */
     private void validateEmail(String email)
             throws ValidationExceptions.ValidationException {
@@ -156,6 +160,7 @@ public class UserSignupValidator {
 
     /**
      * Checks if an email is already registered in the system.
+     * 
      * @param email The email to check.
      * @throws ValidationExceptions.DuplicateEmailException If the email exists.
      */
@@ -168,6 +173,7 @@ public class UserSignupValidator {
 
     /**
      * Validates that the gender matches expected values.
+     * 
      * @param gender The gender string.
      * @throws ValidationExceptions.ValidationException If invalid.
      */
@@ -182,7 +188,9 @@ public class UserSignupValidator {
     }
 
     /**
-     * Validates the date of birth is not in the future and within reasonable limits.
+     * Validates the date of birth is not in the future and within reasonable
+     * limits.
+     * 
      * @param dateOfBirth The date of birth.
      * @throws ValidationExceptions.ValidationException If invalid.
      */
@@ -203,6 +211,7 @@ public class UserSignupValidator {
 
     /**
      * Validates that a phone number is exactly 10 digits.
+     * 
      * @param phoneNumber The phone number string.
      * @throws ValidationExceptions.ValidationException If invalid.
      */
@@ -216,6 +225,7 @@ public class UserSignupValidator {
 
     /**
      * Validates that a health card number is 9 or 10 digits.
+     * 
      * @param healthCardNum The health card string.
      * @throws ValidationExceptions.ValidationException If invalid.
      */
@@ -229,6 +239,7 @@ public class UserSignupValidator {
 
     /**
      * Validates that the specialization is not null and is a valid enum value.
+     * 
      * @param specialization The Specialization enum.
      * @throws ValidationExceptions.ValidationException If invalid.
      */
@@ -236,7 +247,7 @@ public class UserSignupValidator {
             throws ValidationExceptions.ValidationException {
         if (specialization == null) {
             throw new ValidationExceptions.EmptyFieldException("Specialization");
-        }else{
+        } else {
             for (Specialization spec : Specialization.values()) {
                 if (spec.equals(specialization)) {
                     return;
@@ -248,6 +259,7 @@ public class UserSignupValidator {
 
     /**
      * Validates that a medical license number has a minimum length.
+     * 
      * @param licenseNumber The license string.
      * @throws ValidationExceptions.ValidationException If too short.
      */

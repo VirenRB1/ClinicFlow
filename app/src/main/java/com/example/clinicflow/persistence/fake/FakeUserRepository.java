@@ -18,11 +18,13 @@ import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
 
 /**
- * In-memory implementation of UserRepository for testing and development purposes.
- * Implements Serializable to allow state to be passed between activities if needed.
+ * In-memory implementation of UserRepository for testing and development
+ * purposes.
+ * Implements Serializable to allow state to be passed between activities if
+ * needed.
  */
 public class FakeUserRepository implements UserRepository, Serializable {
-    
+
     // In-memory collections of users and clinic data
     List<Doctor> doctors;
     List<Patient> patients;
@@ -83,6 +85,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Adds a patient to the in-memory list.
+     * 
      * @param patient The patient to add.
      */
     @Override
@@ -92,6 +95,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Adds a doctor to the in-memory list.
+     * 
      * @param doctor The doctor to add.
      */
     @Override
@@ -101,6 +105,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Adds a staff member to the in-memory list.
+     * 
      * @param staff The staff to add.
      */
     @Override
@@ -110,6 +115,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Removes a user from the appropriate in-memory list.
+     * 
      * @param user The user object to remove.
      */
     @Override
@@ -125,6 +131,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Finds a patient by email.
+     * 
      * @param email The email to search for.
      * @return The Patient object or null.
      */
@@ -140,6 +147,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Finds any user type by email.
+     * 
      * @param email The email to search for.
      * @return The User object or null.
      */
@@ -174,6 +182,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Adds a new appointment to the list.
+     * 
      * @param appointment The appointment details.
      */
     @Override
@@ -181,9 +190,9 @@ public class FakeUserRepository implements UserRepository, Serializable {
         appointments.add(appointment);
     }
 
-
     /**
      * Adds a doctor availability slot.
+     * 
      * @param availability The availability details.
      */
     @Override
@@ -193,8 +202,9 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Retrieves availability slots for a doctor on a specific day of the week.
+     * 
      * @param doctorEmail The doctor's email.
-     * @param dayOfWeek The day of the week (1-7).
+     * @param dayOfWeek   The day of the week (1-7).
      * @return A list of matching availability slots.
      */
     @Override
@@ -210,8 +220,9 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Retrieves appointments for a doctor on a specific date.
+     * 
      * @param doctorEmail The doctor's email.
-     * @param date The date to search for.
+     * @param date        The date to search for.
      * @return A list of matching appointments.
      */
     @Override
@@ -230,6 +241,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
 
     /**
      * Retrieves all appointments for a patient.
+     * 
      * @param patientEmail The patient's email.
      * @return A list of matching appointments.
      */

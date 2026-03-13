@@ -21,7 +21,7 @@ import com.example.clinicflow.presentation.NavigationExtras;
 import java.time.LocalTime;
 import java.util.Locale;
 
-public class SetAvailability extends AppCompatActivity{
+public class SetAvailability extends AppCompatActivity {
 
     private BasicBinds binds;
     private Button submit;
@@ -68,7 +68,7 @@ public class SetAvailability extends AppCompatActivity{
     }
 
     private void showTimeDropDown(String title, EditText time, boolean isStart) {
-        String [] labels = makeLabels();
+        String[] labels = makeLabels();
         new android.app.AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                 .setTitle(title)
                 .setItems(labels, (d, which) -> {
@@ -83,7 +83,7 @@ public class SetAvailability extends AppCompatActivity{
     }
 
     private String[] makeLabels() {
-        String [] labels = new String[TIME_OPTIONS.length];
+        String[] labels = new String[TIME_OPTIONS.length];
         for (int i = 0; i < TIME_OPTIONS.length; i++) {
             labels[i] = String.format(Locale.getDefault(), "%02d:00", TIME_OPTIONS[i]);
         }
@@ -94,9 +94,9 @@ public class SetAvailability extends AppCompatActivity{
         new android.app.AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                 .setTitle(DAY)
                 .setItems(DAYS, (dialog, which) -> {
-                        selectedDay = which + 1;
-                        dayOfWeek.setText(DAYS[which]);
-        }).show();
+                    selectedDay = which + 1;
+                    dayOfWeek.setText(DAYS[which]);
+                }).show();
     }
 
     private void setEvents(String email) {
@@ -109,8 +109,7 @@ public class SetAvailability extends AppCompatActivity{
                 email,
                 selectedDay,
                 selectedStartTime,
-                selectedEndTime
-        );
+                selectedEndTime);
 
         try {
             doctorAvailabilityService.addDoctorAvailability(doctorAvailability);

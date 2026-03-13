@@ -18,6 +18,7 @@ public class AuthService {
 
     /**
      * Default constructor using UniversalAuthenticator.
+     * 
      * @param userRepository Repository for user data.
      */
     public AuthService(UserRepository userRepository) {
@@ -26,9 +27,10 @@ public class AuthService {
 
     /**
      * Flexible constructor for dependency injection.
+     * 
      * @param userRepository Repository for user data.
-     * @param validator Validator for email/password formats.
-     * @param authenticator Strategy for verifying credentials.
+     * @param validator      Validator for email/password formats.
+     * @param authenticator  Strategy for verifying credentials.
      */
     public AuthService(UserRepository userRepository, CredentialsValidator validator, UserAuthenticator authenticator) {
         this.repo = userRepository;
@@ -38,7 +40,8 @@ public class AuthService {
 
     /**
      * Authenticates a user, returning null on failure.
-     * @param email User email.
+     * 
+     * @param email    User email.
      * @param password User password.
      * @return The authenticated User object, or null if failed.
      */
@@ -52,7 +55,8 @@ public class AuthService {
 
     /**
      * Authenticates a user or throws a specific AuthException.
-     * @param email User email.
+     * 
+     * @param email    User email.
      * @param password User password.
      * @return The authenticated User object.
      * @throws AuthExceptions.AuthException If validation or authentication fails.

@@ -22,6 +22,7 @@ public class ObjectCreation {
 
     /**
      * Constructs ObjectCreation with a specific user repository.
+     * 
      * @param userRepository The repository used for user data persistence.
      */
     public ObjectCreation(UserRepository userRepository) {
@@ -33,7 +34,7 @@ public class ObjectCreation {
      * Validates and adds a new patient to the database.
      */
     public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
-                                        LocalDate dateOfBirth, String healthCardNum, String phoneNumber)
+            LocalDate dateOfBirth, String healthCardNum, String phoneNumber)
             throws ValidationExceptions.ValidationException {
 
         VALIDATOR.patientValidator(
@@ -44,23 +45,23 @@ public class ObjectCreation {
                 gender,
                 dateOfBirth,
                 healthCardNum,
-                phoneNumber
-        );
+                phoneNumber);
 
         DATABASE.addPatient(
-                new Patient(firstName, lastName, email, password, gender, dateOfBirth, healthCardNum, phoneNumber)
-        );
+                new Patient(firstName, lastName, email, password, gender, dateOfBirth, healthCardNum, phoneNumber));
 
         return true;
     }
-    
+
     /**
      * Validates and adds a new doctor to the database.
+     * 
      * @return True if the doctor was successfully added.
-     * @throws ValidationExceptions.ValidationException If any input fails validation.
+     * @throws ValidationExceptions.ValidationException If any input fails
+     *                                                  validation.
      */
     public boolean addDoctorToDatabase(String firstName, String lastName, String email, String password, String gender,
-                                       LocalDate dateOfBirth, Specialization specialization, String licenseNumber)
+            LocalDate dateOfBirth, Specialization specialization, String licenseNumber)
             throws ValidationExceptions.ValidationException {
         VALIDATOR.doctorValidator(
                 firstName,
@@ -70,21 +71,21 @@ public class ObjectCreation {
                 gender,
                 dateOfBirth,
                 specialization,
-                licenseNumber
-        );
+                licenseNumber);
         DATABASE.addDoctor(
-                new Doctor(firstName, lastName, email, password, gender, dateOfBirth, specialization, licenseNumber)
-        );
+                new Doctor(firstName, lastName, email, password, gender, dateOfBirth, specialization, licenseNumber));
         return true;
     }
 
     /**
      * Validates and adds a new staff member to the database.
+     * 
      * @return True if the staff member was successfully added.
-     * @throws ValidationExceptions.ValidationException If any input fails validation.
+     * @throws ValidationExceptions.ValidationException If any input fails
+     *                                                  validation.
      */
     public boolean addStaffToDatabase(String firstName, String lastName, String email, String password, String gender,
-                                      LocalDate dateOfBirth, String position)
+            LocalDate dateOfBirth, String position)
             throws ValidationExceptions.ValidationException {
         VALIDATOR.staffValidator(
                 firstName,
@@ -92,16 +93,15 @@ public class ObjectCreation {
                 email,
                 password,
                 gender,
-                dateOfBirth
-        );
+                dateOfBirth);
         DATABASE.addStaff(
-                new Staff(firstName, lastName, email, password, gender, dateOfBirth, position)
-        );
+                new Staff(firstName, lastName, email, password, gender, dateOfBirth, position));
         return true;
     }
-    
+
     /**
      * Deletes a user from the system by their email.
+     * 
      * @param email The email of the user to delete.
      * @return True if a user was found and deleted, false otherwise.
      */

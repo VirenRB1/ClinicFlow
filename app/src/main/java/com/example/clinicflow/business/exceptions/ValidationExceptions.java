@@ -55,12 +55,12 @@ public class ValidationExceptions {
             super("Invalid specialization.");
         }
     }
-    
+
     public static class InvalidStartAndEndTimeException extends ValidationException {
         public InvalidStartAndEndTimeException() {
             super("Start time must be before end time.");
         }
-    
+
     }
 
     public static class AvailabilityOverlapException extends ValidationException {
@@ -80,6 +80,5 @@ public class ValidationExceptions {
             super("Appointment date cannot be in the past.");
         }
     }
-
 
 }

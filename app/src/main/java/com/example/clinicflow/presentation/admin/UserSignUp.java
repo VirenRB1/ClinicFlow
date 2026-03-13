@@ -43,7 +43,6 @@ public class UserSignUp extends AppCompatActivity {
 
     private ObjectCreation objectCreation;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -89,14 +88,14 @@ public class UserSignUp extends AppCompatActivity {
                     actDob = LocalDate.of(year, month + 1, dayOfMonth);
                     dob.setText(actDob.toString());
                 },
-                curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
+                curr.getYear(), curr.getMonthValue() - 1, curr.getDayOfMonth());
         dialog.show();
     }
 
     private void onSignUpClick(UserRole role) {
         try {
             boolean added = addUserByRole(role);
-            if(added) {
+            if (added) {
                 Toast.makeText(this, role + " added successfully", Toast.LENGTH_LONG).show();
                 finish();
             } else {
@@ -122,22 +121,21 @@ public class UserSignUp extends AppCompatActivity {
         if (role == UserRole.PATIENT) {
             return objectCreation.addPatientToDatabase(
                     first, last, emailAdd, pass, genderStr, actDob,
-                    cleanText(healthCard), cleanText(phoneNumber)
-            );
+                    cleanText(healthCard), cleanText(phoneNumber));
         } else if (role == UserRole.DOCTOR) {
             return objectCreation.addDoctorToDatabase(
                     first, last, emailAdd, pass, genderStr, actDob,
-                    parseSpecialization(cleanText(specialization)), cleanText(licenseNumber)
-            );
+                    parseSpecialization(cleanText(specialization)), cleanText(licenseNumber));
         } else if (role == UserRole.STAFF) {
             return objectCreation.addStaffToDatabase(
-                    first, last, emailAdd, pass, genderStr, actDob, cleanText(position)
-            );
+                    first, last, emailAdd, pass, genderStr, actDob, cleanText(position));
         }
         return false;
     }
+
     private Specialization parseSpecialization(String spec) {
-        if (spec == null || spec.isEmpty()) return null;
+        if (spec == null || spec.isEmpty())
+            return null;
         try {
             return Specialization.valueOf(spec.trim().toUpperCase().replace(" ", "_"));
         } catch (IllegalArgumentException e) {
@@ -145,11 +143,11 @@ public class UserSignUp extends AppCompatActivity {
         }
     }
 
-    private String cleanText(EditText editText){
+    private String cleanText(EditText editText) {
         return editText.getText().toString().trim();
     }
 
-    private void setViews(){
+    private void setViews() {
         firstName = findViewById(R.id.FirsNameEditText);
         lastName = findViewById(R.id.LastNameEditText);
         email = findViewById(R.id.EmailAddressEditText);
