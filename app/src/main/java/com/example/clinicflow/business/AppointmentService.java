@@ -173,8 +173,10 @@ public class AppointmentService {
     // Helper method to check if a time slot is free
     private boolean isSlotFree(List<Appointment> appointments, LocalTime start, LocalTime end) {
         for (Appointment appt : appointments) {
-            if (start.isBefore(appt.getEndTime()) && appt.getStartTime().isBefore(end)) {
-                return false;
+            if (!"Cancelled".equalsIgnoreCase(appt.getStatus())) {
+                if (start.isBefore(appt.getEndTime()) && appt.getStartTime().isBefore(end)) {
+                    return false;
+                }
             }
         }
         return true;
