@@ -80,4 +80,68 @@ public class AppointmentRepoIT {
                         s.getEndTime().equals(LocalTime.of(11,30)));
         assertTrue(slotRemoved);
     }
+
+    @Test
+    public void pastAndUpcomingAppointments() throws ValidationExceptions.ValidationException {
+        LocalDate today = LocalDate.now();
+        String doctorEmail = "doctorPU@gmail.com";
+        String patientEmail = "patientPU@gmail.com";
+
+        // Add availability for today and the upcoming date
+        repo.addDoctorAvailability(new DoctorAvailability(
+                doctorEmail,
+                today.getDayOfWeek().getValue(),
+                LocalTime.of(9,0),
+                LocalTime.of(17,0)
+        ));
+
+        LocalDate upcomingDate = today.plusDays(2);
+        repo.addDoctorAvailability(new DoctorAvailability(
+                doctorEmail,
+                upcomingDate.getDayOfWeek().getValue(),
+                LocalTime.of(9,0),
+                LocalTime.of(17,0)
+        ));
+
+        // Past appointment
+        Appointment past = new Appointment(
+                doctorEmail,
+                patientEmail,
+                today.minusDays(1),
+                LocalTime.of(10,0),
+                LocalTime.of(10,30),
+                "Completed",
+                "Checkup",
+                "all ok"
+        );
+
+        // Upcoming appointment
+        Appointment upcoming = new Appointment(
+                doctorEmail,
+                patientEmail,
+                upcomingDate,
+                LocalTime.of(11,0),
+                LocalTime.of(11,30),
+                "Confirmed",
+                "Checkup",
+                "none"
+        );
+
+        repo.addAppointment(past);
+        appointmentService.bookAppointment(upcoming);
+
+        List<Appointment> patientAppointments =
+                repo.getAppointmentsForPatient(patientEmail);
+
+        assertEquals(2, patientAppointments.size());
+
+        List<Appointment> upcomingAppointments =
+                appointmentService.getUpcomingAppointmentsForPatient(patientEmail);
+
+        List<Appointment> pastAppointments =
+                appointmentService.getPastAppointmentsForPatient(patientEmail);
+
+        assertEquals(1, upcomingAppointments.size());
+        assertEquals(1, pastAppointments.size());
+    }
 }
