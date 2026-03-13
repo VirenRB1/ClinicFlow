@@ -1,7 +1,7 @@
 package com.example.clinicflow.presentation.admin;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.clinicflow.R;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class AdminScreen extends AppCompatActivity {
@@ -30,24 +30,24 @@ public class AdminScreen extends AppCompatActivity {
         setContentView(R.layout.admin_landing);
 
         setViews();
-        String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         setEvents(email);
 
         BasicBinds.setWindowInsets(this);
     }
 
     private void setEvents(String email) {
-        logout.setOnClickListener(v -> onLogoutClick(this));
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
-        addDoctor.setOnClickListener(v -> onClickRole(UserRole.DOCTOR, email));
-        addStaff.setOnClickListener(v -> onClickRole(UserRole.STAFF, email));
-        addPatient.setOnClickListener(v -> onClickRole(UserRole.PATIENT, email));
+        logout.setOnClickListener(v -> logoutToMain(this));
+        profile.setOnClickListener(v -> navigateWithUserEmail(this, Profile.class, email));
+        addDoctor.setOnClickListener(v -> navigationWithRole(UserRole.DOCTOR, email));
+        addStaff.setOnClickListener(v -> navigationWithRole(UserRole.STAFF, email));
+        addPatient.setOnClickListener(v -> navigationWithRole(UserRole.PATIENT, email));
     }
 
-    private void onClickRole(UserRole role, String email) {
+    private void navigationWithRole(UserRole role, String email) {
         Intent intent = new Intent(this, AddOrDeleteScreen.class);
-        intent.putExtra(Navigation.USER_ROLE, role);
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
+        intent.putExtra(NavigationExtras.USER_ROLE, role);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, email);
         startActivity(intent);
     }
 

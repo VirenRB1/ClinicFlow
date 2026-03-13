@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +16,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.business.LookupService;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,7 +51,7 @@ public class BookAppointment extends AppCompatActivity{
 
         doctors = lookupService.getDoctors();
 
-        patientEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         setEvents();
 
         BasicBinds.setWindowInsets(this);
@@ -66,16 +65,13 @@ public class BookAppointment extends AppCompatActivity{
     }
 
     private void findSlots() {
-        if(doctorEditText.getText().toString().isEmpty() || dateEditText.getText().toString().isEmpty()) {
-            Toast.makeText(this, "All fields must be filled", Toast.LENGTH_LONG).show();
-            return;
+        if(!doctorEditText.getText().toString().isEmpty() || dateEditText.getText().toString().isEmpty()) {
+            Intent intent = new Intent(this, Slots.class);
+            intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, patientEmail);
+            intent.putExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL, selectedDoctor.getEmail());
+            intent.putExtra(DATE, actualDate.toString());
+            startActivity(intent);
         }
-
-        Intent intent = new Intent(this, Slots.class);
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, patientEmail);
-        intent.putExtra(Navigation.EXTRA_DOCTOR_EMAIL, selectedDoctor.getEmail());
-        intent.putExtra(DATE, actualDate.toString());
-        startActivity(intent);
     }
 
     private void showDoctors() {
@@ -91,13 +87,10 @@ public class BookAppointment extends AppCompatActivity{
 
     private String[] makeLabels() {
         String [] labels = new String[doctors.size()];
-        int i = 0;
-        for (Doctor doctor : doctors) {
-            labels[i] = doctor.getFullName();
-            i++;
+        for (int i = 0; i < doctors.size(); i++) {
+            labels[i] = doctors.get(i).getFullName();
         }
         return labels;
-
     }
 
 
@@ -113,9 +106,6 @@ public class BookAppointment extends AppCompatActivity{
                 curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
         dialog.show();
     }
-
-
-
 
     private void setViews() {
         binds = setBasicBinds(this);

@@ -1,6 +1,6 @@
 package com.example.clinicflow.presentation.patientScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -20,12 +20,14 @@ import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 
 import java.time.LocalDate;
 
 public class ConfirmAppointment extends AppCompatActivity {
 
+    private static final String STATUS = "Confirmed";
+    private static final String DEFAULT_NOTES = "";
     private Button backButton;
     private Button confirmButton;
     private TextView name;
@@ -49,17 +51,15 @@ public class ConfirmAppointment extends AppCompatActivity {
         setContentView(R.layout.confirm_appointment);
 
         app = (ClinicFlowApp) getApplication();
-
-
         setViews();
 
-        patientEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
-        doctorEmail = getIntent().getStringExtra(Navigation.EXTRA_DOCTOR_EMAIL);
+        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        doctorEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL);
         String dateString = getIntent().getStringExtra(BookAppointment.DATE);
         if (dateString != null) {
             date = LocalDate.parse(dateString);
         }
-        slot = (TimeSlot) getIntent().getSerializableExtra(Navigation.EXTRA_SLOT);
+        slot = (TimeSlot) getIntent().getSerializableExtra(NavigationExtras.EXTRA_SLOT);
 
         setTexts();
         setEvents();
@@ -78,20 +78,12 @@ public class ConfirmAppointment extends AppCompatActivity {
 
     private void setEvents() {
         backButton.setOnClickListener(v -> finish());
-        logoutButton.setOnClickListener(v -> onLogoutClick(this));
+        logoutButton.setOnClickListener(v -> logoutToMain(this));
         confirmButton.setOnClickListener(v -> onConfirmClick());
     }
 
     private void onConfirmClick() {
-        if(purpose.getText().toString().trim().isEmpty()){
-            Toast.makeText(this, "Please enter a purpose", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        String STATUS = "Confirmed";
-        String DEFAULT_NOTES = "";
         Appointment appointment = new Appointment(doctorEmail, patientEmail, date, slot.getStartTime(), slot.getEndTime(), STATUS, purpose.getText().toString().trim(), DEFAULT_NOTES);
-
         AppointmentService appointmentService = app.getAppointmentService();
 
         try {
@@ -103,8 +95,6 @@ public class ConfirmAppointment extends AppCompatActivity {
         } catch (ValidationExceptions.ValidationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     private void setViews() {

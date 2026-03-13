@@ -15,7 +15,7 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.business.AppointmentService;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.RecyclerViewInterface;
 import com.example.clinicflow.presentation.adapters.TimeSlotAdapter;
 
@@ -31,7 +31,6 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
     private String patientEmail;
     private String doctorEmail;
     private LocalDate actualDate;
-    private AppointmentService appointmentService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +44,15 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
         Button back = findViewById(R.id.backButton);
         back.setOnClickListener(v -> finish());
 
-        patientEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
-        doctorEmail = getIntent().getStringExtra(Navigation.EXTRA_DOCTOR_EMAIL);
+        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        doctorEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL);
         String date = getIntent().getStringExtra(BookAppointment.DATE);
         if (date != null) {
             actualDate = LocalDate.parse(date);
         }
 
-        ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        appointmentService = app.getAppointmentService();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         loadSlots();
-
         BasicBinds.setWindowInsets(this);
     }
 
@@ -68,9 +62,10 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
         loadSlots();
     }
 
-
     private void loadSlots() {
         if (doctorEmail != null && actualDate != null) {
+            ClinicFlowApp app = (ClinicFlowApp) getApplication();
+            AppointmentService appointmentService = app.getAppointmentService();
             slots = appointmentService.getAvailableTimeSlots(doctorEmail, actualDate);
 
             TimeSlotAdapter adapter = new TimeSlotAdapter(this, slots, this);
@@ -89,12 +84,12 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
     }
 
     @Override
-    public void onRecordClick(int position) {
+    public void onItemClick(int position) {
         Intent intent = new Intent(Slots.this, ConfirmAppointment.class);
 
-        intent.putExtra(Navigation.EXTRA_SLOT, slots.get(position));
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, patientEmail);
-        intent.putExtra(Navigation.EXTRA_DOCTOR_EMAIL, doctorEmail);
+        intent.putExtra(NavigationExtras.EXTRA_SLOT, slots.get(position));
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, patientEmail);
+        intent.putExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL, doctorEmail);
         intent.putExtra(BookAppointment.DATE, getIntent().getStringExtra(BookAppointment.DATE));
 
         startActivity(intent);

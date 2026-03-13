@@ -13,10 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.ObjectCreation;
+import com.example.clinicflow.business.validation.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 
 import java.time.LocalDate;
 
@@ -53,7 +54,7 @@ public class UserSignUp extends AppCompatActivity {
 
         setViews();
 
-        UserRole role = (UserRole) getIntent().getSerializableExtra(Navigation.USER_ROLE);
+        UserRole role = (UserRole) getIntent().getSerializableExtra(NavigationExtras.USER_ROLE);
 
         makeVisible(role);
         setEvents(role);
@@ -93,61 +94,48 @@ public class UserSignUp extends AppCompatActivity {
     }
 
     private void onSignUpClick(UserRole role) {
-        String first = cleanText(firstName);
-        String last = cleanText(lastName);
-        String emailAdd = cleanText(email);
-        String pass = cleanText(password);
-        String confirmPass = cleanText(confirmPassword);
-        String genderStr = cleanText(gender);
-        String hCardStr = null;
-        String phoneStr = null;
-        Specialization specializationEnum = null;
-        String licenseNumberStr = null;
-        String positionStr = null;
-
-
-        if(!pass.equals(confirmPass)){
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (role == UserRole.PATIENT) {
-            hCardStr = cleanText(healthCard);
-            phoneStr = cleanText(phoneNumber);
-        } else if (role == UserRole.DOCTOR) {
-            specializationEnum = parseSpecialization(cleanText(specialization));
-            licenseNumberStr = cleanText(licenseNumber);
-
-            if (specializationEnum == null && !cleanText(specialization).isEmpty()) {
-                Toast.makeText(this, "Invalid Specialization", Toast.LENGTH_LONG).show();
-                return;
-            }
-        } else if (role == UserRole.STAFF) {
-            positionStr = cleanText(position);
-        }
-
-
         try {
-            boolean added = false;
-
-            if (role == UserRole.PATIENT) {
-                added = objectCreation.addPatientToDatabase(first, last, emailAdd, pass, genderStr, actDob, hCardStr, phoneStr);
-            } else if (role == UserRole.DOCTOR) {
-                added = objectCreation.addDoctorToDatabase(first, last, emailAdd, pass, genderStr, actDob, specializationEnum, licenseNumberStr);
-            } else if (role == UserRole.STAFF) {
-                added = objectCreation.addStaffToDatabase(first, last, emailAdd, pass, genderStr, actDob, positionStr);
-            }
-            if(!added){
+            boolean added = addUserByRole(role);
+            if(added) {
+                Toast.makeText(this, role + " added successfully", Toast.LENGTH_LONG).show();
+                finish();
+            } else {
                 Toast.makeText(this, "User could not be added", Toast.LENGTH_LONG).show();
-                return;
             }
-            Toast.makeText(this, role + " added successfully", Toast.LENGTH_LONG).show();
-            finish();
-        } catch (Exception e) {
+        } catch (ValidationExceptions.ValidationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
+    private boolean addUserByRole(UserRole role) throws ValidationExceptions.ValidationException {
+        String first = cleanText(firstName);
+        String last = cleanText(lastName);
+        String emailAdd = cleanText(email);
+        String pass = cleanText(password);
+        String confirm = cleanText(confirmPassword);
+        String genderStr = cleanText(gender);
+
+        if (!pass.equals(confirm)) {
+            throw new ValidationExceptions.ValidationException("Passwords do not match");
+        }
+
+        if (role == UserRole.PATIENT) {
+            return objectCreation.addPatientToDatabase(
+                    first, last, emailAdd, pass, genderStr, actDob,
+                    cleanText(healthCard), cleanText(phoneNumber)
+            );
+        } else if (role == UserRole.DOCTOR) {
+            return objectCreation.addDoctorToDatabase(
+                    first, last, emailAdd, pass, genderStr, actDob,
+                    parseSpecialization(cleanText(specialization)), cleanText(licenseNumber)
+            );
+        } else if (role == UserRole.STAFF) {
+            return objectCreation.addStaffToDatabase(
+                    first, last, emailAdd, pass, genderStr, actDob, cleanText(position)
+            );
+        }
+        return false;
+    }
     private Specialization parseSpecialization(String spec) {
         if (spec == null || spec.isEmpty()) return null;
         try {

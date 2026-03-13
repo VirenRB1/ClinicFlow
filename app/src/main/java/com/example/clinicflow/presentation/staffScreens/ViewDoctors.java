@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 
 public class ViewDoctors extends AppCompatActivity{
 
@@ -20,7 +20,7 @@ public class ViewDoctors extends AppCompatActivity{
 
         setViews();
 
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
 
         setEvents(email);
 

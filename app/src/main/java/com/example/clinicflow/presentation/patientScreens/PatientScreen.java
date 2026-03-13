@@ -1,7 +1,7 @@
 package com.example.clinicflow.presentation.patientScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onClickEmail;
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.sharedScreens.MyAppointments;
 import com.example.clinicflow.presentation.sharedScreens.Profile;
 
@@ -32,7 +32,7 @@ public class PatientScreen extends AppCompatActivity {
 
         setViews();
 
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
 
         setEvents(email);
 
@@ -40,17 +40,17 @@ public class PatientScreen extends AppCompatActivity {
     }
 
     private void setEvents(String email) {
-        logout.setOnClickListener(v -> onLogoutClick(this));
+        logout.setOnClickListener(v -> logoutToMain(this));
         myApts.setOnClickListener(v -> onRecordClick(email, false));
-        bookApt.setOnClickListener(v -> onClickEmail(this, BookAppointment.class, email));
+        bookApt.setOnClickListener(v -> navigateWithUserEmail(this, BookAppointment.class, email));
         myRecs.setOnClickListener(v -> onRecordClick(email, true));
-        profile.setOnClickListener(v -> onClickEmail(this, Profile.class, email));
+        profile.setOnClickListener(v -> navigateWithUserEmail(this, Profile.class, email));
     }
 
     private void onRecordClick(String email, boolean showNotes) {
         Intent intent = new Intent(this, MyAppointments.class);
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, email);
-        intent.putExtra(Navigation.NOTES, showNotes);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, email);
+        intent.putExtra(NavigationExtras.NOTES, showNotes);
         startActivity(intent);
     }
 

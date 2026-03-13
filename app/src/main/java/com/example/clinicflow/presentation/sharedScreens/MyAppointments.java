@@ -16,7 +16,7 @@ import com.example.clinicflow.business.AppointmentService;
 import com.example.clinicflow.business.LookupService;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.adapters.AppointmentAdapter;
 import com.example.clinicflow.presentation.RecyclerViewInterface;
 
@@ -24,92 +24,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyAppointments extends AppCompatActivity implements RecyclerViewInterface {
-    List<Appointment> appointments;
 
-    protected void onCreate(Bundle savedInstanceState){
+    private RecyclerView recyclerView;
+    private TextView emptyStateText;
+    private Button backButton;
+
+    private AppointmentService appointmentService;
+    private LookupService lookupService;
+
+    private List<Appointment> appointments;
+    private String finalEmail;
+    private boolean showNotes;
+
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.appointments);
 
-        RecyclerView recyclerView = findViewById(R.id.recordsRecyclerView);
-        TextView emptyStateText = findViewById(R.id.emptyStateText);
-        Button back = findViewById(R.id.backButton);
-        back.setOnClickListener(v -> finish());
-
-        String userEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
-        String patientEmail = getIntent().getStringExtra(Navigation.EXTRA_PATIENT_EMAIL);
-        String finalEmail = actEmail(userEmail, patientEmail);
-
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        AppointmentService appointmentService = app.getAppointmentService();
-        LookupService lookupService = app.getLookupService();
+        appointmentService = app.getAppointmentService();
+        lookupService = app.getLookupService();
 
-        boolean showNotes = getIntent().getBooleanExtra(Navigation.NOTES, false);
+        setViews();
+        setEvents();
 
-        appointments = apptsToShow(showNotes, appointmentService, finalEmail);
+        String userEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        String patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL);
+        finalEmail = resolveEmail(userEmail, patientEmail);
+        showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
 
-        List <String> doctorNames = findNames(lookupService);
-
-        AppointmentAdapter adapter = new AppointmentAdapter(this,appointments, doctorNames, this);
-
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        showDetails(appointments, emptyStateText);
-
+        loadAppointments();
         BasicBinds.setWindowInsets(this);
     }
 
-    private List<Appointment> apptsToShow(boolean showNotes, AppointmentService appointmentService, String finalEmail) {
-        List<Appointment> appointments;
-
-        if(showNotes) {
-            appointments = appointmentService.getPastAppointmentsForPatient(finalEmail);
-        } else {
-            appointments = appointmentService.getUpcomingAppointmentsForPatient(finalEmail);
-        }
-
-        return appointments;
+    private void setViews() {
+        recyclerView = findViewById(R.id.recordsRecyclerView);
+        emptyStateText = findViewById(R.id.emptyStateText);
+        backButton = findViewById(R.id.backButton);
     }
 
-    private List<String> findNames(LookupService lookupService) {
-        List<String> names = new ArrayList<>();
-
-        if (appointments != null) {
-            for (Appointment a : appointments) {
-                names.add(lookupService.getFullName(a.getDoctorEmail()));
-            }
-        }
-        return names;
+    private void setEvents() {
+        backButton.setOnClickListener(v -> finish());
     }
 
-    private void showDetails(List<Appointment> appointments, TextView emptyStateText) {
-        if (appointments == null || appointments.isEmpty()) {
-            emptyStateText.setVisibility(TextView.VISIBLE);
-        } else {
-            emptyStateText.setVisibility(TextView.GONE);
+    private void loadAppointments() {
+        appointments = fetchAppointments();
+
+        List<String> doctorNames = new ArrayList<>();
+        for (Appointment a : appointments) {
+            doctorNames.add(lookupService.getFullName(a.getDoctorEmail()));
         }
+
+        recyclerView.setAdapter(new AppointmentAdapter(this, appointments, doctorNames, this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        emptyStateText.setVisibility(appointments.isEmpty() ? TextView.VISIBLE : TextView.GONE);
+    }
+
+    private List<Appointment> fetchAppointments() {
+        if (showNotes) {
+            return appointmentService.getPastAppointmentsForPatient(finalEmail);
+        }
+        return appointmentService.getUpcomingAppointmentsForPatient(finalEmail);
     }
 
     @Override
-    public void onRecordClick(int position) {
-        Intent intent = new Intent(MyAppointments.this, AppointmentDetail.class);
-
-        intent.putExtra(Navigation.EXTRA_APPT, appointments.get(position));
-        intent.putExtra(Navigation.EXTRA_USER_EMAIL, getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL));
-        intent.putExtra(Navigation.NOTES, getIntent().getBooleanExtra(Navigation.NOTES, false));
-        if(getIntent().getStringExtra(Navigation.EXTRA_PATIENT_EMAIL) != null){
-            intent.putExtra(Navigation.EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(Navigation.EXTRA_PATIENT_EMAIL));
-        }
-
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this, AppointmentDetail.class);
+        intent.putExtra(NavigationExtras.EXTRA_APPT, appointments.get(position));
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL));
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL));
+        intent.putExtra(NavigationExtras.NOTES, showNotes);
         startActivity(intent);
     }
 
-    public String actEmail(String userEmail, String patientEmail){
-        if(patientEmail != null){
-            return patientEmail;
-        }
-        return userEmail;
+    private String resolveEmail(String userEmail, String patientEmail) {
+        return patientEmail != null ? patientEmail : userEmail;
     }
 }

@@ -1,11 +1,10 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.Navigation.onLogoutClick;
+import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +18,7 @@ import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.google.android.material.card.MaterialCardView;
 
 public class Profile extends AppCompatActivity {
@@ -59,32 +58,17 @@ public class Profile extends AppCompatActivity {
         lookupService = app.getLookupService();
 
         setViews();
-
-        final String userEmail = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
-
         setEvents();
-        loadProfile(userEmail);
 
+        final String userEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        loadProfile(userEmail);
         BasicBinds.setWindowInsets(this);
     }
 
     private void loadProfile(String userEmail) {
-        if(userEmail == null || userEmail.trim().isEmpty()){
-            Toast.makeText(this, "No user email provided", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
         Users user = lookupService.findUserByEmail(userEmail);
-        if(user == null){
-            Toast.makeText(this, "User not found", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
         setCommonInfo(user);
         setRoleInfo(user);
-
         userCard.setVisibility(TextView.VISIBLE);
     }
 
@@ -147,7 +131,7 @@ public class Profile extends AppCompatActivity {
     }
 
     private void setEvents() {
-        logout.setOnClickListener(v -> onLogoutClick(this));
+        logout.setOnClickListener(v -> logoutToMain(this));
         back.setOnClickListener(v -> finish());
     }
 

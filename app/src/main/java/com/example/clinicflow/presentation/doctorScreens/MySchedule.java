@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 
 public class MySchedule extends AppCompatActivity{
 
@@ -21,7 +21,7 @@ public class MySchedule extends AppCompatActivity{
         setContentView(R.layout.my_schedule);
 
         setViews();
-        final String email = getIntent().getStringExtra(Navigation.EXTRA_USER_EMAIL);
+        final String email = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         setEvents(email);
 
         BasicBinds.setWindowInsets(this);

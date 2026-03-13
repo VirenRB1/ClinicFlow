@@ -2,7 +2,6 @@ package com.example.clinicflow.presentation.authScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,7 +16,7 @@ import com.example.clinicflow.business.auth.AuthExceptions;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.BasicBinds;
-import com.example.clinicflow.presentation.Navigation;
+import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.admin.UserSignUp;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,42 +40,36 @@ public class MainActivity extends AppCompatActivity {
         loginNav = new LoginNav(this);
 
         setViews();
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String enteredEmail = email.getText().toString().trim();
-                String enteredPW = password.getText().toString().trim();
-
-                Users currUser;
-
-                try {
-                    currUser = authService.authenticateOrThrow(enteredEmail, enteredPW);
-                } catch (AuthExceptions.AuthException e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                Intent intent = loginNav.sendToLanding(currUser, enteredEmail);
-                if (intent == null) {
-                    Toast.makeText(getApplicationContext(), "Incorrect Account Type", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                startActivity(intent);
-
-            }
-        });
-
-        signupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UserSignUp.class);
-                intent.putExtra(Navigation.USER_ROLE, UserRole.PATIENT);
-                startActivity(intent);
-            }
-        });
+        setEvents();
 
         BasicBinds.setWindowInsets(this);
+    }
+
+    private void setEvents() {
+        loginBtn.setOnClickListener(v -> onLoginClick());
+        signupBtn.setOnClickListener(v -> onSignUpClick());
+    }
+
+    private void onSignUpClick() {
+        Intent intent = new Intent(MainActivity.this, UserSignUp.class);
+        intent.putExtra(NavigationExtras.USER_ROLE, UserRole.PATIENT);
+        startActivity(intent);
+    }
+
+    private void onLoginClick() {
+        String enteredEmail = email.getText().toString().trim();
+        String enteredPW = password.getText().toString().trim();
+
+        Users currUser;
+        try {
+            currUser = authService.authenticateOrThrow(enteredEmail, enteredPW);
+            Intent intent = loginNav.sendToLanding(currUser, enteredEmail);
+            if (intent != null) {
+                startActivity(intent);
+            }
+        } catch (AuthExceptions.AuthException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void setViews() {
