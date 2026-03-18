@@ -40,7 +40,7 @@ public class AppointmentService {
         return upcoming;
     }
 
-   //Retrieve all the past appointments for a patient
+    //Retrieve all the past appointments for a patient
     public List<Appointment> getPastAppointmentsForPatient(String patientEmail) {
         List<Appointment> allAppointments = userRepository.getAppointmentsForPatient(patientEmail);
         List<Appointment> past = new ArrayList<>();
@@ -50,7 +50,7 @@ public class AppointmentService {
         for (int i = 0; i < allAppointments.size(); i++) {
             Appointment appt = allAppointments.get(i);
             boolean isPastTime = !isAfterNow(appt.getAppointmentDate(), appt.getStartTime(), today, now);
-            if ("Completed".equalsIgnoreCase(appt.getStatus()) || (isPastTime && ! "Cancelled".equalsIgnoreCase(appt.getStatus()))) {
+            if ("Completed".equalsIgnoreCase(appt.getStatus()) || (isPastTime && !"Cancelled".equalsIgnoreCase(appt.getStatus()))) {
                 past.add(appt);
             }
         }
@@ -59,7 +59,7 @@ public class AppointmentService {
         return past;
     }
 
- //Complete and appointment and add a doctor note
+    //Complete and appointment and add a doctor note
     public void completeAppointment(Appointment appointment, String doctorNote) {
         appointment.setStatus("Completed");
         appointment.setDoctorNotes(doctorNote);
@@ -92,17 +92,23 @@ public class AppointmentService {
     //Get all available time slots for a doctor on a specific date
     public List<TimeSlot> getAvailableTimeSlots(String doctorEmail, LocalDate date) {
         List<Appointment> appointments = userRepository.getAppointmentsForDoctorOnDate(doctorEmail, date);
-        List<DoctorAvailability> doctorAvailabilities = userRepository.getDoctorAvailability(doctorEmail, date.getDayOfWeek().getValue());
+        List<DoctorAvailability> doctorAvailabilities = userRepository.getDoctorAvailability(
+                doctorEmail,
+                date.getDayOfWeek().getValue()
+        );
 
         List<TimeSlot> allSlots = generateTimeSlots(doctorAvailabilities, appointments);
-        
+
         List<TimeSlot> availableSlots = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+
         for (TimeSlot slot : allSlots) {
-            if (slot.isAvailable()) {
+            if (slot.isAvailable() && isAfterNow(date, slot.getStartTime(), today, now)) {
                 availableSlots.add(slot);
             }
         }
-        
+
         availableSlots.sort(new Comparator<TimeSlot>() {
             @Override
             public int compare(TimeSlot t1, TimeSlot t2) {
@@ -119,7 +125,7 @@ public class AppointmentService {
         }
 
         List<DoctorAvailability> currentAvailabilities = userRepository.getDoctorAvailability(
-                appointment.getDoctorEmail(), 
+                appointment.getDoctorEmail(),
                 appointment.getAppointmentDate().getDayOfWeek().getValue()
         );
 
@@ -128,7 +134,7 @@ public class AppointmentService {
         }
 
         List<Appointment> existingAppointments = userRepository.getAppointmentsForDoctorOnDate(
-                appointment.getDoctorEmail(), 
+                appointment.getDoctorEmail(),
                 appointment.getAppointmentDate()
         );
 
@@ -146,12 +152,12 @@ public class AppointmentService {
             LocalTime currentStart = availability.getStartTime();
             LocalTime dayEnd = availability.getEndTime();
 
-            while (currentStart.plusMinutes(SLOT_DURATION_MINUTES).isBefore(dayEnd) || 
-                   currentStart.plusMinutes(SLOT_DURATION_MINUTES).equals(dayEnd)) {
-                
+            while (currentStart.plusMinutes(SLOT_DURATION_MINUTES).isBefore(dayEnd) ||
+                    currentStart.plusMinutes(SLOT_DURATION_MINUTES).equals(dayEnd)) {
+
                 LocalTime currentEnd = currentStart.plusMinutes(SLOT_DURATION_MINUTES);
                 boolean available = isSlotFree(appointments, currentStart, currentEnd);
-                
+
                 timeSlots.add(new TimeSlot(currentStart, currentEnd, available));
                 currentStart = currentEnd;
             }
@@ -163,7 +169,7 @@ public class AppointmentService {
     private boolean isWithinAvailability(List<DoctorAvailability> availabilities, LocalTime start, LocalTime end) {
         for (DoctorAvailability avail : availabilities) {
             if ((start.isAfter(avail.getStartTime()) || start.equals(avail.getStartTime())) &&
-                (end.isBefore(avail.getEndTime()) || end.equals(avail.getEndTime()))) {
+                    (end.isBefore(avail.getEndTime()) || end.equals(avail.getEndTime()))) {
                 return true;
             }
         }
