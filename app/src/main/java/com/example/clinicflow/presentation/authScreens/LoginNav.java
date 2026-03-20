@@ -1,6 +1,5 @@
 package com.example.clinicflow.presentation.authScreens;
 
-
 import android.content.Context;
 import android.content.Intent;
 
@@ -19,6 +18,7 @@ public class LoginNav {
 
     private final Context context;
     private final Map<UserRole, Class<?>> landingPages;
+
     public LoginNav(Context context) {
         this.context = context;
         this.landingPages = createLandingPagesMap();
@@ -36,7 +36,7 @@ public class LoginNav {
     public Intent sendToLanding(Users user, String email) {
         Class<?> destination = landingPages.get(user.getRole());
 
-        if(destination == null) {
+        if (destination == null) {
             return null;
         }
 

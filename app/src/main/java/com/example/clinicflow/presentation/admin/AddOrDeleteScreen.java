@@ -20,7 +20,6 @@ public class AddOrDeleteScreen extends AppCompatActivity {
     private Button deleteButton;
     private BasicBinds binds;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);

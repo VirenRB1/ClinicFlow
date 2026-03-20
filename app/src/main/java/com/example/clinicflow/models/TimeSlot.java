@@ -33,8 +33,4 @@ public class TimeSlot implements Serializable {
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
 }

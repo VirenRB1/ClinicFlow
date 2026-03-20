@@ -9,7 +9,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 
-public class ViewDoctors extends AppCompatActivity{
+public class ViewDoctors extends AppCompatActivity {
 
     private BasicBinds binds;
 
@@ -28,7 +28,7 @@ public class ViewDoctors extends AppCompatActivity{
     }
 
     private void setEvents(String email) {
-       binds.setBasicEvents(this, email);
+        binds.setBasicEvents(this, email);
     }
 
     private void setViews() {

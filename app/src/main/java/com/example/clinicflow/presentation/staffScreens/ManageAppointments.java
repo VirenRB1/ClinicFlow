@@ -9,7 +9,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 
-public class ManageAppointments extends AppCompatActivity{
+public class ManageAppointments extends AppCompatActivity {
 
     private BasicBinds binds;
 

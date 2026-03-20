@@ -1,7 +1,8 @@
 package com.example.clinicflow.presentation;
 
 public final class NavigationExtras {
-    private NavigationExtras() {}
+    private NavigationExtras() {
+    }
 
     public static final String EXTRA_USER_EMAIL = "user_email";
     public static final String EXTRA_PATIENT_EMAIL = "patient_email";

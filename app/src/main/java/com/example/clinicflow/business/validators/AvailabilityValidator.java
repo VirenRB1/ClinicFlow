@@ -17,14 +17,15 @@ public class AvailabilityValidator {
         if (startTime == null || endTime == null) {
             throw new ValidationExceptions.EmptyFieldException("Start/End Time");
         }
-        
+
         if (!startTime.isBefore(endTime)) {
             throw new ValidationExceptions.InvalidStartAndEndTimeException();
         }
 
         // Requirement: Start and end times must be on the hour (XX:00)
         if (startTime.getMinute() != 0 || endTime.getMinute() != 0) {
-            throw new ValidationExceptions.ValidationException("Availability times must be at the top of the hour (e.g., 09:00).");
+            throw new ValidationExceptions.ValidationException(
+                    "Availability times must be at the top of the hour (e.g., 09:00).");
         }
 
     }

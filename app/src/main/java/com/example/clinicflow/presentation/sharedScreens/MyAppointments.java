@@ -53,7 +53,6 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         finalEmail = resolveEmail(userEmail, patientEmail);
         showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
 
-        loadAppointments();
         BasicBinds.setWindowInsets(this);
     }
 
@@ -67,6 +66,11 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         backButton.setOnClickListener(v -> finish());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAppointments();
+    }
     private void loadAppointments() {
         appointments = fetchAppointments();
 
@@ -92,8 +96,10 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
     public void onItemClick(int position) {
         Intent intent = new Intent(this, AppointmentDetail.class);
         intent.putExtra(NavigationExtras.EXTRA_APPT, appointments.get(position));
-        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL));
-        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL));
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL,
+                getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL));
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL,
+                getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL));
         intent.putExtra(NavigationExtras.NOTES, showNotes);
         startActivity(intent);
     }

@@ -1,6 +1,5 @@
 package com.example.clinicflow.models;
 
-
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -25,7 +24,7 @@ public abstract class Users {
         this.dateOfBirth = dob;
     }
 
-    //Get methods
+    // Get methods
     public String getFirstName() {
         return firstName;
     }

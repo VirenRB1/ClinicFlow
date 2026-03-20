@@ -21,7 +21,7 @@ import com.example.clinicflow.presentation.NavigationExtras;
 import java.time.LocalDate;
 import java.util.List;
 
-public class BookAppointment extends AppCompatActivity{
+public class BookAppointment extends AppCompatActivity {
 
     private BasicBinds binds;
     private EditText doctorEditText;
@@ -65,7 +65,7 @@ public class BookAppointment extends AppCompatActivity{
     }
 
     private void findSlots() {
-        if(!doctorEditText.getText().toString().isEmpty() || dateEditText.getText().toString().isEmpty()) {
+        if (!doctorEditText.getText().toString().isEmpty() || dateEditText.getText().toString().isEmpty()) {
             Intent intent = new Intent(this, Slots.class);
             intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, patientEmail);
             intent.putExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL, selectedDoctor.getEmail());
@@ -75,7 +75,7 @@ public class BookAppointment extends AppCompatActivity{
     }
 
     private void showDoctors() {
-        String [] labels = makeLabels();
+        String[] labels = makeLabels();
 
         new android.app.AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                 .setTitle(DOCTOR)
@@ -86,13 +86,12 @@ public class BookAppointment extends AppCompatActivity{
     }
 
     private String[] makeLabels() {
-        String [] labels = new String[doctors.size()];
+        String[] labels = new String[doctors.size()];
         for (int i = 0; i < doctors.size(); i++) {
             labels[i] = doctors.get(i).getFullName();
         }
         return labels;
     }
-
 
     private void showDates() {
         LocalDate curr = LocalDate.now();
@@ -103,7 +102,7 @@ public class BookAppointment extends AppCompatActivity{
                     actualDate = LocalDate.of(year, month + 1, dayOfMonth);
                     dateEditText.setText(actualDate.toString());
                 },
-                curr.getYear(),curr.getMonthValue() - 1, curr.getDayOfMonth());
+                curr.getYear(), curr.getMonthValue() - 1, curr.getDayOfMonth());
         dialog.show();
     }
 

@@ -165,8 +165,6 @@ public class AppointmentService {
 
         appointment.setStatus("Cancelled");
         userRepository.updateAppointment(appointment);
-
-
     }
 
     private List<TimeSlot> generateTimeSlots(List<DoctorAvailability> availabilities, List<Appointment> appointments) {

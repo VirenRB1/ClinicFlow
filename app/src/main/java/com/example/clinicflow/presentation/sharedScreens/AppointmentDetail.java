@@ -3,12 +3,15 @@ package com.example.clinicflow.presentation.sharedScreens;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
+import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.business.services.LookupService;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.presentation.BasicBinds;
@@ -29,8 +32,11 @@ public class AppointmentDetail extends AppCompatActivity {
     private TextView doctorNote;
     private TextView startTime;
     private TextView endTime;
-
+    private Button cancelBtn;
+    private Button backBtn;
+    private Appointment appointment;
     private LookupService lookupService;
+    private AppointmentService appointmentService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +45,44 @@ public class AppointmentDetail extends AppCompatActivity {
         setContentView(R.layout.appointment_detail);
         BasicBinds.setWindowInsets(this);
 
-        lookupService = ((ClinicFlowApp) getApplication()).getLookupService();
+        getServices();
+        setDetailViews();
+        setEvents();
 
-        Button backBtn = findViewById(R.id.backButton);
-        backBtn.setOnClickListener(v -> finish());
-
-        Appointment record = (Appointment) getIntent().getSerializableExtra(NavigationExtras.EXTRA_APPT);
-        if (record != null) {
+        appointment = (Appointment) getIntent().getSerializableExtra(NavigationExtras.EXTRA_APPT);
+        if (appointment != null) {
+            setVisibility();
             boolean showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
-            setDetailViews();
-            setDetails(record, showNotes);
+            setDetails(appointment, showNotes);
         }
     }
+
+    private void setVisibility(){
+        if(appointment.getStatus().equalsIgnoreCase("Completed")){
+            cancelBtn.setVisibility(Button.GONE);
+        }
+    }
+
+    private void getServices() {
+        lookupService = ((ClinicFlowApp) getApplication()).getLookupService();
+        appointmentService = ((ClinicFlowApp) getApplication()).getAppointmentService();
+    }
+
+    private void setEvents() {
+        cancelBtn.setOnClickListener(v -> cancelOnClick());
+        backBtn.setOnClickListener(v -> finish());
+    }
+
+    private void cancelOnClick() {
+        try {
+            appointmentService.cancelAppointment(appointment);
+            Toast.makeText(this, "Appointment Cancelled", Toast.LENGTH_SHORT).show();
+            finish();
+        } catch (ValidationExceptions.ValidationException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private String getUserName(String email){
         return lookupService.getFullName(email);
     }
@@ -82,6 +114,8 @@ public class AppointmentDetail extends AppCompatActivity {
         startTime = findViewById(R.id.startTime);
         endTime = findViewById(R.id.endTime);
         noteTitle = findViewById(R.id.detailDoctorNoteTitle);
+        cancelBtn = findViewById(R.id.cancelButton);
+        backBtn = findViewById(R.id.backButton);
     }
 
 }

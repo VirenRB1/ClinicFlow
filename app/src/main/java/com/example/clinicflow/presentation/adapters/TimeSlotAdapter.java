@@ -24,7 +24,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
 
     List<TimeSlot> slots;
 
-    public TimeSlotAdapter(Context context, List<TimeSlot> slots, RecyclerViewInterface recyclerViewInterface){
+    public TimeSlotAdapter(Context context, List<TimeSlot> slots, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.slots = slots;
         this.recyclerViewInterface = recyclerViewInterface;
@@ -50,11 +50,12 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
         return slots == null ? 0 : slots.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageview;
 
         TextView start, end;
+
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
@@ -65,10 +66,10 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(recyclerViewInterface != null){
+                    if (recyclerViewInterface != null) {
                         int pos = getBindingAdapterPosition();
 
-                        if(pos != RecyclerView.NO_POSITION){
+                        if (pos != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.onItemClick(pos);
                         }
                     }
@@ -77,4 +78,3 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
         }
     }
 }
-

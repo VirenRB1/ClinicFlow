@@ -6,9 +6,9 @@ public class Patient extends Users {
     private String healthcardNumber;
     private String phoneNumber;
 
-    public Patient(String firstName, String lastName, String email, String password, String gender
-        , LocalDate dateOfBirth, String healthcardNumber, String phoneNumber) {
-        super(firstName,lastName, email, password, gender, dateOfBirth);
+    public Patient(String firstName, String lastName, String email, String password, String gender,
+            LocalDate dateOfBirth, String healthcardNumber, String phoneNumber) {
+        super(firstName, lastName, email, password, gender, dateOfBirth);
         this.healthcardNumber = healthcardNumber;
         this.phoneNumber = phoneNumber;
     }
@@ -21,7 +21,7 @@ public class Patient extends Users {
         return phoneNumber;
     }
 
-    public UserRole getRole(){
+    public UserRole getRole() {
         return UserRole.PATIENT;
     }
 }
