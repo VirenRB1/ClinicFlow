@@ -255,4 +255,14 @@ public class FakeUserRepository implements UserRepository, Serializable {
         }
         return result;
     }
+
+    @Override
+    public void updateAppointment(Appointment appointment) {
+        for (int i = 0; i < appointments.size(); i++) {
+            if (appointments.get(i).getId() == appointment.getId()) {
+                appointments.set(i, appointment);
+                return;
+            }
+        }
+    }
 }

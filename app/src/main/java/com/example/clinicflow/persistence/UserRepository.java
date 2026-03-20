@@ -117,4 +117,6 @@ public interface UserRepository {
      * @return A list of appointments.
      */
     List<Appointment> getAppointmentsForPatient(String patientEmail);
+
+    void updateAppointment(Appointment appointment);
 }

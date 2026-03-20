@@ -53,7 +53,6 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         finalEmail = resolveEmail(userEmail, patientEmail);
         showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
 
-        loadAppointments();
         BasicBinds.setWindowInsets(this);
     }
 
@@ -67,6 +66,11 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         backButton.setOnClickListener(v -> finish());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAppointments();
+    }
     private void loadAppointments() {
         appointments = fetchAppointments();
 

@@ -108,4 +108,8 @@ public class Appointment implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public void setDoctorNotes(String doctorNotes) {
+        this.doctorNotes = doctorNotes;
+    }
 }

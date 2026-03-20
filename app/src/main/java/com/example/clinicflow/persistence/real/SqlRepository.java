@@ -519,4 +519,22 @@ public class SqlRepository implements UserRepository {
         }
         return appointments;
     }
+
+    @Override
+    public void updateAppointment(Appointment appointment) {
+        if (appointment == null) return;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
+            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
+
+            db.update(DbContract.AppointmentEntry.TABLE_NAME, values, DbContract.AppointmentEntry._ID + " = ?", new String[]{String.valueOf(appointment.getId())});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
 }
