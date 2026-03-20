@@ -75,6 +75,12 @@ public class ValidationExceptions {
         }
     }
 
+    public static class AppointmentCancellationException extends ValidationException {
+        public AppointmentCancellationException() {
+            super("This appointment cannot be cancelled .");
+        }
+    }
+
     public static class InvalidAppointmentDateException extends ValidationException {
         public InvalidAppointmentDateException() {
             super("Appointment date cannot be in the past.");
