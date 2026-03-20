@@ -6,7 +6,7 @@ public class Staff extends Users {
     private String position;
 
     public Staff(String firstName, String lastName, String email, String password, String gender,
-                 LocalDate dateOfBirth, String position) {
+            LocalDate dateOfBirth, String position) {
         super(firstName, lastName, email, password, gender, dateOfBirth);
         this.position = position;
     }
@@ -15,7 +15,7 @@ public class Staff extends Users {
         return position;
     }
 
-    public UserRole getRole(){
+    public UserRole getRole() {
         return UserRole.STAFF;
     }
 }

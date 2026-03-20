@@ -46,8 +46,7 @@ public class BasicBinds {
         }
 
         if (profile != null) {
-            profile.setOnClickListener(v ->
-                    Navigation.navigateWithUserEmail(activity, Profile.class, email));
+            profile.setOnClickListener(v -> Navigation.navigateWithUserEmail(activity, Profile.class, email));
         }
     }
 }

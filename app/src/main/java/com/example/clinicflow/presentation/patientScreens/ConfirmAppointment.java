@@ -83,7 +83,8 @@ public class ConfirmAppointment extends AppCompatActivity {
     }
 
     private void onConfirmClick() {
-        Appointment appointment = new Appointment(doctorEmail, patientEmail, date, slot.getStartTime(), slot.getEndTime(), STATUS, purpose.getText().toString().trim(), DEFAULT_NOTES);
+        Appointment appointment = new Appointment(doctorEmail, patientEmail, date, slot.getStartTime(),
+                slot.getEndTime(), STATUS, purpose.getText().toString().trim(), DEFAULT_NOTES);
         AppointmentService appointmentService = app.getAppointmentService();
 
         try {

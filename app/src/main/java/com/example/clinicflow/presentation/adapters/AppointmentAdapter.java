@@ -23,12 +23,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     List<Appointment> records;
     List<String> names;
 
-    public AppointmentAdapter(Context context, List<Appointment> records, List<String> names, RecyclerViewInterface recyclerViewInterface){
+    public AppointmentAdapter(Context context, List<Appointment> records, List<String> names,
+            RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.records = records;
         this.names = names;
         this.recyclerViewInterface = recyclerViewInterface;
     }
+
     @NonNull
     @Override
     public AppointmentAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,11 +52,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return records == null ? 0 : records.size();
     }
 
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageview;
 
         TextView doc, date;
+
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
@@ -65,10 +67,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(recyclerViewInterface != null){
+                    if (recyclerViewInterface != null) {
                         int pos = getBindingAdapterPosition();
 
-                        if(pos != RecyclerView.NO_POSITION){
+                        if (pos != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.onItemClick(pos);
                         }
                     }

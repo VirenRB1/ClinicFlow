@@ -51,7 +51,8 @@ public class AppointmentDetail extends AppCompatActivity {
             setDetails(record, showNotes);
         }
     }
-    private String getUserName(String email){
+
+    private String getUserName(String email) {
         return lookupService.getFullName(email);
     }
 

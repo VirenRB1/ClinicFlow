@@ -7,25 +7,61 @@ import com.example.clinicflow.persistence.UserRepository;
 
 import java.util.List;
 
+/**
+ * Service class for looking up users and user-related information.
+ */
 public class LookupService {
     private final UserRepository userRepository;
 
+    /**
+     * Constructs a LookupService with the provided user repository.
+     * 
+     * @param userRepository The repository to use for data retrieval.
+     */
     public LookupService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Finds any user by their email address.
+     * 
+     * @param email The email to search for.
+     * @return The User object if found, null otherwise.
+     */
     public Users findUserByEmail(String email) {
         return userRepository.getUserByEmail(email);
     }
 
+    /**
+     * Specifically finds a patient by their email.
+     * 
+     * @param email The patient's email.
+     * @return The Patient object if found and the user is indeed a patient, null
+     *         otherwise.
+     */
     public Patient findPatientByEmail(String email) {
-        return (Patient) userRepository.getUserByEmail(email);
+        Users user = userRepository.getUserByEmail(email);
+        return (user instanceof Patient) ? (Patient) user : null;
     }
 
+    /**
+     * Specifically finds a doctor by their email.
+     * 
+     * @param email The doctor's email.
+     * @return The Doctor object if found and the user is indeed a doctor, null
+     *         otherwise.
+     */
     public Doctor findDoctorByEmail(String email) {
-        return (Doctor) userRepository.getUserByEmail(email);
+        Users user = userRepository.getUserByEmail(email);
+        return (user instanceof Doctor) ? (Doctor) user : null;
     }
 
+    /**
+     * Gets the full name of a user based on their email.
+     * 
+     * @param email The user's email.
+     * @return The user's full name, or "No User Found" if not found.
+     */
     public String getFullName(String email) {
         Users user = findUserByEmail(email);
         if (user == null) {
@@ -34,7 +70,11 @@ public class LookupService {
         return user.getFullName();
     }
 
-    //need implementation
+    /**
+     * Retrieves a list of all doctors in the system.
+     * 
+     * @return A list of all Doctor objects.
+     */
     public List<Doctor> getDoctors() {
         return userRepository.getAllDoctors();
     }

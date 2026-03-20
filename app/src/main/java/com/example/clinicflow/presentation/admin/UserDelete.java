@@ -21,7 +21,7 @@ import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 import com.google.android.material.card.MaterialCardView;
 
-public class UserDelete extends AppCompatActivity{
+public class UserDelete extends AppCompatActivity {
 
     private MaterialCardView patientCard;
     private BasicBinds binds;
@@ -36,6 +36,7 @@ public class UserDelete extends AppCompatActivity{
     private LookupService lookupService;
     private ObjectCreation objectCreation;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -58,24 +59,30 @@ public class UserDelete extends AppCompatActivity{
         delete.setOnClickListener(v -> onClickDelete());
         binds.setBasicEvents(this, userEmail);
     }
+
     private void onClickDelete() {
-        boolean deleted = objectCreation.deleteUser(emailAddress.getText().toString().trim());
-        if(!deleted) {
+        String enteredEmail = emailAddress.getText().toString().trim();
+        boolean deleted = objectCreation.deleteUser(enteredEmail);
+
+        if (!deleted) {
             Toast.makeText(this, "User could not be deleted", Toast.LENGTH_LONG).show();
             return;
         }
+
         Toast.makeText(this, "User deleted successfully", Toast.LENGTH_LONG).show();
+        emailAddress.setText(""); // Clear the search field
+        hide(); // Hide the information card
     }
 
     private void onClickSearch() {
         String enteredEmail = emailAddress.getText().toString().trim();
 
-        if(enteredEmail.isEmpty()) {
-            Toast.makeText(this, "Please enter a email", Toast.LENGTH_LONG).show();
+        if (enteredEmail.isEmpty()) {
+            Toast.makeText(this, "Please enter an email", Toast.LENGTH_LONG).show();
             hide();
         } else {
             Users user = lookupService.findUserByEmail(enteredEmail);
-            if(user == null) {
+            if (user == null) {
                 Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
                 hide();
             } else {
@@ -88,15 +95,20 @@ public class UserDelete extends AppCompatActivity{
         email.setText(user.getEmail());
         name.setText(user.getFullName());
         gender.setText(user.getGender());
-        age.setText(String.valueOf(user.getAge()));
+
+        try {
+            age.setText(String.valueOf(user.getAge()));
+        } catch (IllegalStateException e) {
+            age.setText("N/A");
+        }
 
         delete.setVisibility(View.VISIBLE);
         patientCard.setVisibility(View.VISIBLE);
     }
 
     private void hide() {
-        patientCard.setVisibility(View.INVISIBLE);
-        delete.setVisibility(View.INVISIBLE);
+        patientCard.setVisibility(View.GONE);
+        delete.setVisibility(View.GONE);
     }
 
     private void setViews() {

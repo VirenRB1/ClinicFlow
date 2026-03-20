@@ -11,7 +11,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 
-public class MySchedule extends AppCompatActivity{
+public class MySchedule extends AppCompatActivity {
 
     private BasicBinds binds;
 

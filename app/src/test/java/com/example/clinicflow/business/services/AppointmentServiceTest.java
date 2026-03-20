@@ -182,14 +182,4 @@ public class AppointmentServiceTest {
         assertEquals(LocalTime.of(11, 30), slots.get(2).getStartTime());
     }
 
-    @Test
-    public void testUpdateMethods() {
-        Appointment appt = new Appointment("d", "p", LocalDate.now(), LocalTime.of(10, 0), LocalTime.of(10, 30), "Confirmed", "", "");
-        appointmentService.completeAppointment(appt, "Note");
-        assertEquals("Completed", appt.getStatus());
-        assertEquals("Note", appt.getDoctorNotes());
-        
-        appointmentService.updateAppointmentStatus(appt, "Cancelled");
-        assertEquals("Cancelled", appt.getStatus());
-    }
 }

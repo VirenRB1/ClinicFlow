@@ -75,7 +75,7 @@ public class Profile extends AppCompatActivity {
     private void setRoleInfo(Users user) {
         UserRole role = user.getRole();
 
-        if(role == UserRole.DOCTOR) {
+        if (role == UserRole.DOCTOR) {
             Doctor doc = (Doctor) user;
 
             specialization.setVisibility(TextView.VISIBLE);
