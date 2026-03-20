@@ -146,6 +146,29 @@ public class AppointmentService {
         userRepository.addAppointment(appointment);
     }
 
+    public void cancelAppointment(Appointment appointment)  throws ValidationExceptions.ValidationException {
+
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+
+        if("Cancelled".equalsIgnoreCase(appointment.getStatus())){
+            throw new ValidationExceptions.AppointmentCancellationException();
+        }
+
+        if ("Completed".equalsIgnoreCase(appointment.getStatus())) {
+            throw new ValidationExceptions.AppointmentCancellationException();
+        }
+
+        if(!isAfterNow(appointment.getAppointmentDate(), appointment.getStartTime(), today, now)){
+            throw new ValidationExceptions.AppointmentCancellationException();
+        }
+
+        appointment.setStatus("Cancelled");
+        userRepository.updateAppointment(appointment);
+
+
+    }
+
     private List<TimeSlot> generateTimeSlots(List<DoctorAvailability> availabilities, List<Appointment> appointments) {
         List<TimeSlot> timeSlots = new ArrayList<>();
         for (DoctorAvailability availability : availabilities) {
