@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AppDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "clinic_flow.db";
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 10; // Incremented version again
 
     /**
      * Constructs a new database helper.
@@ -35,6 +35,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         createDoctorTable(db);
         createStaffTable(db);
         createAppointmentTable(db);
+        createCompletedAppointmentTable(db);
         createDoctorAvailabilityTable(db);
         populateFakeData(db);
     }
@@ -52,7 +53,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.DoctorEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.PatientEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.AdminEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + DbContract.AppointmentEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DbContract.UpcomingAppointmentEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DbContract.CompletedAppointmentEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DbContract.DoctorAvailabilityEntry.TABLE_NAME);
         onCreate(db);
     }
@@ -127,19 +129,32 @@ public class AppDbHelper extends SQLiteOpenHelper {
      * Creates the appointments table.
      */
     private void createAppointmentTable(SQLiteDatabase db) {
-        String createAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.AppointmentEntry.TABLE_NAME
+        String createAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.UpcomingAppointmentEntry.TABLE_NAME
                 + " (" +
-                DbContract.AppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
-                DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL + " TEXT NOT NULL, " +
-                DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " TEXT NOT NULL, " +
-                DbContract.AppointmentEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
-                DbContract.AppointmentEntry.COLUMN_END_TIME + " TEXT NOT NULL, " +
-                DbContract.AppointmentEntry.COLUMN_STATUS + " TEXT NOT NULL, " +
-                DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE + " TEXT DEFAULT '', " +
-                DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES + " TEXT" +
+                DbContract.UpcomingAppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_EMAIL + " TEXT NOT NULL, " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE + " TEXT NOT NULL, " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_END_TIME + " TEXT NOT NULL, " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_PURPOSE + " TEXT DEFAULT ''" +
                 ");";
         db.execSQL(createAppointmentTableQuery);
+    }
+
+    private void createCompletedAppointmentTable(SQLiteDatabase db) {
+        String createCompletedAppointmentTableQuery = "CREATE TABLE IF NOT EXISTS " + DbContract.CompletedAppointmentEntry.TABLE_NAME
+                + " (" +
+                DbContract.CompletedAppointmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL + " TEXT NOT NULL, " +
+                DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL + " TEXT NOT NULL, " +
+                DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE + " TEXT NOT NULL, " +
+                DbContract.CompletedAppointmentEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
+                DbContract.CompletedAppointmentEntry.COLUMN_END_TIME + " TEXT NOT NULL, " +
+                DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE + " TEXT DEFAULT '', " +
+                DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES + " TEXT" +
+                ");";
+        db.execSQL(createCompletedAppointmentTableQuery);
     }
 
     /**
