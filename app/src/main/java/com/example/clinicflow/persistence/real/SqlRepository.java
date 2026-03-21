@@ -520,6 +520,42 @@ public class SqlRepository implements UserRepository {
         return appointments;
     }
 
+    public List<Appointment> getAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> appointments = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selection = DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ?";
+        String[] selectionArgs = { doctorEmail };
+
+        try (Cursor cursor = db.query(
+                DbContract.AppointmentEntry.TABLE_NAME,
+                null, selection, selectionArgs, null, null,
+                DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
+                        DbContract.AppointmentEntry.COLUMN_START_TIME + " ASC")) {
+            while (cursor.moveToNext()) {
+                appointments.add(new Appointment(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL)),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                        LocalDate.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                        LocalTime.parse(cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_START_TIME))),
+                        LocalTime.parse(cursor
+                                .getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_END_TIME))),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_STATUS)),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES))));
+            }
+        }
+        return appointments;
+    }
+
+
+
     @Override
     public void updateAppointment(Appointment appointment) {
         if (appointment == null) return;

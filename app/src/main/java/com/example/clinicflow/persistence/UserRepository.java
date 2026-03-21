@@ -118,5 +118,7 @@ public interface UserRepository {
      */
     List<Appointment> getAppointmentsForPatient(String patientEmail);
 
+    List<Appointment> getAppointmentsForDoctor(String doctorEmail);
+
     void updateAppointment(Appointment appointment);
 }

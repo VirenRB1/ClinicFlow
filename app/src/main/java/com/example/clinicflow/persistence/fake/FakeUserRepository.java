@@ -257,6 +257,17 @@ public class FakeUserRepository implements UserRepository, Serializable {
     }
 
     @Override
+    public List<Appointment> getAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail)) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public void updateAppointment(Appointment appointment) {
         for (int i = 0; i < appointments.size(); i++) {
             if (appointments.get(i).getId() == appointment.getId()) {
