@@ -121,16 +121,15 @@ public class DbFactory {
         List<Appointment> pastAppointments = UserFactory.getDefaultPastAppointments();
         for (Appointment appointment : pastAppointments) {
             ContentValues values = new ContentValues();
-            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
-            values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
-            values.put(DbContract.AppointmentEntry.COLUMN_APPOINTMENT_DATE,
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE,
                     appointment.getAppointmentDate().toString());
-            values.put(DbContract.AppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
-            values.put(DbContract.AppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
-            values.put(DbContract.AppointmentEntry.COLUMN_STATUS, appointment.getStatus());
-            values.put(DbContract.AppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
-            values.put(DbContract.AppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
-            db.insertWithOnConflict(DbContract.AppointmentEntry.TABLE_NAME, null, values,
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
+            values.put(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
+            db.insertWithOnConflict(DbContract.CompletedAppointmentEntry.TABLE_NAME, null, values,
                     SQLiteDatabase.CONFLICT_IGNORE);
         }
     }
