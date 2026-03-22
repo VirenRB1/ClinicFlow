@@ -34,63 +34,40 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void testGetUpcomingAppointmentsForPatient_Exhaustive() {
+    public void testGetUpcomingAppointmentsForPatient() {
         String patientEmail = "patient@test.com";
         LocalDate today = LocalDate.now();
         LocalDate futureDate = today.plusDays(1);
 
-        // 1. Future date, Confirmed (Included) - tests apptDate.isAfter(today)
+        // Sorting check: Future early (9:00), Future late (10:00)
         Appointment appt1 = new Appointment("doc@test.com", patientEmail, futureDate, LocalTime.of(10, 0), LocalTime.of(10, 30), "Confirmed", "", "");
-        // 2. Future date, NOT Confirmed (Excluded) - tests status check
-        Appointment appt2 = new Appointment("doc@test.com", patientEmail, futureDate, LocalTime.of(11, 0), LocalTime.of(11, 30), "Completed", "", "");
-        // 3. Today, future time, Confirmed (Included) - tests apptDate.equals(today) && startTime.isAfter(now)
-        // Using MAX to ensure it's in the future regardless of test run time.
-        Appointment appt3 = new Appointment("doc@test.com", patientEmail, today, LocalTime.MAX, LocalTime.MAX, "Confirmed", "", "");
-        // 4. Today, past time, Confirmed (Excluded) - tests apptDate.equals(today) && startTime.isAfter(now) is false
-        Appointment appt4 = new Appointment("doc@test.com", patientEmail, today, LocalTime.MIN, LocalTime.MIN.plusMinutes(30), "Confirmed", "", "");
-        // 5. Past date, Confirmed (Excluded) - tests apptDate.isAfter and apptDate.equals are both false
-        Appointment appt5 = new Appointment("doc@test.com", patientEmail, today.minusDays(1), LocalTime.of(10, 0), LocalTime.of(10, 30), "Confirmed", "", "");
-        // 6. Sorting check: Future early (9:00), Future late (10:00)
-        Appointment appt6 = new Appointment("doc@test.com", patientEmail, futureDate, LocalTime.of(9, 0), LocalTime.of(9, 30), "Confirmed", "", "");
+        Appointment appt2 = new Appointment("doc@test.com", patientEmail, futureDate, LocalTime.of(9, 0), LocalTime.of(9, 30), "Confirmed", "", "");
 
-        when(mockUserRepository.getAppointmentsForPatient(patientEmail))
-                .thenReturn(Arrays.asList(appt1, appt2, appt3, appt4, appt5, appt6));
+        when(mockUserRepository.getUpcomingAppointmentsForPatient(patientEmail))
+                .thenReturn(Arrays.asList(appt1, appt2));
 
         List<Appointment> results = appointmentService.getUpcomingAppointmentsForPatient(patientEmail);
 
-        // Should include appt3 (today), appt6 (tomorrow 9:00), appt1 (tomorrow 10:00)
-        assertEquals(3, results.size());
-        assertEquals(appt3, results.get(0));
-        assertEquals(appt6, results.get(1));
-        assertEquals(appt1, results.get(2));
+        // Should include both and be sorted
+        assertEquals(2, results.size());
+        assertEquals(appt2, results.get(0)); // 9:00 first
+        assertEquals(appt1, results.get(1)); // 10:00 second
     }
 
     @Test
-    public void testGetPastAppointmentsForPatient_Exhaustive() {
+    public void testGetPastAppointmentsForPatient() {
         String patientEmail = "patient@test.com";
-        LocalDate today = LocalDate.now();
-        LocalDate pastDate = today.minusDays(1);
+        LocalDate pastDate = LocalDate.now().minusDays(1);
 
-        // 1. Status Completed (Included regardless of time) - tests branch 1 of OR
-        Appointment appt1 = new Appointment("doc@test.com", patientEmail, today.plusDays(1), LocalTime.of(10, 0), LocalTime.of(10, 30), "Completed", "", "");
-        // 2. Status Confirmed, Past date (Included) - tests branch 2 of OR (isPastTime && !Cancelled)
-        Appointment appt2 = new Appointment("doc@test.com", patientEmail, pastDate, LocalTime.of(10, 0), LocalTime.of(10, 30), "Confirmed", "", "");
-        // 3. Status Confirmed, Today past time (Included) - tests isPastTime = true for today
-        Appointment appt3 = new Appointment("doc@test.com", patientEmail, today, LocalTime.MIN, LocalTime.MIN.plusMinutes(30), "Confirmed", "", "");
-        // 4. Status Cancelled, Past date (Excluded) - tests ! "Cancelled".equalsIgnoreCase
-        Appointment appt4 = new Appointment("doc@test.com", patientEmail, pastDate, LocalTime.of(11, 0), LocalTime.of(11, 30), "Cancelled", "", "");
-        // 5. Status Confirmed, Future date (Excluded) - tests isPastTime = false
-        Appointment appt5 = new Appointment("doc@test.com", patientEmail, today.plusDays(1), LocalTime.of(12, 0), LocalTime.of(12, 30), "Confirmed", "", "");
-
-        when(mockUserRepository.getAppointmentsForPatient(patientEmail))
-                .thenReturn(Arrays.asList(appt1, appt2, appt3, appt4, appt5));
+        Appointment appt1 = new Appointment("doc@test.com", patientEmail, pastDate, LocalTime.of(10, 0), LocalTime.of(10, 30), "Completed", "", "all ok");
+        
+        when(mockUserRepository.getCompletedAppointmentsForPatient(patientEmail))
+                .thenReturn(Collections.singletonList(appt1));
 
         List<Appointment> results = appointmentService.getPastAppointmentsForPatient(patientEmail);
 
-        assertEquals(3, results.size());
-        assertTrue(results.contains(appt1));
-        assertTrue(results.contains(appt2));
-        assertTrue(results.contains(appt3));
+        assertEquals(1, results.size());
+        assertEquals(appt1, results.get(0));
     }
 
     @Test

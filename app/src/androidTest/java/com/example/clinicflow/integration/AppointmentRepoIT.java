@@ -60,15 +60,15 @@ public class AppointmentRepoIT {
                 LocalTime.of(11,30),
                 "Confirmed",
                 "Checkup",
-                "No notes"
+                ""
                 );
         appointmentService.bookAppointment(apptmt);
 
         // Check that the appointment was booked
         List<Appointment> apptDoctor =
-                repo.getAppointmentsForDoctorOnDate(doctorEmail, date);
+                repo.getUpcomingAppointmentsForDoctor(doctorEmail);
         List<Appointment> apptPatient =
-                repo.getAppointmentsForPatient(patientEmail);
+                repo.getUpcomingAppointmentsForPatient(patientEmail);
         assertEquals(1, apptDoctor.size());
         assertEquals(1, apptPatient.size());
         assertEquals("Confirmed", apptDoctor.get(0).getStatus());
@@ -123,24 +123,31 @@ public class AppointmentRepoIT {
                 LocalTime.of(11,30),
                 "Confirmed",
                 "Checkup",
-                "none"
+                ""
         );
 
+        // Manually add past appointment to completed table logic (via update or add then complete)
+        // Since repo.addAppointment adds to upcoming, we can complete it
         repo.addAppointment(past);
+        appointmentService.completeAppointment(past, "all ok");
+        
         appointmentService.bookAppointment(upcoming);
 
-        List<Appointment> patientAppointments =
-                repo.getAppointmentsForPatient(patientEmail);
+        List<Appointment> upcomingList =
+                repo.getUpcomingAppointmentsForPatient(patientEmail);
+        List<Appointment> completedList =
+                repo.getCompletedAppointmentsForPatient(patientEmail);
 
-        assertEquals(2, patientAppointments.size());
+        assertEquals(1, upcomingList.size());
+        assertEquals(1, completedList.size());
 
-        List<Appointment> upcomingAppointments =
+        List<Appointment> serviceUpcoming =
                 appointmentService.getUpcomingAppointmentsForPatient(patientEmail);
 
-        List<Appointment> pastAppointments =
+        List<Appointment> servicePast =
                 appointmentService.getPastAppointmentsForPatient(patientEmail);
 
-        assertEquals(1, upcomingAppointments.size());
-        assertEquals(1, pastAppointments.size());
+        assertEquals(1, serviceUpcoming.size());
+        assertEquals(1, servicePast.size());
     }
 }

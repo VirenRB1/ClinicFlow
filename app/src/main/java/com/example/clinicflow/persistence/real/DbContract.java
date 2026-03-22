@@ -71,17 +71,28 @@ public final class DbContract {
     /**
      * Entry for the appointments table.
      */
-    public static final class AppointmentEntry implements BaseColumns {
+    public static final class UpcomingAppointmentEntry implements BaseColumns {
         public static final String TABLE_NAME = "appointments";
         public static final String COLUMN_DOCTOR_EMAIL = "doctor_email";
         public static final String COLUMN_PATIENT_EMAIL = "patient_email";
         public static final String COLUMN_APPOINTMENT_DATE = "appointment_date";
         public static final String COLUMN_START_TIME = "start_time";
         public static final String COLUMN_END_TIME = "end_time";
-        public static final String COLUMN_STATUS = "status";
+        public static final String COLUMN_PATIENT_PURPOSE = "patient_purpose";
+    }
+
+    public static final class CompletedAppointmentEntry implements BaseColumns {
+        public static final String TABLE_NAME = "completed_appointments";
+        public static final String COLUMN_DOCTOR_EMAIL = "doctor_email";
+        public static final String COLUMN_PATIENT_EMAIL = "patient_email";
+        public static final String COLUMN_APPOINTMENT_DATE = "appointment_date";
+        public static final String COLUMN_START_TIME = "start_time";
+        public static final String COLUMN_END_TIME = "end_time";
         public static final String COLUMN_PATIENT_PURPOSE = "patient_purpose";
         public static final String COLUMN_DOCTOR_NOTES = "doctor_notes";
     }
+
+
 
     /**
      * Entry for the doctor availability table.

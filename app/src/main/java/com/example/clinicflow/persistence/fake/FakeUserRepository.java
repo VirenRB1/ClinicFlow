@@ -240,22 +240,82 @@ public class FakeUserRepository implements UserRepository, Serializable {
     }
 
     /**
-     * Retrieves all appointments for a patient.
+     * Retrieves upcoming appointments for a patient.
      * 
      * @param patientEmail The patient's email.
-     * @return A list of matching appointments.
+     * @return A list of upcoming appointments.
      */
     @Override
-    public List<Appointment> getAppointmentsForPatient(String patientEmail) {
+    public List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail) {
         List<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments) {
-            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail)) {
+            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail) && 
+                "Confirmed".equalsIgnoreCase(appointment.getStatus())) {
                 result.add(appointment);
             }
         }
         return result;
     }
 
+    /**
+     * Retrieves completed appointments for a patient.
+     * 
+     * @param patientEmail The patient's email.
+     * @return A list of completed appointments.
+     */
+    @Override
+    public List<Appointment> getCompletedAppointmentsForPatient(String patientEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail) && 
+                "Completed".equalsIgnoreCase(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Retrieves upcoming appointments for a doctor.
+     * 
+     * @param doctorEmail The doctor's email.
+     * @return A list of upcoming appointments.
+     */
+    @Override
+    public List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail) && 
+                "Confirmed".equalsIgnoreCase(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Retrieves completed appointments for a doctor.
+     * 
+     * @param doctorEmail The doctor's email.
+     * @return A list of completed appointments.
+     */
+    @Override
+    public List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail) && 
+                "Completed".equalsIgnoreCase(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Updates an appointment in the in-memory list.
+     * 
+     * @param appointment The updated appointment details.
+     */
     @Override
     public void updateAppointment(Appointment appointment) {
         for (int i = 0; i < appointments.size(); i++) {

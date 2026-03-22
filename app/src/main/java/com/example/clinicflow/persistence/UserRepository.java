@@ -111,12 +111,24 @@ public interface UserRepository {
     List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date);
 
     /**
-     * Retrieves all appointments for a specific patient.
+     * Retrieves upcoming appointments for a specific patient.
      * 
      * @param patientEmail The patient's email.
-     * @return A list of appointments.
+     * @return A list of upcoming appointments.
      */
-    List<Appointment> getAppointmentsForPatient(String patientEmail);
+    List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail);
+
+    /**
+     * Retrieves completed appointments for a specific patient.
+     * 
+     * @param patientEmail The patient's email.
+     * @return A list of completed appointments.
+     */
+    List<Appointment> getCompletedAppointmentsForPatient(String patientEmail);
+
+    List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail);
+
+    List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail);
 
     void updateAppointment(Appointment appointment);
 }

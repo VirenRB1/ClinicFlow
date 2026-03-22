@@ -3,7 +3,6 @@ package com.example.clinicflow.business.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -76,12 +75,13 @@ public class LookupServiceTest {
     }
 
     @Test
-    public void testFindPatientByEmail_IsNotPatient_ThrowsClassCastException() {
+    public void testFindPatientByEmail_IsNotPatient_ReturnsNull() {
         String email = "doctor@example.com";
         Doctor doctor = new Doctor("John", "Doe", email, "pass", "Male", LocalDate.of(1990, 1, 1), Specialization.CARDIOLOGY, "LIC123");
         when(mockUserRepository.getUserByEmail(email)).thenReturn(doctor);
 
-        assertThrows(ClassCastException.class, () -> lookupService.findPatientByEmail(email));
+        Patient result = lookupService.findPatientByEmail(email);
+        assertNull(result);
     }
 
     @Test
@@ -107,12 +107,13 @@ public class LookupServiceTest {
     }
 
     @Test
-    public void testFindDoctorByEmail_IsNotDoctor_ThrowsClassCastException() {
+    public void testFindDoctorByEmail_IsNotDoctor_ReturnsNull() {
         String email = "patient@example.com";
         Patient patient = new Patient("Alice", "Brown", email, "pass", "Female", LocalDate.of(2000, 1, 1), "123456", "5551234");
         when(mockUserRepository.getUserByEmail(email)).thenReturn(patient);
 
-        assertThrows(ClassCastException.class, () -> lookupService.findDoctorByEmail(email));
+        Doctor result = lookupService.findDoctorByEmail(email);
+        assertNull(result);
     }
 
     @Test
