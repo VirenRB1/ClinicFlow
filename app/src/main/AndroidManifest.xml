@@ -31,7 +31,8 @@
         <activity android:name=".presentation.doctorScreens.MySchedule" />
         <activity android:name=".presentation.doctorScreens.SetAvailability" />
         <activity android:name=".presentation.sharedScreens.MyAppointments"/>
-        <activity android:name=".presentation.sharedScreens.AppointmentDetail"/>
+        <activity android:name=".presentation.sharedScreens.AppointmentDetail"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".presentation.sharedScreens.Profile"/>
         <activity android:name=".presentation.admin.UserSignUp"/>
         <activity android:name=".presentation.admin.AddOrDeleteScreen"/>

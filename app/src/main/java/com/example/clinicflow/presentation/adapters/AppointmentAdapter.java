@@ -42,7 +42,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentAdapter.MyViewHolder holder, int position) {
-        holder.doc.setText(names.get(position));
+        holder.name.setText(names.get(position));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         holder.date.setText(records.get(position).getAppointmentDate().format(formatter));
     }
@@ -55,13 +55,13 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageview;
 
-        TextView doc, date;
+        TextView name, date;
 
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             imageview = itemView.findViewById(R.id.arrow);
-            doc = itemView.findViewById(R.id.doctorName);
+            name = itemView.findViewById(R.id.doctorName);
             date = itemView.findViewById(R.id.dateTime);
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -35,6 +35,7 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
     private List<Appointment> appointments;
     private String finalEmail;
     private boolean showNotes;
+    private boolean doctorView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         String patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL);
         finalEmail = resolveEmail(userEmail, patientEmail);
         showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
+        doctorView = getIntent().getBooleanExtra(NavigationExtras.DOCTOR_VIEW, false);
 
         BasicBinds.setWindowInsets(this);
     }
@@ -76,7 +78,11 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
 
         List<String> doctorNames = new ArrayList<>();
         for (Appointment a : appointments) {
-            doctorNames.add(lookupService.getFullName(a.getDoctorEmail()));
+            if(doctorView) {
+                doctorNames.add(lookupService.getFullName(a.getPatientEmail()));
+            } else {
+                doctorNames.add(lookupService.getFullName(a.getDoctorEmail()));
+            }
         }
 
         recyclerView.setAdapter(new AppointmentAdapter(this, appointments, doctorNames, this));
@@ -86,6 +92,9 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
     }
 
     private List<Appointment> fetchAppointments() {
+        if (doctorView) {
+            return appointmentService.getUpcomingAppointmentsForDoctor(finalEmail);
+        }
         if (showNotes) {
             return appointmentService.getPastAppointmentsForPatient(finalEmail);
         }
@@ -101,6 +110,7 @@ public class MyAppointments extends AppCompatActivity implements RecyclerViewInt
         intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL,
                 getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL));
         intent.putExtra(NavigationExtras.NOTES, showNotes);
+        intent.putExtra(NavigationExtras.DOCTOR_VIEW, doctorView);
         startActivity(intent);
     }
 

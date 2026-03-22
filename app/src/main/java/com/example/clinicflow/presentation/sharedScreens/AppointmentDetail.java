@@ -2,6 +2,8 @@ package com.example.clinicflow.presentation.sharedScreens;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +31,15 @@ public class AppointmentDetail extends AppCompatActivity {
     private TextView patientName;
     private TextView purpose;
     private TextView noteTitle;
-    private TextView doctorNote;
+    private EditText doctorNote;
     private TextView startTime;
     private TextView endTime;
     private Button cancelBtn;
     private Button backBtn;
+    private Button completeBtn;
+    private boolean doctorView;
+    private boolean showNotes;
+    private ScrollView doctorNoteContainer;
     private Appointment appointment;
     private LookupService lookupService;
     private AppointmentService appointmentService;
@@ -47,17 +53,26 @@ public class AppointmentDetail extends AppCompatActivity {
 
         getServices();
         setDetailViews();
-        setEvents();
 
         appointment = (Appointment) getIntent().getSerializableExtra(NavigationExtras.EXTRA_APPT);
+        doctorView = getIntent().getBooleanExtra(NavigationExtras.DOCTOR_VIEW, false);
+        showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
+
+        setEvents();
+
         if (appointment != null) {
-            setVisibility();
-            boolean showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
-            setDetails(appointment, showNotes);
+            setDetails(appointment, showNotes, doctorView);
+            setButtonsAndFields();
         }
     }
 
-    private void setVisibility(){
+    private void setButtonsAndFields() {
+        if (doctorView) {
+            cancelBtn.setVisibility(Button.GONE);
+            completeBtn.setVisibility(Button.VISIBLE);
+            doctorNote.setEnabled(true);
+        }
+
         if(appointment.getStatus().equalsIgnoreCase("Completed")){
             cancelBtn.setVisibility(Button.GONE);
         }
@@ -71,6 +86,14 @@ public class AppointmentDetail extends AppCompatActivity {
     private void setEvents() {
         cancelBtn.setOnClickListener(v -> cancelOnClick());
         backBtn.setOnClickListener(v -> finish());
+        completeBtn.setOnClickListener(v -> completeOnClick());
+    }
+
+    private void completeOnClick() {
+        String notes = doctorNote.getText().toString();
+        appointmentService.completeAppointment(appointment, notes);
+        Toast.makeText(this, "Appointment Completed", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void cancelOnClick() {
@@ -87,7 +110,7 @@ public class AppointmentDetail extends AppCompatActivity {
         return lookupService.getFullName(email);
     }
 
-    private void setDetails(Appointment record, boolean show) {
+    private void setDetails(Appointment record, boolean show, boolean doctorView) {
         doctorName.setText(getUserName(record.getDoctorEmail()));
         startTime.setText(timeFmt.format(record.getStartTime()));
         endTime.setText(timeFmt.format(record.getEndTime()));
@@ -95,13 +118,33 @@ public class AppointmentDetail extends AppCompatActivity {
         patientName.setText(getUserName(record.getPatientEmail()));
         purpose.setText(record.getPatientPurpose());
 
+        if (doctorView) {
+            noteTitle.setVisibility(TextView.VISIBLE);
+            doctorNoteContainer.setVisibility(ScrollView.VISIBLE);
+            doctorNote.setVisibility(TextView.VISIBLE);
+            doctorNote.setText(record.getDoctorNotes());
+            doctorNote.setEnabled(true);
+            doctorNote.setFocusable(true);
+            doctorNote.setFocusableInTouchMode(true);
+            doctorNote.setCursorVisible(true);
+            doctorNote.setLongClickable(true);
+            return;
+        }
+
         if (!show) {
             noteTitle.setVisibility(TextView.GONE);
+            doctorNoteContainer.setVisibility(ScrollView.GONE);
             doctorNote.setVisibility(TextView.GONE);
         } else {
             noteTitle.setVisibility(TextView.VISIBLE);
+            doctorNoteContainer.setVisibility(ScrollView.VISIBLE);
             doctorNote.setVisibility(TextView.VISIBLE);
             doctorNote.setText(record.getDoctorNotes());
+            doctorNote.setEnabled(true);
+            doctorNote.setFocusable(false);
+            doctorNote.setFocusableInTouchMode(false);
+            doctorNote.setCursorVisible(false);
+            doctorNote.setLongClickable(false);
         }
     }
 
@@ -116,6 +159,8 @@ public class AppointmentDetail extends AppCompatActivity {
         noteTitle = findViewById(R.id.detailDoctorNoteTitle);
         cancelBtn = findViewById(R.id.cancelButton);
         backBtn = findViewById(R.id.backButton);
+        completeBtn = findViewById(R.id.completeButton);
+        doctorNoteContainer = findViewById(R.id.doctorNoteContainer);
     }
 
 }

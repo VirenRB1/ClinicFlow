@@ -11,4 +11,5 @@ public final class NavigationExtras {
     public static final String EXTRA_SLOT = "slot";
     public static final String USER_ROLE = "user_role";
     public static final String NOTES = "show_notes";
+    public static final String DOCTOR_VIEW = "doctor_view";
 }
