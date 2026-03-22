@@ -7,6 +7,7 @@ import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.UserRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,55 +23,28 @@ public class AppointmentService {
 
     //Get all upcoming appointments for a patient
     public List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail) {
-        List<Appointment> allAppointments = userRepository.getAppointmentsForPatient(patientEmail);
-        List<Appointment> upcoming = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
-
-        for (int i = 0; i < allAppointments.size(); i++) {
-            Appointment appt = allAppointments.get(i);
-            if (isAfterNow(appt.getAppointmentDate(), appt.getStartTime(), today, now)) {
-                if ("Confirmed".equalsIgnoreCase(appt.getStatus())) {
-                    upcoming.add(appt);
-                }
-            }
-        }
-
+        List<Appointment> upcoming = userRepository.getUpcomingAppointmentsForPatient(patientEmail);
         sortAppointments(upcoming);
         return upcoming;
     }
 
     //Retrieve all the past appointments for a patient
     public List<Appointment> getPastAppointmentsForPatient(String patientEmail) {
-        List<Appointment> allAppointments = userRepository.getAppointmentsForPatient(patientEmail);
-        List<Appointment> past = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
-
-        for (int i = 0; i < allAppointments.size(); i++) {
-            Appointment appt = allAppointments.get(i);
-            boolean isPastTime = !isAfterNow(appt.getAppointmentDate(), appt.getStartTime(), today, now);
-            if ("Completed".equalsIgnoreCase(appt.getStatus()) || (isPastTime && !"Cancelled".equalsIgnoreCase(appt.getStatus()))) {
-                past.add(appt);
-            }
-        }
-
+        List<Appointment> past = userRepository.getCompletedAppointmentsForPatient(patientEmail);
         sortAppointments(past);
         return past;
+    }
+
+    public List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> upcoming = userRepository.getUpcomingAppointmentsForDoctor(doctorEmail);
+        sortAppointments(upcoming);
+        return upcoming;
     }
 
     //Complete and appointment and add a doctor note
     public void completeAppointment(Appointment appointment, String doctorNote) {
         appointment.setStatus("Completed");
         appointment.setDoctorNotes(doctorNote);
-        userRepository.updateAppointment(appointment);
-    }
-
-    /**
-     * Updates an appointment status to completed or cancelled. Cancell will be implemented in IT3
-     */
-    public void updateAppointmentStatus(Appointment appointment, String newStatus) {
-        appointment.setStatus(newStatus);
         userRepository.updateAppointment(appointment);
     }
 
@@ -97,17 +71,7 @@ public class AppointmentService {
                 date.getDayOfWeek().getValue()
         );
 
-        List<TimeSlot> allSlots = generateTimeSlots(doctorAvailabilities, appointments);
-
-        List<TimeSlot> availableSlots = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
-
-        for (TimeSlot slot : allSlots) {
-            if (slot.isAvailable() && isAfterNow(date, slot.getStartTime(), today, now)) {
-                availableSlots.add(slot);
-            }
-        }
+        List<TimeSlot> availableSlots = generateTimeSlots(doctorAvailabilities, appointments, date);
 
         availableSlots.sort(new Comparator<TimeSlot>() {
             @Override
@@ -167,19 +131,26 @@ public class AppointmentService {
         userRepository.updateAppointment(appointment);
     }
 
-    private List<TimeSlot> generateTimeSlots(List<DoctorAvailability> availabilities, List<Appointment> appointments) {
+    private List<TimeSlot> generateTimeSlots(List<DoctorAvailability> availabilities, List<Appointment> appointments, LocalDate date) {
         List<TimeSlot> timeSlots = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
         for (DoctorAvailability availability : availabilities) {
             LocalTime currentStart = availability.getStartTime();
             LocalTime dayEnd = availability.getEndTime();
 
-            while (currentStart.plusMinutes(SLOT_DURATION_MINUTES).isBefore(dayEnd) ||
-                    currentStart.plusMinutes(SLOT_DURATION_MINUTES).equals(dayEnd)) {
-
+            while (!currentStart.plusMinutes(SLOT_DURATION_MINUTES).isAfter(dayEnd)) {
                 LocalTime currentEnd = currentStart.plusMinutes(SLOT_DURATION_MINUTES);
-                boolean available = isSlotFree(appointments, currentStart, currentEnd);
+                LocalDateTime slotStartTime = LocalDateTime.of(date, currentStart);
 
-                timeSlots.add(new TimeSlot(currentStart, currentEnd, available));
+                // Ensure we only add slots that are in the future
+                if (slotStartTime.isAfter(now)) {
+                    boolean available = isSlotFree(appointments, currentStart, currentEnd);
+                    // Only add the slot to the list if it is actually available
+                    if (available) {
+                        timeSlots.add(new TimeSlot(currentStart, currentEnd, true));
+                    }
+                }
                 currentStart = currentEnd;
             }
         }
