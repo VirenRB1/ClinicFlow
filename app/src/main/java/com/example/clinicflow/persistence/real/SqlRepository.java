@@ -406,7 +406,7 @@ public class SqlRepository implements UserRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String selection = DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ? AND " +
-                DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE + " = ?";
+                DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE + " = ?" ;
 
         String[] selectionArgs = { doctorEmail, date.toString() };
 
@@ -416,21 +416,7 @@ public class SqlRepository implements UserRepository {
                 DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME + " ASC")) {
 
             while (cursor.moveToNext()) {
-                appointments.add(new Appointment(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor
-                                .getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_END_TIME))),
-                        "Confirmed",
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        null));
+                appointments.add(mapUpcoming(cursor));
             }
         }
         
@@ -440,22 +426,7 @@ public class SqlRepository implements UserRepository {
                 DbContract.CompletedAppointmentEntry.COLUMN_START_TIME + " ASC")) {
 
             while (cursor.moveToNext()) {
-                appointments.add(new Appointment(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor
-                                .getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME))),
-                        "Completed",
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES))));
+                appointments.add(mapCompleted(cursor));
             }
         }
         
@@ -500,137 +471,65 @@ public class SqlRepository implements UserRepository {
         return availability;
     }
 
-    /**
-     * Retrieves all appointments for a patient.
-     * 
-     * @param patientEmail The patient's email.
-     * @return List of appointments.
-     */
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<Appointment> getAppointmentsForPatient(String patientEmail) {
+    public List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail) {
         List<Appointment> appointments = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         String selection = DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_EMAIL + " = ?";
         String[] selectionArgs = { patientEmail };
-
-        try (Cursor cursor = db.query(
-                DbContract.UpcomingAppointmentEntry.TABLE_NAME,
-                null, selection, selectionArgs, null, null,
-                DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
-                        DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME + " ASC")) {
-
+        try (Cursor cursor = db.query(DbContract.UpcomingAppointmentEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)) {
             while (cursor.moveToNext()) {
-                appointments.add(new Appointment(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor
-                                .getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_END_TIME))),
-                        "Confirmed",
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        null));
+                appointments.add(mapUpcoming(cursor));
             }
         }
-        
-        try (Cursor cursor = db.query(
-                DbContract.CompletedAppointmentEntry.TABLE_NAME,
-                null, selection, selectionArgs, null, null,
-                DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
-                        DbContract.CompletedAppointmentEntry.COLUMN_START_TIME + " ASC")) {
-
-            while (cursor.moveToNext()) {
-                appointments.add(new Appointment(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor
-                                .getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME))),
-                        "Completed",
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES))));
-            }
-        }
-        
         return appointments;
     }
 
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<Appointment> getAppointmentsForDoctor(String doctorEmail) {
+    public List<Appointment> getCompletedAppointmentsForPatient(String patientEmail) {
         List<Appointment> appointments = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String selection = DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ?";
-        String[] selectionArgs = { doctorEmail };
-
-        try (Cursor cursor = db.query(
-                DbContract.UpcomingAppointmentEntry.TABLE_NAME,
-                null, selection, selectionArgs, null, null,
-                DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
-                        DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME + " ASC")) {
+        String selection = DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL + " = ?";
+        String[] selectionArgs = { patientEmail };
+        try (Cursor cursor = db.query(DbContract.CompletedAppointmentEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)) {
             while (cursor.moveToNext()) {
-                appointments.add(new Appointment(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor
-                                .getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_END_TIME))),
-                        "Confirmed",
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        null));
+                appointments.add(mapCompleted(cursor));
             }
         }
-        
-        try (Cursor cursor = db.query(
-                DbContract.CompletedAppointmentEntry.TABLE_NAME,
-                null, selection, selectionArgs, null, null,
-                DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE + " ASC, " +
-                        DbContract.CompletedAppointmentEntry.COLUMN_START_TIME + " ASC")) {
-            while (cursor.moveToNext()) {
-                appointments.add(new Appointment(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL)),
-                        LocalDate.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
-                        LocalTime.parse(cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME))),
-                        LocalTime.parse(cursor
-                                .getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME))),
-                        "Completed",
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES))));
-            }
-        }
-        
         return appointments;
     }
 
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> appointments = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selection = DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ?";
+        String[] selectionArgs = { doctorEmail };
+        try (Cursor cursor = db.query(DbContract.UpcomingAppointmentEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)) {
+            while (cursor.moveToNext()) {
+                appointments.add(mapUpcoming(cursor));
+            }
+        }
+        return appointments;
+    }
 
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> appointments = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selection = DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ?";
+        String[] selectionArgs = { doctorEmail };
+        try (Cursor cursor = db.query(DbContract.CompletedAppointmentEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)) {
+            while (cursor.moveToNext()) {
+                appointments.add(mapCompleted(cursor));
+            }
+        }
+        return appointments;
+    }
 
     @Override
     public void updateAppointment(Appointment appointment) {
@@ -663,4 +562,33 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Appointment mapUpcoming(Cursor cursor) {
+        return new Appointment(
+                cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry._ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME))),
+                LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_END_TIME))),
+                "Confirmed",
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                null
+        );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Appointment mapCompleted(Cursor cursor) {
+        return new Appointment(
+                cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry._ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL)),
+                LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
+                LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME))),
+                LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME))),
+                "Completed",
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES))
+        );
+    }
 }
