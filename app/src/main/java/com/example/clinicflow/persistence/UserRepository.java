@@ -71,6 +71,30 @@ public interface UserRepository {
     Patient getPatientByEmail(String email);
 
     /**
+     * Retrieves a doctor by email.
+     * 
+     * @param email The email to search for.
+     * @return The Doctor object or null if not found.
+     */
+    Doctor getDoctorByEmail(String email);
+
+    /**
+     * Retrieves a staff member by email.
+     * 
+     * @param email The email to search for.
+     * @return The Staff object or null if not found.
+     */
+    Staff getStaffByEmail(String email);
+
+    /**
+     * Retrieves an administrator by email.
+     * 
+     * @param email The email to search for.
+     * @return The Admin object or null if not found.
+     */
+    Admin getAdminByEmail(String email);
+
+    /**
      * Retrieves any user type by email.
      * 
      * @param email The email to search for.

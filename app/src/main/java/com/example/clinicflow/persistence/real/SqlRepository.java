@@ -308,6 +308,92 @@ public class SqlRepository implements UserRepository {
     }
 
     /**
+     * Retrieves a doctor by email.
+     * 
+     * @param email The email address.
+     * @return The Doctor if found, null otherwise.
+     */
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Doctor getDoctorByEmail(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor cursor = db.query(DbContract.DoctorEntry.TABLE_NAME, null,
+                DbContract.DoctorEntry.COLUMN_EMAIL + " = ?", new String[] { email }, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                String specStr = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_SPECIALIZATION));
+                Specialization specialization;
+                try {
+                    specialization = Specialization.valueOf(specStr.trim().toUpperCase().replace(" ", "_"));
+                } catch (Exception e) {
+                    specialization = Specialization.GENERAL_MEDICINE;
+                }
+
+                return new Doctor(
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_FIRST_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LAST_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_EMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_PASSWORD)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_GENDER)),
+                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_DATE_OF_BIRTH))),
+                        specialization,
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.DoctorEntry.COLUMN_LICENSE_NUMBER)));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves a staff member by email.
+     * 
+     * @param email The email address.
+     * @return The Staff if found, null otherwise.
+     */
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Staff getStaffByEmail(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor cursor = db.query(DbContract.StaffEntry.TABLE_NAME, null,
+                DbContract.StaffEntry.COLUMN_EMAIL + " = ?", new String[] { email }, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                return new Staff(
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_FIRST_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_LAST_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_EMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_PASSWORD)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_GENDER)),
+                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_DATE_OF_BIRTH))),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.StaffEntry.COLUMN_POSITION)));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves an admin by email.
+     * 
+     * @param email The email address.
+     * @return The Admin if found, null otherwise.
+     */
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Admin getAdminByEmail(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor cursor = db.query(DbContract.AdminEntry.TABLE_NAME, null,
+                DbContract.AdminEntry.COLUMN_EMAIL + " = ?", new String[] { email }, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                return new Admin(
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_FIRST_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_LAST_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_EMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_PASSWORD)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_GENDER)),
+                        LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.AdminEntry.COLUMN_DATE_OF_BIRTH))));
+            }
+        }
+        return null;
+    }
+
+    /**
      * Retrieves a user by email, searching through all user types.
      * 
      * @param email The email address.
@@ -319,24 +405,12 @@ public class SqlRepository implements UserRepository {
         if (email == null)
             return null;
 
-        for (Admin admin : getAllAdmins()) {
-            if (admin.getEmail().equalsIgnoreCase(email))
-                return admin;
-        }
-        for (Doctor doctor : getAllDoctors()) {
-            if (doctor.getEmail().equalsIgnoreCase(email))
-                return doctor;
-        }
-        for (Staff staff : getAllStaffs()) {
-            if (staff.getEmail().equalsIgnoreCase(email))
-                return staff;
-        }
-        for (Patient patient : getAllPatients()) {
-            if (patient.getEmail().equalsIgnoreCase(email))
-                return patient;
-        }
+        Users user = getAdminByEmail(email);
+        if (user == null) user = getDoctorByEmail(email);
+        if (user == null) user = getStaffByEmail(email);
+        if (user == null) user = getPatientByEmail(email);
 
-        return null;
+        return user;
     }
 
     /**

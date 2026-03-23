@@ -138,8 +138,56 @@ public class FakeUserRepository implements UserRepository, Serializable {
     @Override
     public Patient getPatientByEmail(String email) {
         for (Patient patient : patients) {
-            if (patient.getEmail().equals(email)) {
+            if (patient.getEmail().equalsIgnoreCase(email)) {
                 return patient;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds a doctor by email.
+     * 
+     * @param email The email to search for.
+     * @return The Doctor object or null.
+     */
+    @Override
+    public Doctor getDoctorByEmail(String email) {
+        for (Doctor doctor : doctors) {
+            if (doctor.getEmail().equalsIgnoreCase(email)) {
+                return doctor;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds a staff member by email.
+     * 
+     * @param email The email to search for.
+     * @return The Staff object or null.
+     */
+    @Override
+    public Staff getStaffByEmail(String email) {
+        for (Staff staff : staffs) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
+                return staff;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds an administrator by email.
+     * 
+     * @param email The email to search for.
+     * @return The Admin object or null.
+     */
+    @Override
+    public Admin getAdminByEmail(String email) {
+        for (Admin admin : admins) {
+            if (admin.getEmail().equalsIgnoreCase(email)) {
+                return admin;
             }
         }
         return null;
@@ -153,31 +201,11 @@ public class FakeUserRepository implements UserRepository, Serializable {
      */
     @Override
     public Users getUserByEmail(String email) {
-        for (Doctor doctor : doctors) {
-            if (doctor.getEmail().equalsIgnoreCase(email)) {
-                return doctor;
-            }
-        }
-
-        for (Staff staff : staffs) {
-            if (staff.getEmail().equalsIgnoreCase(email)) {
-                return staff;
-            }
-        }
-
-        for (Patient patient : patients) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                return patient;
-            }
-        }
-
-        for (Admin admin : admins) {
-            if (admin.getEmail().equalsIgnoreCase(email)) {
-                return admin;
-            }
-        }
-
-        return null;
+        Users user = getAdminByEmail(email);
+        if (user == null) user = getDoctorByEmail(email);
+        if (user == null) user = getStaffByEmail(email);
+        if (user == null) user = getPatientByEmail(email);
+        return user;
     }
 
     /**
