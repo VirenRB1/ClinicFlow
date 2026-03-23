@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.services.LookupService;
+import com.example.clinicflow.business.validators.AppointmentValidator;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
@@ -39,6 +42,10 @@ public class BookAppointment extends AppCompatActivity {
 
     private Doctor selectedDoctor;
 
+    private AppointmentValidator validator;
+
+    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -50,10 +57,17 @@ public class BookAppointment extends AppCompatActivity {
         LookupService lookupService = app.getLookupService();
 
         doctors = lookupService.getDoctors();
+        validator = new AppointmentValidator();
 
         patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
-        setEvents();
 
+        if (patientEmail == null) {
+            Toast.makeText(this, "No Patient Email", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        setEvents();
         BasicBinds.setWindowInsets(this);
     }
 
@@ -65,12 +79,15 @@ public class BookAppointment extends AppCompatActivity {
     }
 
     private void findSlots() {
-        if (!doctorEditText.getText().toString().isEmpty() || dateEditText.getText().toString().isEmpty()) {
+        try {
+            validator.validateDoctorAndDate(selectedDoctor, actualDate);
             Intent intent = new Intent(this, Slots.class);
             intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, patientEmail);
             intent.putExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL, selectedDoctor.getEmail());
             intent.putExtra(DATE, actualDate.toString());
             startActivity(intent);
+        } catch (ValidationExceptions.ValidationException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

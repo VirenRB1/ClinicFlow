@@ -77,13 +77,49 @@ public class ValidationExceptions {
 
     public static class AppointmentCancellationException extends ValidationException {
         public AppointmentCancellationException() {
-            super("This appointment cannot be cancelled .");
+            super("This appointment cannot be cancelled.");
         }
     }
 
     public static class InvalidAppointmentDateException extends ValidationException {
         public InvalidAppointmentDateException() {
             super("Appointment date cannot be in the past.");
+        }
+    }
+
+    public static class MissingDoctorException extends ValidationException {
+        public MissingDoctorException() {
+            super("Please select a doctor.");
+        }
+    }
+
+    public static class MissingAppointmentDateException extends ValidationException {
+        public MissingAppointmentDateException() {
+            super("Please select a date.");
+        }
+    }
+
+    public static class MissingTimeSlotException extends ValidationException {
+        public MissingTimeSlotException() {
+            super("Missing time slot.");
+        }
+    }
+
+    public static class MissingPatientEmailException extends ValidationException {
+        public MissingPatientEmailException() {
+            super("Missing patient email.");
+        }
+    }
+
+    public static class MissingDoctorEmailException extends ValidationException {
+        public MissingDoctorEmailException() {
+            super("Missing doctor email.");
+        }
+    }
+
+    public static class MissingPurposeException extends ValidationException {
+        public MissingPurposeException() {
+            super("Missing purpose.");
         }
     }
 

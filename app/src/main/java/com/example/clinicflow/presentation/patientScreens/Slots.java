@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,9 +48,14 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
         patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         doctorEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL);
         String date = getIntent().getStringExtra(BookAppointment.DATE);
-        if (date != null) {
-            actualDate = LocalDate.parse(date);
+
+        if (doctorEmail == null || patientEmail == null || date == null) {
+            Toast.makeText(this, "Invalid doctor email, patient email, or date", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
+
+        actualDate = LocalDate.parse(date);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadSlots();
@@ -63,16 +69,15 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
     }
 
     private void loadSlots() {
-        if (doctorEmail != null && actualDate != null) {
-            ClinicFlowApp app = (ClinicFlowApp) getApplication();
-            AppointmentService appointmentService = app.getAppointmentService();
-            slots = appointmentService.getAvailableTimeSlots(doctorEmail, actualDate);
+        ClinicFlowApp app = (ClinicFlowApp) getApplication();
+        AppointmentService appointmentService = app.getAppointmentService();
 
-            TimeSlotAdapter adapter = new TimeSlotAdapter(this, slots, this);
-            recyclerView.setAdapter(adapter);
+        slots = appointmentService.getAvailableTimeSlots(doctorEmail, actualDate);
 
-            showDetails(slots, emptyStateText);
-        }
+        TimeSlotAdapter adapter = new TimeSlotAdapter(this, slots, this);
+        recyclerView.setAdapter(adapter);
+
+        showDetails(slots, emptyStateText);
     }
 
     private void showDetails(List<TimeSlot> slots, TextView emptyStateText) {
