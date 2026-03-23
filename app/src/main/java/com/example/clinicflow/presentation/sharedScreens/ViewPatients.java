@@ -102,5 +102,8 @@ public class ViewPatients extends AppCompatActivity {
         healthCard = findViewById(R.id.healthCardActual);
         phone = findViewById(R.id.phoneActual);
         emailAddress = findViewById(R.id.editTextEmailAddress);
+
+        TextView searchTitle = findViewById(R.id.searchSectionTitle);
+        searchTitle.setText(R.string.search_by_email);
     }
 }
