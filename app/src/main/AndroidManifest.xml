@@ -28,7 +28,6 @@
         <activity android:name=".presentation.staffScreens.ManageAppointments" />
         <activity android:name=".presentation.sharedScreens.ViewPatients" />
         <activity android:name=".presentation.staffScreens.ViewDoctors" />
-        <activity android:name=".presentation.doctorScreens.MySchedule" />
         <activity android:name=".presentation.doctorScreens.SetAvailability" />
         <activity android:name=".presentation.sharedScreens.MyAppointments"/>
         <activity android:name=".presentation.sharedScreens.AppointmentDetail"

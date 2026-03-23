@@ -121,5 +121,8 @@ public class UserDelete extends AppCompatActivity {
         gender = findViewById(R.id.genderActual);
         age = findViewById(R.id.ageActual);
         emailAddress = findViewById(R.id.editTextEmailAddress);
+
+        TextView searchTitle = findViewById(R.id.searchSectionTitle);
+        searchTitle.setText(R.string.search_by_email_user);
     }
 }
