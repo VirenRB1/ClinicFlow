@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertThrows;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.stubbing.OngoingStubbing;
 
 public class UserSignupValidatorTest {
 
@@ -121,9 +122,12 @@ public class UserSignupValidatorTest {
         });
     }
 
+
     @Test
     public void userValidator_duplicateEmail_shouldThrowDuplicateEmailException() {
-        when(repo.getPatientByEmail("john@example.com")).thenReturn(getPatient());
+        when(repo.getUserByEmail("john@example.com"))
+                .thenReturn(getPatient("john@example.com"));
+
         assertThrows(ValidationExceptions.DuplicateEmailException.class, () -> {
             validator.userValidator(
                     "John",
@@ -134,6 +138,13 @@ public class UserSignupValidatorTest {
                     validDob()
             );
         });
+    }
+
+    private static Patient getPatient(String email) {
+        return new Patient(
+                "Alice", "Brown", email, "pass4", "Female",
+                LocalDate.of(2000, 1, 1), "123456", "5551234"
+        );
     }
 
     @Test
