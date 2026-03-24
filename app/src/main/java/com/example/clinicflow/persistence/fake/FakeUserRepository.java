@@ -1,6 +1,7 @@
 package com.example.clinicflow.persistence.fake;
 
 import com.example.clinicflow.models.Admin;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.persistence.UserFactory;
 import com.example.clinicflow.persistence.UserRepository;
 
@@ -278,7 +279,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         List<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments) {
             if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail) && 
-                "Confirmed".equalsIgnoreCase(appointment.getStatus())) {
+                AppointmentStatus.CONFIRMED.equals(appointment.getStatus())) {
                 result.add(appointment);
             }
         }
@@ -296,7 +297,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         List<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments) {
             if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail) && 
-                "Completed".equalsIgnoreCase(appointment.getStatus())) {
+                AppointmentStatus.COMPLETED.equals(appointment.getStatus())) {
                 result.add(appointment);
             }
         }
@@ -314,7 +315,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         List<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments) {
             if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail) && 
-                "Confirmed".equalsIgnoreCase(appointment.getStatus())) {
+                AppointmentStatus.CONFIRMED.equals(appointment.getStatus())) {
                 result.add(appointment);
             }
         }
@@ -332,7 +333,7 @@ public class FakeUserRepository implements UserRepository, Serializable {
         List<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments) {
             if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail) && 
-                "Completed".equalsIgnoreCase(appointment.getStatus())) {
+                AppointmentStatus.COMPLETED.equals(appointment.getStatus())) {
                 result.add(appointment);
             }
         }

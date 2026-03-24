@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.clinicflow.models.Admin;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Specialization;
@@ -611,7 +612,7 @@ public class SqlRepository implements UserRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            if ("Completed".equalsIgnoreCase(appointment.getStatus())) {
+            if (AppointmentStatus.COMPLETED.equals(appointment.getStatus())) {
                 db.delete(DbContract.UpcomingAppointmentEntry.TABLE_NAME, 
                         DbContract.UpcomingAppointmentEntry._ID + " = ?", 
                         new String[]{String.valueOf(appointment.getId())});
@@ -625,7 +626,7 @@ public class SqlRepository implements UserRepository {
                 values.put(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
                 values.put(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
                 db.insert(DbContract.CompletedAppointmentEntry.TABLE_NAME, null, values);
-            } else if ("Cancelled".equalsIgnoreCase(appointment.getStatus())) {
+            } else if (AppointmentStatus.CANCELLED.equals(appointment.getStatus())) {
                 db.delete(DbContract.UpcomingAppointmentEntry.TABLE_NAME, 
                         DbContract.UpcomingAppointmentEntry._ID + " = ?", 
                         new String[]{String.valueOf(appointment.getId())});
@@ -645,7 +646,7 @@ public class SqlRepository implements UserRepository {
                 LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
                 LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_START_TIME))),
                 LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_END_TIME))),
-                "Confirmed",
+                AppointmentStatus.CONFIRMED,
                 cursor.getString(cursor.getColumnIndexOrThrow(DbContract.UpcomingAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
                 null
         );
@@ -660,7 +661,7 @@ public class SqlRepository implements UserRepository {
                 LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE))),
                 LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME))),
                 LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME))),
-                "Completed",
+                AppointmentStatus.COMPLETED,
                 cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES))
         );

@@ -11,7 +11,7 @@ public class Appointment implements Serializable {
     private LocalDate appointmentDate;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String status;
+    private AppointmentStatus status;
     private String patientPurpose;
     private String doctorNotes;
 
@@ -21,7 +21,7 @@ public class Appointment implements Serializable {
             LocalDate appointmentDate,
             LocalTime startTime,
             LocalTime endTime,
-            String status,
+            AppointmentStatus status,
             String patientPurpose,
             String doctorNotes) {
         this.id = id;
@@ -40,7 +40,7 @@ public class Appointment implements Serializable {
             LocalDate appointmentDate,
             LocalTime startTime,
             LocalTime endTime,
-            String status,
+            AppointmentStatus status,
             String patientPurpose,
             String doctorNotes) {
         this.doctorEmail = doctorEmail;
@@ -77,7 +77,7 @@ public class Appointment implements Serializable {
         return endTime;
     }
 
-    public String getStatus() {
+    public AppointmentStatus getStatus() {
         return status;
     }
 
@@ -105,7 +105,7 @@ public class Appointment implements Serializable {
         this.endTime = endTime;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(AppointmentStatus status) {
         this.status = status;
     }
 

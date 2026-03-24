@@ -2,6 +2,7 @@ package com.example.clinicflow.business.services;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.UserRepository;
@@ -43,7 +44,7 @@ public class AppointmentService {
 
     //Complete and appointment and add a doctor note
     public void completeAppointment(Appointment appointment, String doctorNote) {
-        appointment.setStatus("Completed");
+        appointment.setStatus(AppointmentStatus.COMPLETED);
         appointment.setDoctorNotes(doctorNote);
         userRepository.updateAppointment(appointment);
     }
@@ -106,7 +107,7 @@ public class AppointmentService {
             throw new ValidationExceptions.AppointmentConflictException();
         }
 
-        appointment.setStatus("Confirmed");
+        appointment.setStatus(AppointmentStatus.CONFIRMED);
         userRepository.addAppointment(appointment);
     }
 
@@ -115,11 +116,11 @@ public class AppointmentService {
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
 
-        if("Cancelled".equalsIgnoreCase(appointment.getStatus())){
+        if(AppointmentStatus.CANCELLED.equals(appointment.getStatus())){
             throw new ValidationExceptions.AppointmentCancellationException();
         }
 
-        if ("Completed".equalsIgnoreCase(appointment.getStatus())) {
+        if (AppointmentStatus.COMPLETED.equals(appointment.getStatus())) {
             throw new ValidationExceptions.AppointmentCancellationException();
         }
 
@@ -127,7 +128,7 @@ public class AppointmentService {
             throw new ValidationExceptions.AppointmentCancellationException();
         }
 
-        appointment.setStatus("Cancelled");
+        appointment.setStatus(AppointmentStatus.CANCELLED);
         userRepository.updateAppointment(appointment);
     }
 
@@ -171,7 +172,7 @@ public class AppointmentService {
     // Helper method to check if a time slot is free
     private boolean isSlotFree(List<Appointment> appointments, LocalTime start, LocalTime end) {
         for (Appointment appt : appointments) {
-            if (!"Cancelled".equalsIgnoreCase(appt.getStatus())) {
+            if (appt.getStatus() != AppointmentStatus.CANCELLED) {
                 if (start.isBefore(appt.getEndTime()) && appt.getStartTime().isBefore(end)) {
                     return false;
                 }
