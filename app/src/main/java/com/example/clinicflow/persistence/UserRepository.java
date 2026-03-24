@@ -154,5 +154,6 @@ public interface UserRepository {
 
     List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail);
 
+    //
     void updateAppointment(Appointment appointment);
 }
