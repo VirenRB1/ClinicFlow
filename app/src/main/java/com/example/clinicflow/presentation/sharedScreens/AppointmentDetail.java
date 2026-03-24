@@ -16,6 +16,7 @@ import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.business.services.LookupService;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 
@@ -73,7 +74,7 @@ public class AppointmentDetail extends AppCompatActivity {
             doctorNote.setEnabled(true);
         }
 
-        if(appointment.getStatus().equalsIgnoreCase("Completed")){
+        if(AppointmentStatus.COMPLETED.equals(appointment.getStatus())){
             cancelBtn.setVisibility(Button.GONE);
         }
     }

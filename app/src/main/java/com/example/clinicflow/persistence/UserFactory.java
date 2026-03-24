@@ -2,6 +2,7 @@ package com.example.clinicflow.persistence;
 
 import com.example.clinicflow.models.Admin;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Specialization;
@@ -74,12 +75,12 @@ public class UserFactory {
     public static List<Appointment> getDefaultPastAppointments() {
         List<Appointment> appointments = new ArrayList<>();
         appointments.add(new Appointment("johndoe@clinicdoc.com", "alicebrown@gmail.com", LocalDate.of(2023, 3, 15),
-                LocalTime.of(10, 0), LocalTime.of(10, 30), "Completed", "Severe Headache", "Prescribed Medication"));
+                LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.COMPLETED, "Severe Headache", "Prescribed Medication"));
         appointments.add(new Appointment("janesmith@clinicdoc.com", "bobdavis@gmail.com", LocalDate.of(2023, 3, 16),
-                LocalTime.of(14, 0), LocalTime.of(14, 30), "Completed", "Back Pain", "Prescribed Medication"));
+                LocalTime.of(14, 0), LocalTime.of(14, 30), AppointmentStatus.COMPLETED, "Back Pain", "Prescribed Medication"));
         appointments
                 .add(new Appointment("emilyjohnson@clinicdoc.com", "charliewilson@gmail.com", LocalDate.of(2023, 3, 17),
-                        LocalTime.of(9, 0), LocalTime.of(9, 30), "Completed", "Chest Pain", "Prescribed Medication"));
+                        LocalTime.of(9, 0), LocalTime.of(9, 30), AppointmentStatus.COMPLETED, "Chest Pain", "Prescribed Medication"));
         return appointments;
     }
 }

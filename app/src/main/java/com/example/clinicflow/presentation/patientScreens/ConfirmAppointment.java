@@ -18,6 +18,7 @@ import com.example.clinicflow.business.services.LookupService;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.validators.AppointmentValidator;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
@@ -27,7 +28,7 @@ import java.time.LocalDate;
 
 public class ConfirmAppointment extends AppCompatActivity {
 
-    private static final String STATUS = "Confirmed";
+    private static final AppointmentStatus STATUS = AppointmentStatus.CONFIRMED;
     private static final String DEFAULT_NOTES = "";
     private Button backButton;
     private Button confirmButton;

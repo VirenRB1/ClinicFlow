@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.AppDbHelper;
@@ -58,7 +59,7 @@ public class AppointmentRepoIT {
                 date,
                 LocalTime.of(11,0),
                 LocalTime.of(11,30),
-                "Confirmed",
+                AppointmentStatus.CONFIRMED,
                 "Checkup",
                 ""
                 );
@@ -71,7 +72,7 @@ public class AppointmentRepoIT {
                 repo.getUpcomingAppointmentsForPatient(patientEmail);
         assertEquals(1, apptDoctor.size());
         assertEquals(1, apptPatient.size());
-        assertEquals("Confirmed", apptDoctor.get(0).getStatus());
+        assertEquals(AppointmentStatus.CONFIRMED, apptDoctor.get(0).getStatus());
 
         // Check that slot is removed
         boolean slotRemoved = appointmentService.getAvailableTimeSlots(doctorEmail, date).stream()
@@ -109,7 +110,7 @@ public class AppointmentRepoIT {
                 today.minusDays(1),
                 LocalTime.of(10,0),
                 LocalTime.of(10,30),
-                "Completed",
+                AppointmentStatus.COMPLETED,
                 "Checkup",
                 "all ok"
         );
@@ -121,7 +122,7 @@ public class AppointmentRepoIT {
                 upcomingDate,
                 LocalTime.of(11,0),
                 LocalTime.of(11,30),
-                "Confirmed",
+                AppointmentStatus.CONFIRMED,
                 "Checkup",
                 ""
         );

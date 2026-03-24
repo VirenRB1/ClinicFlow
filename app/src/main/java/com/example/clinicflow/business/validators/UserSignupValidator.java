@@ -159,14 +159,14 @@ public class UserSignupValidator {
     }
 
     /**
-     * Checks if an email is already registered in the system.
+     * Checks if an email is already registered in the system across all user types.
      * 
      * @param email The email to check.
      * @throws ValidationExceptions.DuplicateEmailException If the email exists.
      */
     private void validateDuplicateEmail(String email)
             throws ValidationExceptions.DuplicateEmailException {
-        if (repo.getPatientByEmail(email) != null) {
+        if (repo.getUserByEmail(email) != null) {
             throw new ValidationExceptions.DuplicateEmailException();
         }
     }
