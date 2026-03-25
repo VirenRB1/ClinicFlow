@@ -1,7 +1,5 @@
 package com.example.clinicflow.presentation.patientScreens;
 
-import static com.example.clinicflow.presentation.Navigation.logoutToMain;
-
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,14 +28,13 @@ public class ConfirmAppointment extends AppCompatActivity {
 
     private static final AppointmentStatus STATUS = AppointmentStatus.CONFIRMED;
     private static final String DEFAULT_NOTES = "";
-    private Button backButton;
+    private BasicBinds binds;
     private Button confirmButton;
     private TextView name;
     private TextView email;
     private TextView startTime;
     private TextView endTime;
     private TextView dateView;
-    private Button logoutButton;
     private EditText purpose;
 
     private String patientEmail;
@@ -61,7 +58,7 @@ public class ConfirmAppointment extends AppCompatActivity {
         patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         doctorEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL);
         String dateString = getIntent().getStringExtra(BookAppointment.DATE);
-        slot = (TimeSlot) getIntent().getSerializableExtra(NavigationExtras.EXTRA_SLOT);
+        slot = getIntent().getSerializableExtra(NavigationExtras.EXTRA_SLOT, TimeSlot.class);
 
         if (patientEmail == null || doctorEmail == null || dateString == null || slot == null) {
             Toast.makeText(this, "Invalid data", Toast.LENGTH_SHORT).show();
@@ -72,6 +69,7 @@ public class ConfirmAppointment extends AppCompatActivity {
         date = LocalDate.parse(dateString);
 
         setTexts();
+        binds.setBasicEvents(this, patientEmail);
         setEvents();
         BasicBinds.setWindowInsets(this);
     }
@@ -94,8 +92,6 @@ public class ConfirmAppointment extends AppCompatActivity {
     }
 
     private void setEvents() {
-        backButton.setOnClickListener(v -> finish());
-        logoutButton.setOnClickListener(v -> logoutToMain(this));
         confirmButton.setOnClickListener(v -> onConfirmClick());
     }
 
@@ -117,14 +113,13 @@ public class ConfirmAppointment extends AppCompatActivity {
     }
 
     private void setViews() {
-        backButton = findViewById(R.id.backButton);
+        binds = BasicBinds.setBasicBinds(this);
         confirmButton = findViewById(R.id.confirmButton);
         name = findViewById(R.id.nameActual);
         email = findViewById(R.id.emailActual);
         startTime = findViewById(R.id.startTimeActual);
         endTime = findViewById(R.id.endTimeActual);
         dateView = findViewById(R.id.dateActual);
-        logoutButton = findViewById(R.id.logoutButton);
         purpose = findViewById(R.id.purposeEditText);
     }
 

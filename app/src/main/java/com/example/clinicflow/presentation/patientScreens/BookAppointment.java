@@ -114,7 +114,6 @@ public class BookAppointment extends AppCompatActivity {
         LocalDate curr = LocalDate.now();
 
         DatePickerDialog dialog = new DatePickerDialog(this,
-                android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 (view, year, month, dayOfMonth) -> {
                     actualDate = LocalDate.of(year, month + 1, dayOfMonth);
                     dateEditText.setText(actualDate.toString());

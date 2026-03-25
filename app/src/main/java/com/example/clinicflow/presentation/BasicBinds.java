@@ -3,7 +3,7 @@ package com.example.clinicflow.presentation;
 import static com.example.clinicflow.presentation.Navigation.logoutToMain;
 
 import android.app.Activity;
-import android.widget.Button;
+import android.view.View;
 
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -14,18 +14,22 @@ import com.example.clinicflow.presentation.sharedScreens.Profile;
 
 public class BasicBinds {
 
-    private Button logout;
-    private Button profile;
-    private Button back;
+    private final View logout;
+    private final View profile;
+    private final View back;
+
+    private BasicBinds (View logout, View profile, View back) {
+        this.logout = logout;
+        this.profile = profile;
+        this.back = back;
+    }
 
     public static BasicBinds setBasicBinds(Activity activity) {
-        BasicBinds binds = new BasicBinds();
+        View logout = activity.findViewById(R.id.logoutButton);
+        View profile = activity.findViewById(R.id.profileButton);
+        View back = activity.findViewById(R.id.backButton);
 
-        binds.logout = activity.findViewById(R.id.logoutButton);
-        binds.profile = activity.findViewById(R.id.profileButton);
-        binds.back = activity.findViewById(R.id.backButton);
-
-        return binds;
+        return new BasicBinds(logout, profile, back);
     }
 
     public static void setWindowInsets(Activity activity) {
