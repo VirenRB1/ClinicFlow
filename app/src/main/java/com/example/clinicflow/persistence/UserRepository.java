@@ -71,6 +71,30 @@ public interface UserRepository {
     Patient getPatientByEmail(String email);
 
     /**
+     * Retrieves a doctor by email.
+     * 
+     * @param email The email to search for.
+     * @return The Doctor object or null if not found.
+     */
+    Doctor getDoctorByEmail(String email);
+
+    /**
+     * Retrieves a staff member by email.
+     * 
+     * @param email The email to search for.
+     * @return The Staff object or null if not found.
+     */
+    Staff getStaffByEmail(String email);
+
+    /**
+     * Retrieves an administrator by email.
+     * 
+     * @param email The email to search for.
+     * @return The Admin object or null if not found.
+     */
+    Admin getAdminByEmail(String email);
+
+    /**
      * Retrieves any user type by email.
      * 
      * @param email The email to search for.
@@ -111,10 +135,25 @@ public interface UserRepository {
     List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date);
 
     /**
-     * Retrieves all appointments for a specific patient.
+     * Retrieves upcoming appointments for a specific patient.
      * 
      * @param patientEmail The patient's email.
-     * @return A list of appointments.
+     * @return A list of upcoming appointments.
      */
-    List<Appointment> getAppointmentsForPatient(String patientEmail);
+    List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail);
+
+    /**
+     * Retrieves completed appointments for a specific patient.
+     * 
+     * @param patientEmail The patient's email.
+     * @return A list of completed appointments.
+     */
+    List<Appointment> getCompletedAppointmentsForPatient(String patientEmail);
+
+    List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail);
+
+    List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail);
+
+    //
+    void updateAppointment(Appointment appointment);
 }

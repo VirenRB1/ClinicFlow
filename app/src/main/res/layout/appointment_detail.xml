@@ -151,6 +151,7 @@
             android:textStyle="bold" />
 
         <ScrollView
+            android:id="@+id/doctorNoteContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="12dp"
@@ -160,14 +161,16 @@
             android:fillViewport="true"
             app:layout_constraintHeight_default="wrap">
 
-            <TextView
+            <EditText
                 android:id="@+id/detailDoctorNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:visibility="visible"
                 android:visibility="gone"
                 android:text="@string/default_doc_note"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:hint="@string/doc_note_hint"
+                android:inputType="textMultiLine"/>
         </ScrollView>
 
 
@@ -177,16 +180,53 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="150dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="50dp"
         android:backgroundTint="@color/blue"
         android:fontFamily="sans-serif-medium"
         android:text="@string/back"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/cancel"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:visibility="visible"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/completeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/complete"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

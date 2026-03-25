@@ -96,4 +96,7 @@
     <string name="appt_details">Appointment Details</string>
     <string name="appointments">Appointments</string>
     <string name="my_apt_detail">Click an Appointment to View Details</string>
+    <string name="cancel">Cancel</string>
+    <string name="doc_note_hint">Enter Notes</string>
+    <string name="complete">Complete</string>
 </resources>

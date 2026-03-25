@@ -1,14 +1,16 @@
 package com.example.clinicflow.integration;
 
 import android.content.Context;
+
 import static org.junit.Assert.*;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
+import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.models.Appointment;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.AppDbHelper;
@@ -31,7 +33,6 @@ public class AppointmentRepoIT {
     public void setup() {
         Context context = ApplicationProvider.getApplicationContext();
 
-        // Clean DB so test is deterministic
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
 
         repo = new SqlRepository(context);
@@ -44,7 +45,6 @@ public class AppointmentRepoIT {
         String doctorEmail = "doctor1@gmail.com";
         String patientEmail = "patient11@gmail.com";
 
-        // Add doctor availability so booking doesn't fail validation
         repo.addDoctorAvailability(new DoctorAvailability(
                 doctorEmail,
                 date.getDayOfWeek().getValue(),
@@ -56,27 +56,27 @@ public class AppointmentRepoIT {
                 doctorEmail,
                 patientEmail,
                 date,
-                LocalTime.of(11,0),
-                LocalTime.of(11,30),
-                "Confirmed",
+                LocalTime.of(11, 0),
+                LocalTime.of(11, 30),
+                AppointmentStatus.CONFIRMED,
                 "Checkup",
-                "No notes"
-                );
+                ""
+        );
+
         appointmentService.bookAppointment(apptmt);
 
-        // Check that the appointment was booked
-        List<Appointment> apptDoctor =
-                repo.getAppointmentsForDoctorOnDate(doctorEmail, date);
-        List<Appointment> apptPatient =
-                repo.getAppointmentsForPatient(patientEmail);
+        List<Appointment> apptDoctor = repo.getUpcomingAppointmentsForDoctor(doctorEmail);
+        List<Appointment> apptPatient = repo.getUpcomingAppointmentsForPatient(patientEmail);
+
         assertEquals(1, apptDoctor.size());
         assertEquals(1, apptPatient.size());
-        assertEquals("Confirmed", apptDoctor.get(0).getStatus());
+        assertEquals(AppointmentStatus.CONFIRMED, apptDoctor.get(0).getStatus());
 
-        // Check that slot is removed
         boolean slotRemoved = appointmentService.getAvailableTimeSlots(doctorEmail, date).stream()
-                .noneMatch(s -> s.getStartTime().equals(LocalTime.of(11,0)) &&
-                        s.getEndTime().equals(LocalTime.of(11,30)));
+                .noneMatch(s ->
+                        s.getStartTime().equals(LocalTime.of(11, 0)) &&
+                                s.getEndTime().equals(LocalTime.of(11, 30)));
+
         assertTrue(slotRemoved);
     }
 
@@ -86,61 +86,39 @@ public class AppointmentRepoIT {
         String doctorEmail = "doctorPU@gmail.com";
         String patientEmail = "patientPU@gmail.com";
 
-        // Add availability for today and the upcoming date
-        repo.addDoctorAvailability(new DoctorAvailability(
-                doctorEmail,
-                today.getDayOfWeek().getValue(),
-                LocalTime.of(9,0),
-                LocalTime.of(17,0)
-        ));
-
         LocalDate upcomingDate = today.plusDays(2);
         repo.addDoctorAvailability(new DoctorAvailability(
                 doctorEmail,
                 upcomingDate.getDayOfWeek().getValue(),
-                LocalTime.of(9,0),
-                LocalTime.of(17,0)
+                LocalTime.of(9, 0),
+                LocalTime.of(17, 0)
         ));
 
-        // Past appointment
-        Appointment past = new Appointment(
-                doctorEmail,
-                patientEmail,
-                today.minusDays(1),
-                LocalTime.of(10,0),
-                LocalTime.of(10,30),
-                "Completed",
-                "Checkup",
-                "all ok"
-        );
-
-        // Upcoming appointment
         Appointment upcoming = new Appointment(
                 doctorEmail,
                 patientEmail,
                 upcomingDate,
-                LocalTime.of(11,0),
-                LocalTime.of(11,30),
-                "Confirmed",
+                LocalTime.of(11, 0),
+                LocalTime.of(11, 30),
+                AppointmentStatus.CONFIRMED,
                 "Checkup",
-                "none"
+                ""
         );
 
-        repo.addAppointment(past);
         appointmentService.bookAppointment(upcoming);
 
-        List<Appointment> patientAppointments =
-                repo.getAppointmentsForPatient(patientEmail);
+        List<Appointment> upcomingList = repo.getUpcomingAppointmentsForPatient(patientEmail);
+        List<Appointment> completedList = repo.getCompletedAppointmentsForPatient(patientEmail);
 
-        assertEquals(2, patientAppointments.size());
+        assertEquals(1, upcomingList.size());
+        assertEquals(0, completedList.size());
 
-        List<Appointment> upcomingAppointments =
+        List<Appointment> serviceUpcoming =
                 appointmentService.getUpcomingAppointmentsForPatient(patientEmail);
-
-        List<Appointment> pastAppointments =
+        List<Appointment> servicePast =
                 appointmentService.getPastAppointmentsForPatient(patientEmail);
 
-        assertEquals(1, upcomingAppointments.size());
-        assertEquals(1, pastAppointments.size());
+        assertEquals(1, serviceUpcoming.size());
+        assertEquals(0, servicePast.size());
     }
 }

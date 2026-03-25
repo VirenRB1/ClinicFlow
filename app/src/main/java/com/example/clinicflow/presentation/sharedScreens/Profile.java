@@ -1,9 +1,6 @@
 package com.example.clinicflow.presentation.sharedScreens;
 
-import static com.example.clinicflow.presentation.Navigation.logoutToMain;
-
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,9 +20,7 @@ import com.google.android.material.card.MaterialCardView;
 
 public class Profile extends AppCompatActivity {
 
-    private Button logout;
-    private Button back;
-
+    private BasicBinds binds;
     private MaterialCardView userCard;
     private TextView email;
     private TextView name;
@@ -58,9 +53,9 @@ public class Profile extends AppCompatActivity {
         lookupService = app.getLookupService();
 
         setViews();
-        setEvents();
 
         final String userEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        binds.setBasicEvents(this, userEmail);
         loadProfile(userEmail);
         BasicBinds.setWindowInsets(this);
     }
@@ -130,14 +125,8 @@ public class Profile extends AppCompatActivity {
         healthCardActual.setVisibility(TextView.GONE);
     }
 
-    private void setEvents() {
-        logout.setOnClickListener(v -> logoutToMain(this));
-        back.setOnClickListener(v -> finish());
-    }
-
     private void setViews() {
-        logout = findViewById(R.id.logoutButton);
-        back = findViewById(R.id.backButton);
+        binds = BasicBinds.setBasicBinds(this);
 
         userCard = findViewById(R.id.userCard);
         email = findViewById(R.id.emailActual);

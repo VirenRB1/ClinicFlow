@@ -36,24 +36,20 @@ public class LookupService {
      * Specifically finds a patient by their email.
      * 
      * @param email The patient's email.
-     * @return The Patient object if found and the user is indeed a patient, null
-     *         otherwise.
+     * @return The Patient object if found, null otherwise.
      */
     public Patient findPatientByEmail(String email) {
-        Users user = userRepository.getUserByEmail(email);
-        return (user instanceof Patient) ? (Patient) user : null;
+        return userRepository.getPatientByEmail(email);
     }
 
     /**
      * Specifically finds a doctor by their email.
      * 
      * @param email The doctor's email.
-     * @return The Doctor object if found and the user is indeed a doctor, null
-     *         otherwise.
+     * @return The Doctor object if found, null otherwise.
      */
     public Doctor findDoctorByEmail(String email) {
-        Users user = userRepository.getUserByEmail(email);
-        return (user instanceof Doctor) ? (Doctor) user : null;
+        return userRepository.getDoctorByEmail(email);
     }
 
     /**

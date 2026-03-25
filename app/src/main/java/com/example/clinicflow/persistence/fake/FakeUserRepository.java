@@ -1,6 +1,7 @@
 package com.example.clinicflow.persistence.fake;
 
 import com.example.clinicflow.models.Admin;
+import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.persistence.UserFactory;
 import com.example.clinicflow.persistence.UserRepository;
 
@@ -138,8 +139,56 @@ public class FakeUserRepository implements UserRepository, Serializable {
     @Override
     public Patient getPatientByEmail(String email) {
         for (Patient patient : patients) {
-            if (patient.getEmail().equals(email)) {
+            if (patient.getEmail().equalsIgnoreCase(email)) {
                 return patient;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds a doctor by email.
+     * 
+     * @param email The email to search for.
+     * @return The Doctor object or null.
+     */
+    @Override
+    public Doctor getDoctorByEmail(String email) {
+        for (Doctor doctor : doctors) {
+            if (doctor.getEmail().equalsIgnoreCase(email)) {
+                return doctor;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds a staff member by email.
+     * 
+     * @param email The email to search for.
+     * @return The Staff object or null.
+     */
+    @Override
+    public Staff getStaffByEmail(String email) {
+        for (Staff staff : staffs) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
+                return staff;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds an administrator by email.
+     * 
+     * @param email The email to search for.
+     * @return The Admin object or null.
+     */
+    @Override
+    public Admin getAdminByEmail(String email) {
+        for (Admin admin : admins) {
+            if (admin.getEmail().equalsIgnoreCase(email)) {
+                return admin;
             }
         }
         return null;
@@ -153,31 +202,11 @@ public class FakeUserRepository implements UserRepository, Serializable {
      */
     @Override
     public Users getUserByEmail(String email) {
-        for (Doctor doctor : doctors) {
-            if (doctor.getEmail().equalsIgnoreCase(email)) {
-                return doctor;
-            }
-        }
-
-        for (Staff staff : staffs) {
-            if (staff.getEmail().equalsIgnoreCase(email)) {
-                return staff;
-            }
-        }
-
-        for (Patient patient : patients) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                return patient;
-            }
-        }
-
-        for (Admin admin : admins) {
-            if (admin.getEmail().equalsIgnoreCase(email)) {
-                return admin;
-            }
-        }
-
-        return null;
+        Users user = getAdminByEmail(email);
+        if (user == null) user = getDoctorByEmail(email);
+        if (user == null) user = getStaffByEmail(email);
+        if (user == null) user = getPatientByEmail(email);
+        return user;
     }
 
     /**
@@ -240,19 +269,89 @@ public class FakeUserRepository implements UserRepository, Serializable {
     }
 
     /**
-     * Retrieves all appointments for a patient.
+     * Retrieves upcoming appointments for a patient.
      * 
      * @param patientEmail The patient's email.
-     * @return A list of matching appointments.
+     * @return A list of upcoming appointments.
      */
     @Override
-    public List<Appointment> getAppointmentsForPatient(String patientEmail) {
+    public List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail) {
         List<Appointment> result = new ArrayList<>();
         for (Appointment appointment : appointments) {
-            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail)) {
+            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail) && 
+                AppointmentStatus.CONFIRMED.equals(appointment.getStatus())) {
                 result.add(appointment);
             }
         }
         return result;
+    }
+
+    /**
+     * Retrieves completed appointments for a patient.
+     * 
+     * @param patientEmail The patient's email.
+     * @return A list of completed appointments.
+     */
+    @Override
+    public List<Appointment> getCompletedAppointmentsForPatient(String patientEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getPatientEmail().equalsIgnoreCase(patientEmail) && 
+                AppointmentStatus.COMPLETED.equals(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Retrieves upcoming appointments for a doctor.
+     * 
+     * @param doctorEmail The doctor's email.
+     * @return A list of upcoming appointments.
+     */
+    @Override
+    public List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail) && 
+                AppointmentStatus.CONFIRMED.equals(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Retrieves completed appointments for a doctor.
+     * 
+     * @param doctorEmail The doctor's email.
+     * @return A list of completed appointments.
+     */
+    @Override
+    public List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail) {
+        List<Appointment> result = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equalsIgnoreCase(doctorEmail) && 
+                AppointmentStatus.COMPLETED.equals(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Updates an appointment in the in-memory list.
+     * 
+     * @param appointment The updated appointment details.
+     */
+    @Override
+    public void updateAppointment(Appointment appointment) {
+        for (int i = 0; i < appointments.size(); i++) {
+            if (appointments.get(i).getId() == appointment.getId()) {
+                appointments.set(i, appointment);
+                return;
+            }
+        }
     }
 }

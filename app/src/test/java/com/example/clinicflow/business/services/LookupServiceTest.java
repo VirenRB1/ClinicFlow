@@ -3,7 +3,6 @@ package com.example.clinicflow.business.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +56,7 @@ public class LookupServiceTest {
     public void testFindPatientByEmail_IsPatient() {
         String email = "patient@example.com";
         Patient patient = new Patient("Alice", "Brown", email, "pass", "Female", LocalDate.of(2000, 1, 1), "123456", "5551234");
-        when(mockUserRepository.getUserByEmail(email)).thenReturn(patient);
+        when(mockUserRepository.getPatientByEmail(email)).thenReturn(patient);
 
         Patient result = lookupService.findPatientByEmail(email);
 
@@ -68,7 +67,7 @@ public class LookupServiceTest {
     @Test
     public void testFindPatientByEmail_DoesNotExist() {
         String email = "notfound@example.com";
-        when(mockUserRepository.getUserByEmail(email)).thenReturn(null);
+        when(mockUserRepository.getPatientByEmail(email)).thenReturn(null);
 
         Patient result = lookupService.findPatientByEmail(email);
 
@@ -76,19 +75,20 @@ public class LookupServiceTest {
     }
 
     @Test
-    public void testFindPatientByEmail_IsNotPatient_ThrowsClassCastException() {
+    public void testFindPatientByEmail_IsNotPatient_ReturnsNull() {
+        // The repository contract for getPatientByEmail is to return null if not a patient
         String email = "doctor@example.com";
-        Doctor doctor = new Doctor("John", "Doe", email, "pass", "Male", LocalDate.of(1990, 1, 1), Specialization.CARDIOLOGY, "LIC123");
-        when(mockUserRepository.getUserByEmail(email)).thenReturn(doctor);
+        when(mockUserRepository.getPatientByEmail(email)).thenReturn(null);
 
-        assertThrows(ClassCastException.class, () -> lookupService.findPatientByEmail(email));
+        Patient result = lookupService.findPatientByEmail(email);
+        assertNull(result);
     }
 
     @Test
     public void testFindDoctorByEmail_IsDoctor() {
         String email = "doctor@example.com";
         Doctor doctor = new Doctor("John", "Doe", email, "pass", "Male", LocalDate.of(1990, 1, 1), Specialization.CARDIOLOGY, "LIC123");
-        when(mockUserRepository.getUserByEmail(email)).thenReturn(doctor);
+        when(mockUserRepository.getDoctorByEmail(email)).thenReturn(doctor);
 
         Doctor result = lookupService.findDoctorByEmail(email);
 
@@ -99,7 +99,7 @@ public class LookupServiceTest {
     @Test
     public void testFindDoctorByEmail_DoesNotExist() {
         String email = "notfound@example.com";
-        when(mockUserRepository.getUserByEmail(email)).thenReturn(null);
+        when(mockUserRepository.getDoctorByEmail(email)).thenReturn(null);
 
         Doctor result = lookupService.findDoctorByEmail(email);
 
@@ -107,12 +107,13 @@ public class LookupServiceTest {
     }
 
     @Test
-    public void testFindDoctorByEmail_IsNotDoctor_ThrowsClassCastException() {
+    public void testFindDoctorByEmail_IsNotDoctor_ReturnsNull() {
+        // The repository contract for getDoctorByEmail is to return null if not a doctor
         String email = "patient@example.com";
-        Patient patient = new Patient("Alice", "Brown", email, "pass", "Female", LocalDate.of(2000, 1, 1), "123456", "5551234");
-        when(mockUserRepository.getUserByEmail(email)).thenReturn(patient);
+        when(mockUserRepository.getDoctorByEmail(email)).thenReturn(null);
 
-        assertThrows(ClassCastException.class, () -> lookupService.findDoctorByEmail(email));
+        Doctor result = lookupService.findDoctorByEmail(email);
+        assertNull(result);
     }
 
     @Test

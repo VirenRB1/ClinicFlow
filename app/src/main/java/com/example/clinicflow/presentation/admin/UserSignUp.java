@@ -53,7 +53,7 @@ public class UserSignUp extends AppCompatActivity {
 
         setViews();
 
-        UserRole role = (UserRole) getIntent().getSerializableExtra(NavigationExtras.USER_ROLE);
+        UserRole role = getIntent().getSerializableExtra(NavigationExtras.USER_ROLE, UserRole.class);
 
         makeVisible(role);
         setEvents(role);
@@ -83,7 +83,6 @@ public class UserSignUp extends AppCompatActivity {
         LocalDate curr = LocalDate.now();
 
         DatePickerDialog dialog = new DatePickerDialog(this,
-                android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 (view, year, month, dayOfMonth) -> {
                     actDob = LocalDate.of(year, month + 1, dayOfMonth);
                     dob.setText(actDob.toString());
