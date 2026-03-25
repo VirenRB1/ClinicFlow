@@ -1,7 +1,8 @@
 package com.example.clinicflow.presentation.admin;
 
 import static com.example.clinicflow.presentation.BasicBinds.setBasicBinds;
-import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.Navigation.navigateToSearchCard;
+import static com.example.clinicflow.presentation.NavigationExtras.MODE_DELETE_USER;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class AddOrDeleteScreen extends AppCompatActivity {
     private void setEvents(UserRole role, String email) {
         binds.setBasicEvents(this, email);
         addButton.setOnClickListener(v -> onClickAdd(role));
-        deleteButton.setOnClickListener(v -> navigateWithUserEmail(this, UserDelete.class, email));
+        deleteButton.setOnClickListener(v -> navigateToSearchCard(this, email, MODE_DELETE_USER));
     }
 
     private void onClickAdd(UserRole role) {
