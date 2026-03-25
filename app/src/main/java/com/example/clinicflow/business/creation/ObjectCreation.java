@@ -6,6 +6,7 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Specialization;
+import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.persistence.UserRepository;
 
@@ -30,10 +31,33 @@ public class ObjectCreation {
         this.VALIDATOR = new UserSignupValidator(userRepository);
     }
 
+    public boolean addUserToDatabase(UserRole role, String firstName, String lastName, String email, String password, String confirmPw, String gender,
+                                     LocalDate dateOfBirth, String healthCardNum, String phoneNumber, String specialization, String licenseNumber, String position) throws ValidationExceptions.ValidationException {
+        if (role == UserRole.PATIENT) {
+            return addPatientToDatabase(firstName, lastName, email, password, confirmPw, gender, dateOfBirth, healthCardNum, phoneNumber);
+        } else if (role == UserRole.DOCTOR) {
+            return addDoctorToDatabase(firstName, lastName, email, password, confirmPw, gender, dateOfBirth, parseSpecialization(specialization), licenseNumber);
+        } else if (role == UserRole.STAFF) {
+            return addStaffToDatabase(firstName, lastName, email, password, confirmPw, gender, dateOfBirth, position);
+        }
+        return false;
+    }
+
+    private Specialization parseSpecialization(String spec) {
+        if (spec == null || spec.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Specialization.valueOf(spec.trim().toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     /**
      * Validates and adds a new patient to the database.
      */
-    public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String gender,
+    public boolean addPatientToDatabase(String firstName, String lastName, String email, String password, String confirmPW, String gender,
             LocalDate dateOfBirth, String healthCardNum, String phoneNumber)
             throws ValidationExceptions.ValidationException {
 
@@ -42,6 +66,7 @@ public class ObjectCreation {
                 lastName,
                 email,
                 password,
+                confirmPW,
                 gender,
                 dateOfBirth,
                 healthCardNum,
@@ -60,7 +85,7 @@ public class ObjectCreation {
      * @throws ValidationExceptions.ValidationException If any input fails
      *                                                  validation.
      */
-    public boolean addDoctorToDatabase(String firstName, String lastName, String email, String password, String gender,
+    public boolean addDoctorToDatabase(String firstName, String lastName, String email, String password, String confirmPW, String gender,
             LocalDate dateOfBirth, Specialization specialization, String licenseNumber)
             throws ValidationExceptions.ValidationException {
         VALIDATOR.doctorValidator(
@@ -68,6 +93,7 @@ public class ObjectCreation {
                 lastName,
                 email,
                 password,
+                confirmPW,
                 gender,
                 dateOfBirth,
                 specialization,
@@ -84,7 +110,7 @@ public class ObjectCreation {
      * @throws ValidationExceptions.ValidationException If any input fails
      *                                                  validation.
      */
-    public boolean addStaffToDatabase(String firstName, String lastName, String email, String password, String gender,
+    public boolean addStaffToDatabase(String firstName, String lastName, String email, String password, String confirmPW, String gender,
             LocalDate dateOfBirth, String position)
             throws ValidationExceptions.ValidationException {
         VALIDATOR.staffValidator(
@@ -92,6 +118,7 @@ public class ObjectCreation {
                 lastName,
                 email,
                 password,
+                confirmPW,
                 gender,
                 dateOfBirth);
         DATABASE.addStaff(

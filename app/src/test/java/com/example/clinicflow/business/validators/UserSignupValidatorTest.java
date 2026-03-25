@@ -10,7 +10,6 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertThrows;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
 public class UserSignupValidatorTest {
 
@@ -121,7 +120,6 @@ public class UserSignupValidatorTest {
             );
         });
     }
-
 
     @Test
     public void userValidator_duplicateEmail_shouldThrowDuplicateEmailException() {
@@ -285,6 +283,7 @@ public class UserSignupValidatorTest {
                             "Smith",
                             "patient@example.com",
                             "secret123",
+                            "secret123",
                             "Male",
                             validDob(),
                             "123456789",
@@ -301,6 +300,24 @@ public class UserSignupValidatorTest {
     }
 
     @Test
+    public void patientValidator_passwordMismatch_shouldThrowPasswordMismatchException() {
+        when(repo.getPatientByEmail("patient@example.com")).thenReturn(null);
+        assertThrows(ValidationExceptions.PasswordMismatchException.class, () -> {
+            validator.patientValidator(
+                    "Pat",
+                    "Smith",
+                    "patient@example.com",
+                    "secret123",
+                    "different",
+                    "Male",
+                    validDob(),
+                    "123456789",
+                    "2045551234"
+            );
+        });
+    }
+
+    @Test
     public void patientValidator_emptyPhone_shouldThrowEmptyFieldException() {
         when(repo.getPatientByEmail("patient@example.com")).thenReturn(null);
         assertThrows(ValidationExceptions.EmptyFieldException.class, () -> {
@@ -308,6 +325,7 @@ public class UserSignupValidatorTest {
                     "Pat",
                     "Smith",
                     "patient@example.com",
+                    "secret123",
                     "secret123",
                     "Male",
                     validDob(),
@@ -325,6 +343,7 @@ public class UserSignupValidatorTest {
                     "Pat",
                     "Smith",
                     "patient@example.com",
+                    "secret123",
                     "secret123",
                     "Male",
                     validDob(),
@@ -344,6 +363,7 @@ public class UserSignupValidatorTest {
                             "Pat",
                             "Smith",
                             "patient@example.com",
+                            "secret123",
                             "secret123",
                             "Male",
                             validDob(),
@@ -369,6 +389,7 @@ public class UserSignupValidatorTest {
                     "Smith",
                     "patient@example.com",
                     "secret123",
+                    "secret123",
                     "Male",
                     validDob(),
                     "",
@@ -385,6 +406,7 @@ public class UserSignupValidatorTest {
                     "Pat",
                     "Smith",
                     "patient@example.com",
+                    "secret123",
                     "secret123",
                     "Male",
                     validDob(),
@@ -404,6 +426,7 @@ public class UserSignupValidatorTest {
                             "Pat",
                             "Smith",
                             "patient@example.com",
+                            "secret123",
                             "secret123",
                             "Male",
                             validDob(),
@@ -435,6 +458,7 @@ public class UserSignupValidatorTest {
                             "Brown",
                             "doctor@example.com",
                             "secret123",
+                            "secret123",
                             "Male",
                             validDob(),
                             Specialization.values()[0],
@@ -451,6 +475,24 @@ public class UserSignupValidatorTest {
     }
 
     @Test
+    public void doctorValidator_passwordMismatch_shouldThrowPasswordMismatchException() {
+        when(repo.getPatientByEmail("doctor@example.com")).thenReturn(null);
+        assertThrows(ValidationExceptions.PasswordMismatchException.class, () -> {
+            validator.doctorValidator(
+                    "Doc",
+                    "Brown",
+                    "doctor@example.com",
+                    "secret123",
+                    "different",
+                    "Male",
+                    validDob(),
+                    Specialization.values()[0],
+                    "LIC12345"
+            );
+        });
+    }
+
+    @Test
     public void doctorValidator_nullSpecialization_shouldThrowEmptyFieldException() {
         when(repo.getPatientByEmail("doctor@example.com")).thenReturn(null);
         assertThrows(ValidationExceptions.EmptyFieldException.class, () -> {
@@ -458,6 +500,7 @@ public class UserSignupValidatorTest {
                     "Doc",
                     "Brown",
                     "doctor@example.com",
+                    "secret123",
                     "secret123",
                     "Male",
                     validDob(),
@@ -476,6 +519,7 @@ public class UserSignupValidatorTest {
                     "Brown",
                     "doctor@example.com",
                     "secret123",
+                    "secret123",
                     "Male",
                     validDob(),
                     Specialization.values()[0],
@@ -492,6 +536,7 @@ public class UserSignupValidatorTest {
                     "Doc",
                     "Brown",
                     "doctor@example.com",
+                    "secret123",
                     "secret123",
                     "Male",
                     validDob(),
@@ -516,6 +561,7 @@ public class UserSignupValidatorTest {
                             "Member",
                             "staff@example.com",
                             "secret123",
+                            "secret123",
                             "Female",
                             validDob()
                     );
@@ -530,6 +576,22 @@ public class UserSignupValidatorTest {
     }
 
     @Test
+    public void staffValidator_passwordMismatch_shouldThrowPasswordMismatchException() {
+        when(repo.getPatientByEmail("staff@example.com")).thenReturn(null);
+        assertThrows(ValidationExceptions.PasswordMismatchException.class, () -> {
+            validator.staffValidator(
+                    "Staff",
+                    "Member",
+                    "staff@example.com",
+                    "secret123",
+                    "different",
+                    "Female",
+                    validDob()
+            );
+        });
+    }
+
+    @Test
     public void staffValidator_invalidUnderlyingUserInput_shouldThrowException() {
         when(repo.getPatientByEmail("staff@example.com")).thenReturn(null);
         assertThrows(ValidationExceptions.InvalidGenderException.class, () -> {
@@ -538,13 +600,15 @@ public class UserSignupValidatorTest {
                     "Member",
                     "staff@example.com",
                     "secret123",
+                    "secret123",
                     "InvalidGender",
                     validDob()
             );
         });
     }
-    private static Patient getPatient(){
-        return new Patient("Alice","Brown","alicebrown@gmail.com","pass4","Female", LocalDate.of(2000,1,1),"123456","5551234");
-    }
 
+    private static Patient getPatient() {
+        return new Patient("Alice", "Brown", "alicebrown@gmail.com", "pass4", "Female",
+                LocalDate.of(2000, 1, 1), "123456", "5551234");
+    }
 }

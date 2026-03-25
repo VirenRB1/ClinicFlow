@@ -67,14 +67,25 @@ public class UserSignupValidator {
             String lastName,
             String email,
             String password,
+            String confirmPw,
             String gender,
             LocalDate dateOfBirth,
             String healthCardNum,
             String phoneNumber) throws ValidationExceptions.ValidationException {
+        validatePWsMatch(password, confirmPw);
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
-
         validatePhoneNumber(phoneNumber);
         validateHealthCardNumber(healthCardNum);
+    }
+
+    private void validatePWsMatch(String password, String confirmPw) throws ValidationExceptions.ValidationException {
+        if (password == null || !password.equals(confirmPw)) {
+            throw new ValidationExceptions.PasswordMismatchException();
+        }
+    }
+
+    {
+
     }
 
     /**
@@ -95,12 +106,13 @@ public class UserSignupValidator {
             String lastName,
             String email,
             String password,
+            String confirmPw,
             String gender,
             LocalDate dateOfBirth,
             Specialization specialization,
             String licenseNumber) throws ValidationExceptions.ValidationException {
+        validatePWsMatch(password, confirmPw);
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
-
         validateSpecialization(specialization);
         validateLicenseNumber(licenseNumber);
     }
@@ -121,8 +133,10 @@ public class UserSignupValidator {
             String lastName,
             String email,
             String password,
+            String confirmPw,
             String gender,
             LocalDate dateOfBirth) throws ValidationExceptions.ValidationException {
+        validatePWsMatch(password, confirmPw);
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
     }
 
