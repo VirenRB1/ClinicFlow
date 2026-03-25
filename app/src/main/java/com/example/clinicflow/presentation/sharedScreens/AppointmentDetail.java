@@ -55,7 +55,7 @@ public class AppointmentDetail extends AppCompatActivity {
         getServices();
         setDetailViews();
 
-        appointment = (Appointment) getIntent().getSerializableExtra(NavigationExtras.EXTRA_APPT);
+        appointment = getIntent().getSerializableExtra(NavigationExtras.EXTRA_APPT, Appointment.class);
         doctorView = getIntent().getBooleanExtra(NavigationExtras.DOCTOR_VIEW, false);
         showNotes = getIntent().getBooleanExtra(NavigationExtras.NOTES, false);
 
