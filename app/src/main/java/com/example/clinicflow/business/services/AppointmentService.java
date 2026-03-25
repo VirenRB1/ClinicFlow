@@ -17,6 +17,7 @@ import java.util.List;
 public class AppointmentService {
     private final UserRepository userRepository;
     private final int SLOT_DURATION_MINUTES = 30;
+    private final String DEFAULT_NOTES = "";
 
     public AppointmentService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -83,6 +84,11 @@ public class AppointmentService {
         return availableSlots;
     }
 
+    public void bookAppointment(String doctorEmail, String patientEmail, LocalDate date, TimeSlot slot, String purpose) throws ValidationExceptions.ValidationException {
+        Appointment appointment = new Appointment(doctorEmail, patientEmail, date, slot.getStartTime(),
+                slot.getEndTime(), AppointmentStatus.CONFIRMED, purpose, DEFAULT_NOTES);
+        bookAppointment(appointment);
+    }
     //Book an appointment for a patient
     public void bookAppointment(Appointment appointment) throws ValidationExceptions.ValidationException {
         if (appointment.getAppointmentDate().isBefore(LocalDate.now())) {
