@@ -14,7 +14,6 @@ import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.R;
 import com.example.clinicflow.business.creation.ObjectCreation;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
-import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
@@ -93,7 +92,21 @@ public class UserSignUp extends AppCompatActivity {
 
     private void onSignUpClick(UserRole role) {
         try {
-            boolean added = addUserByRole(role);
+            boolean added = objectCreation.addUserToDatabase(
+                    role,
+                    cleanText(firstName),
+                    cleanText(lastName),
+                    cleanText(email),
+                    cleanText(password),
+                    cleanText(confirmPassword),
+                    cleanText(gender),
+                    actDob,
+                    cleanText(healthCard),
+                    cleanText(phoneNumber),
+                    cleanText(specialization),
+                    cleanText(licenseNumber),
+                    cleanText(position));
+
             if (added) {
                 Toast.makeText(this, role + " added successfully", Toast.LENGTH_LONG).show();
                 finish();
@@ -104,44 +117,6 @@ public class UserSignUp extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-    private boolean addUserByRole(UserRole role) throws ValidationExceptions.ValidationException {
-        String first = cleanText(firstName);
-        String last = cleanText(lastName);
-        String emailAdd = cleanText(email);
-        String pass = cleanText(password);
-        String confirm = cleanText(confirmPassword);
-        String genderStr = cleanText(gender);
-
-        if (!pass.equals(confirm)) {
-            throw new ValidationExceptions.ValidationException("Passwords do not match");
-        }
-
-        if (role == UserRole.PATIENT) {
-            return objectCreation.addPatientToDatabase(
-                    first, last, emailAdd, pass, genderStr, actDob,
-                    cleanText(healthCard), cleanText(phoneNumber));
-        } else if (role == UserRole.DOCTOR) {
-            return objectCreation.addDoctorToDatabase(
-                    first, last, emailAdd, pass, genderStr, actDob,
-                    parseSpecialization(cleanText(specialization)), cleanText(licenseNumber));
-        } else if (role == UserRole.STAFF) {
-            return objectCreation.addStaffToDatabase(
-                    first, last, emailAdd, pass, genderStr, actDob, cleanText(position));
-        }
-        return false;
-    }
-
-    private Specialization parseSpecialization(String spec) {
-        if (spec == null || spec.isEmpty())
-            return null;
-        try {
-            return Specialization.valueOf(spec.trim().toUpperCase().replace(" ", "_"));
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
     private String cleanText(EditText editText) {
         return editText.getText().toString().trim();
     }
