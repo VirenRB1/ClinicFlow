@@ -137,17 +137,57 @@
                 app:layout_constraintStart_toEndOf="@id/age"
                 tools:text="@string/default_age" />
 
+            <TextView
+                android:id="@+id/healthCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/hc_label"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/age" />
+
+            <TextView
+                android:id="@+id/healthCardActual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/healthCard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/healthCard"
+                tools:text="@string/default_hc_num" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/phone_label"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/healthCard" />
+
+            <TextView
+                android:id="@+id/phoneActual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/phone"
+                tools:text="@string/default_phone" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <Button
-        android:id="@+id/deleteButton"
+        android:id="@+id/actionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:backgroundTint="@color/blue"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/delete"
+        android:text="@string/action"
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="gone"
