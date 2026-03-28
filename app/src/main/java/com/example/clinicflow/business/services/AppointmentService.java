@@ -146,8 +146,16 @@ public class AppointmentService {
             LocalTime currentStart = availability.getStartTime();
             LocalTime dayEnd = availability.getEndTime();
 
-            while (!currentStart.plusMinutes(SLOT_DURATION_MINUTES).isAfter(dayEnd)) {
+            if (currentStart == null || dayEnd == null) continue;
+
+            while (true) {
                 LocalTime currentEnd = currentStart.plusMinutes(SLOT_DURATION_MINUTES);
+                
+                // Stop if we wrap around midnight or exceed availability
+                if (currentEnd.isBefore(currentStart) || currentEnd.isAfter(dayEnd)) {
+                    break;
+                }
+                
                 LocalDateTime slotStartTime = LocalDateTime.of(date, currentStart);
 
                 // Ensure we only add slots that are in the future
