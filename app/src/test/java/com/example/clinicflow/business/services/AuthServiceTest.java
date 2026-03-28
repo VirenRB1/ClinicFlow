@@ -8,7 +8,7 @@ import com.example.clinicflow.business.validators.CredentialsValidator;
 import com.example.clinicflow.business.validators.UserAuthenticator;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,15 +18,14 @@ import java.time.LocalDate;
 public class AuthServiceTest {
 
     private AuthService authService;
-    private UserRepository mockRepo;
+    private UserPersistence mockRepo;
     private CredentialsValidator realValidator;
     private UserAuthenticator mockAuthenticator;
     private Users testUser;
 
     @Before
     public void setUp() {
-        mockRepo = mock(UserRepository.class);
-        // Using real validator and real User implementation to avoid Mockito environment issues
+        mockRepo = mock(UserPersistence.class);
         realValidator = new CredentialsValidator();
         mockAuthenticator = mock(UserAuthenticator.class);
         testUser = new Patient("John", "Doe", "test@example.com", "password123", "Male", 
@@ -54,7 +53,6 @@ public class AuthServiceTest {
         String email = "invalid-email";
         String password = "password123";
 
-        // Real validator will throw InvalidEmailException for this input
         Users result = authService.authenticate(email, password);
 
         assertNull(result);
@@ -78,7 +76,6 @@ public class AuthServiceTest {
         String email = "";
         String password = "password";
 
-        // Real validator throws EmptyEmailException
         assertThrows(AuthExceptions.EmptyEmailException.class, () -> 
             authService.authenticateOrThrow(email, password)
         );
@@ -89,7 +86,6 @@ public class AuthServiceTest {
         String email = "test@example.com";
         String password = "wrong";
 
-        // Mocking the authenticator (interface) usually works even when mocking classes fails
         when(mockAuthenticator.authenticate(mockRepo, email, password))
             .thenThrow(new AuthExceptions.WrongPasswordException());
 
