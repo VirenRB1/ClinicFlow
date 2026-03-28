@@ -8,7 +8,7 @@ import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.UserRole;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 import java.time.LocalDate;
 
@@ -18,17 +18,17 @@ import java.time.LocalDate;
  */
 public class ObjectCreation {
 
-    private final UserRepository DATABASE;
+    private final UserPersistence DATABASE;
     private final UserSignupValidator VALIDATOR;
 
     /**
-     * Constructs ObjectCreation with a specific user repository.
+     * Constructs ObjectCreation with a specific user persistence.
      * 
-     * @param userRepository The repository used for user data persistence.
+     * @param userPersistence The persistence used for user data.
      */
-    public ObjectCreation(UserRepository userRepository) {
-        this.DATABASE = userRepository;
-        this.VALIDATOR = new UserSignupValidator(userRepository);
+    public ObjectCreation(UserPersistence userPersistence) {
+        this.DATABASE = userPersistence;
+        this.VALIDATOR = new UserSignupValidator(userPersistence);
     }
 
     public boolean addUserToDatabase(UserRole role, String firstName, String lastName, String email, String password, String confirmPw, String gender,
