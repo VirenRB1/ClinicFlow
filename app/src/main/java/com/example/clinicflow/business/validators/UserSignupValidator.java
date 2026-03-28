@@ -2,7 +2,7 @@ package com.example.clinicflow.business.validators;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 import java.time.LocalDate;
 
@@ -10,14 +10,14 @@ import java.time.LocalDate;
  * Validator class for user signup and registration details.
  */
 public class UserSignupValidator {
-    private final UserRepository repo;
+    private final UserPersistence repo;
 
     /**
      * Constructs the validator with a repository to check for existing records.
      * 
-     * @param repo The user repository.
+     * @param repo The user persistence.
      */
-    public UserSignupValidator(UserRepository repo) {
+    public UserSignupValidator(UserPersistence repo) {
         this.repo = repo;
     }
 
@@ -82,10 +82,6 @@ public class UserSignupValidator {
         if (password == null || !password.equals(confirmPw)) {
             throw new ValidationExceptions.PasswordMismatchException();
         }
-    }
-
-    {
-
     }
 
     /**

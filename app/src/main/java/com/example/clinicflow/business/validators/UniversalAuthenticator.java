@@ -2,7 +2,7 @@ package com.example.clinicflow.business.validators;
 
 import com.example.clinicflow.business.exceptions.AuthExceptions;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 /**
  * Concrete implementation of UserAuthenticator that works for any user type.
@@ -13,7 +13,7 @@ public class UniversalAuthenticator implements UserAuthenticator {
     /**
      * Authenticates a user by checking if they exist and if their password matches.
      * 
-     * @param repo     The repository to look up the user.
+     * @param repo     The persistence layer to look up the user.
      * @param email    The user's email.
      * @param password The user's password.
      * @return The User object if authentication is successful.
@@ -21,7 +21,7 @@ public class UniversalAuthenticator implements UserAuthenticator {
      *                                      is incorrect.
      */
     @Override
-    public Users authenticate(UserRepository repo, String email, String password)
+    public Users authenticate(UserPersistence repo, String email, String password)
             throws AuthExceptions.AuthException {
 
         Users user = repo.getUserByEmail(email);
