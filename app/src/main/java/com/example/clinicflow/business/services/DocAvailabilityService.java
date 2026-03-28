@@ -2,7 +2,7 @@ package com.example.clinicflow.business.services;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.AppointmentPersistence;
 import com.example.clinicflow.business.validators.AvailabilityValidator;
 
 import java.time.LocalTime;
@@ -12,16 +12,16 @@ import java.util.List;
  * Service class for managing doctor work shifts and availability windows.
  */
 public class DocAvailabilityService {
-    private final UserRepository userRepository;
+    private final AppointmentPersistence appointmentPersistence;
     private final AvailabilityValidator validator;
 
     /**
      * Constructs the service with required dependencies.
      * 
-     * @param userRepository The repository for availability data.
+     * @param appointmentPersistence The persistence for availability data.
      */
-    public DocAvailabilityService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public DocAvailabilityService(AppointmentPersistence appointmentPersistence) {
+        this.appointmentPersistence = appointmentPersistence;
         this.validator = new AvailabilityValidator();
     }
 
@@ -36,7 +36,7 @@ public class DocAvailabilityService {
     public void addDoctorAvailability(DoctorAvailability availability) throws ValidationExceptions.ValidationException {
         validator.validateAvailability(availability);
 
-        List<DoctorAvailability> existingAvailabilities = userRepository.getDoctorAvailability(
+        List<DoctorAvailability> existingAvailabilities = appointmentPersistence.getDoctorAvailability(
                 availability.getDoctorEmail(),
                 availability.getDayOfWeek());
 
@@ -46,7 +46,7 @@ public class DocAvailabilityService {
             }
         }
 
-        userRepository.addDoctorAvailability(availability);
+        appointmentPersistence.addDoctorAvailability(availability);
     }
 
     /**

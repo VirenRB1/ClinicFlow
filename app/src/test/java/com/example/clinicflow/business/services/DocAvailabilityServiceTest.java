@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class DocAvailabilityServiceTest {
-
     private DocAvailabilityService service;
     private UserRepository mockRepo;
 
