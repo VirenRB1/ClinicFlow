@@ -3,7 +3,7 @@ package com.example.clinicflow.business.services;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 import java.util.List;
 
@@ -11,15 +11,15 @@ import java.util.List;
  * Service class for looking up users and user-related information.
  */
 public class LookupService {
-    private final UserRepository userRepository;
+    private final UserPersistence userPersistence;
 
     /**
-     * Constructs a LookupService with the provided user repository.
+     * Constructs a LookupService with the provided user persistence.
      * 
-     * @param userRepository The repository to use for data retrieval.
+     * @param userPersistence The persistence to use for data retrieval.
      */
-    public LookupService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public LookupService(UserPersistence userPersistence) {
+        this.userPersistence = userPersistence;
     }
 
     /**
@@ -29,7 +29,7 @@ public class LookupService {
      * @return The User object if found, null otherwise.
      */
     public Users findUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
+        return userPersistence.getUserByEmail(email);
     }
 
     /**
@@ -39,7 +39,7 @@ public class LookupService {
      * @return The Patient object if found, null otherwise.
      */
     public Patient findPatientByEmail(String email) {
-        return userRepository.getPatientByEmail(email);
+        return userPersistence.getPatientByEmail(email);
     }
 
     /**
@@ -49,7 +49,7 @@ public class LookupService {
      * @return The Doctor object if found, null otherwise.
      */
     public Doctor findDoctorByEmail(String email) {
-        return userRepository.getDoctorByEmail(email);
+        return userPersistence.getDoctorByEmail(email);
     }
 
     /**
@@ -72,6 +72,6 @@ public class LookupService {
      * @return A list of all Doctor objects.
      */
     public List<Doctor> getDoctors() {
-        return userRepository.getAllDoctors();
+        return userPersistence.getAllDoctors();
     }
 }

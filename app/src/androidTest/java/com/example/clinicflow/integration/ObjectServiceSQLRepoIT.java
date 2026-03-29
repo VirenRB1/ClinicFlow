@@ -48,6 +48,7 @@ public class ObjectServiceSQLRepoIT {
                 "Elle",
                 "earth@gmail.com",
                 "ear",
+                "ear",
                 "Female",
                 LocalDate.of(2003, 5, 20),
                 "5429420334",
@@ -77,6 +78,7 @@ public class ObjectServiceSQLRepoIT {
                 "Sam",
                 "Mendez",
                 "sam@gmail.com",
+                "sam22",
                 "sam22",
                 "Male",
                 LocalDate.of(1993, 5, 20),
@@ -109,6 +111,7 @@ public class ObjectServiceSQLRepoIT {
                 "Anda",
                 "Anda@gmail.com",
                 "anda",
+                "anda",
                 "Male",
                 LocalDate.of(1999, 11, 20),
                 "Receptionist"
@@ -129,4 +132,33 @@ public class ObjectServiceSQLRepoIT {
         assertNull(repo.getUserByEmail("Anda@gmail.com"));
         assertEquals(before, repo.getAllStaffs().size());
     }
+
+    @Test(expected = ValidationExceptions.DuplicateEmailException.class)
+    public void addUserWithDuplicateEmailThrowsException() throws ValidationExceptions.ValidationException {
+        object.addPatientToDatabase(
+                "John",
+                "Doe",
+                "john@gmail.com",
+                "pass123",
+                "pass123",
+                "Male",
+                LocalDate.of(1995, 3, 15),
+                "1234567890",
+                "5551234567"
+        );
+
+        object.addDoctorToDatabase(
+                "Jane",
+                "Smith",
+                "john@gmail.com",
+                "pass456",
+                "pass456",
+                "Female",
+                LocalDate.of(1988, 7, 22),
+                Specialization.CARDIOLOGY,
+                "LIC123456"
+        );
+    }
+
+
 }

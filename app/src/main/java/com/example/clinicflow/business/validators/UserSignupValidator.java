@@ -2,7 +2,7 @@ package com.example.clinicflow.business.validators;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 import java.time.LocalDate;
 
@@ -10,14 +10,14 @@ import java.time.LocalDate;
  * Validator class for user signup and registration details.
  */
 public class UserSignupValidator {
-    private final UserRepository repo;
+    private final UserPersistence repo;
 
     /**
      * Constructs the validator with a repository to check for existing records.
      * 
-     * @param repo The user repository.
+     * @param repo The user persistence.
      */
-    public UserSignupValidator(UserRepository repo) {
+    public UserSignupValidator(UserPersistence repo) {
         this.repo = repo;
     }
 
@@ -67,14 +67,21 @@ public class UserSignupValidator {
             String lastName,
             String email,
             String password,
+            String confirmPw,
             String gender,
             LocalDate dateOfBirth,
             String healthCardNum,
             String phoneNumber) throws ValidationExceptions.ValidationException {
+        validatePWsMatch(password, confirmPw);
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
-
         validatePhoneNumber(phoneNumber);
         validateHealthCardNumber(healthCardNum);
+    }
+
+    private void validatePWsMatch(String password, String confirmPw) throws ValidationExceptions.ValidationException {
+        if (password == null || !password.equals(confirmPw)) {
+            throw new ValidationExceptions.PasswordMismatchException();
+        }
     }
 
     /**
@@ -95,12 +102,13 @@ public class UserSignupValidator {
             String lastName,
             String email,
             String password,
+            String confirmPw,
             String gender,
             LocalDate dateOfBirth,
             Specialization specialization,
             String licenseNumber) throws ValidationExceptions.ValidationException {
+        validatePWsMatch(password, confirmPw);
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
-
         validateSpecialization(specialization);
         validateLicenseNumber(licenseNumber);
     }
@@ -121,8 +129,10 @@ public class UserSignupValidator {
             String lastName,
             String email,
             String password,
+            String confirmPw,
             String gender,
             LocalDate dateOfBirth) throws ValidationExceptions.ValidationException {
+        validatePWsMatch(password, confirmPw);
         userValidator(firstName, lastName, email, password, gender, dateOfBirth);
     }
 

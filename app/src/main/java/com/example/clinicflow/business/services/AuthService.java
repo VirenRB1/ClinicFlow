@@ -5,14 +5,14 @@ import com.example.clinicflow.business.validators.CredentialsValidator;
 import com.example.clinicflow.business.validators.UniversalAuthenticator;
 import com.example.clinicflow.business.validators.UserAuthenticator;
 import com.example.clinicflow.models.Users;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.UserPersistence;
 
 /**
  * Service handling user authentication logic.
  */
 public class AuthService {
 
-    private final UserRepository repo;
+    private final UserPersistence repo;
     private final CredentialsValidator validator;
     private final UserAuthenticator authenticator;
 
@@ -21,7 +21,7 @@ public class AuthService {
      * 
      * @param userRepository Repository for user data.
      */
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserPersistence userRepository) {
         this(userRepository, new CredentialsValidator(), new UniversalAuthenticator());
     }
 
@@ -32,7 +32,7 @@ public class AuthService {
      * @param validator      Validator for email/password formats.
      * @param authenticator  Strategy for verifying credentials.
      */
-    public AuthService(UserRepository userRepository, CredentialsValidator validator, UserAuthenticator authenticator) {
+    public AuthService(UserPersistence userRepository, CredentialsValidator validator, UserAuthenticator authenticator) {
         this.repo = userRepository;
         this.validator = validator;
         this.authenticator = authenticator;

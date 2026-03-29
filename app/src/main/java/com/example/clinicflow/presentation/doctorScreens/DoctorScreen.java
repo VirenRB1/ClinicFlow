@@ -1,6 +1,8 @@
 package com.example.clinicflow.presentation.doctorScreens;
 
+import static com.example.clinicflow.presentation.Navigation.navigateToSearchCard;
 import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.NavigationExtras.MODE_VIEW_PATIENT;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +15,6 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.sharedScreens.MyAppointments;
-import com.example.clinicflow.presentation.sharedScreens.ViewPatients;
 
 public class DoctorScreen extends AppCompatActivity {
 
@@ -39,7 +40,7 @@ public class DoctorScreen extends AppCompatActivity {
     private void setEvents(String email) {
         appointments.setOnClickListener(v -> navigateWithDoctorView(email));
         setAvail.setOnClickListener(v -> navigateWithUserEmail(this, SetAvailability.class, email));
-        patientRecs.setOnClickListener(v -> navigateWithUserEmail(this, ViewPatients.class, email));
+        patientRecs.setOnClickListener(v -> navigateToSearchCard(this, email, MODE_VIEW_PATIENT));
     }
 
     private void navigateWithDoctorView(String email) {

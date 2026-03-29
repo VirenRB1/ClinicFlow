@@ -60,7 +60,6 @@ public class ValidationExceptions {
         public InvalidStartAndEndTimeException() {
             super("Start time must be before end time.");
         }
-
     }
 
     public static class AvailabilityOverlapException extends ValidationException {
@@ -120,6 +119,12 @@ public class ValidationExceptions {
     public static class MissingPurposeException extends ValidationException {
         public MissingPurposeException() {
             super("Missing purpose.");
+        }
+    }
+
+    public static class PasswordMismatchException extends ValidationException {
+        public PasswordMismatchException() {
+            super("Passwords do not match.");
         }
     }
 

@@ -15,8 +15,6 @@ import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.business.services.LookupService;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.validators.AppointmentValidator;
-import com.example.clinicflow.models.Appointment;
-import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
@@ -25,9 +23,6 @@ import com.example.clinicflow.presentation.NavigationExtras;
 import java.time.LocalDate;
 
 public class ConfirmAppointment extends AppCompatActivity {
-
-    private static final AppointmentStatus STATUS = AppointmentStatus.CONFIRMED;
-    private static final String DEFAULT_NOTES = "";
     private BasicBinds binds;
     private Button confirmButton;
     private TextView name;
@@ -97,12 +92,13 @@ public class ConfirmAppointment extends AppCompatActivity {
 
     private void onConfirmClick() {
         try {
-            validator.validateAppointmentConfirmation(patientEmail, doctorEmail, date, slot, purpose.getText().toString().trim());
-            Appointment appointment = new Appointment(doctorEmail, patientEmail, date, slot.getStartTime(),
-                    slot.getEndTime(), STATUS, purpose.getText().toString().trim(), DEFAULT_NOTES);
-            AppointmentService appointmentService = app.getAppointmentService();
+            String purposeText = purpose.getText().toString().trim();
 
-            appointmentService.bookAppointment(appointment);
+            validator.validateAppointmentConfirmation(patientEmail, doctorEmail, date, slot, purposeText);
+
+            AppointmentService appointmentService = app.getAppointmentService();
+            appointmentService.bookAppointment(doctorEmail, patientEmail, date, slot, purposeText);
+
             Toast.makeText(this, "Appointment booked successfully", Toast.LENGTH_LONG).show();
             finish();
         } catch (ValidationExceptions.AppointmentConflictException e) {
