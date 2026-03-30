@@ -38,6 +38,8 @@
         <activity android:name=".presentation.admin.AdminScreen"/>
         <activity android:name=".presentation.patientScreens.Slots"/>
         <activity android:name=".presentation.patientScreens.ConfirmAppointment"/>
+        <activity android:name=".presentation.sharedScreens.MySchedule"/>
+
     </application>
 
 </manifest>
