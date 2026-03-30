@@ -64,4 +64,8 @@ public class DocAvailabilityService {
 
         return newStart.isBefore(existingEnd) && existingStart.isBefore(newEnd);
     }
+
+    public List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek) {
+        return appointmentPersistence.getDoctorAvailability(doctorEmail, dayOfWeek);
+    }
 }
