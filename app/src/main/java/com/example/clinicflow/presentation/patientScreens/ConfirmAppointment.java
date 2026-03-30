@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
+import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.services.AppointmentService;
 import com.example.clinicflow.business.services.LookupService;
-import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.validators.AppointmentValidator;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;
@@ -32,6 +32,7 @@ public class ConfirmAppointment extends AppCompatActivity {
     private TextView dateView;
     private EditText purpose;
 
+    private String actingUserEmail;
     private String patientEmail;
     private String doctorEmail;
     private LocalDate date;
@@ -40,6 +41,7 @@ public class ConfirmAppointment extends AppCompatActivity {
     private ClinicFlowApp app;
     private AppointmentValidator validator;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -50,12 +52,17 @@ public class ConfirmAppointment extends AppCompatActivity {
 
         setViews();
 
-        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        actingUserEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL);
         doctorEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL);
         String dateString = getIntent().getStringExtra(BookAppointment.DATE);
         slot = getIntent().getSerializableExtra(NavigationExtras.EXTRA_SLOT, TimeSlot.class);
 
-        if (patientEmail == null || doctorEmail == null || dateString == null || slot == null) {
+        if (patientEmail == null) {
+            patientEmail = actingUserEmail;
+        }
+
+        if (actingUserEmail == null || doctorEmail == null || dateString == null || slot == null) {
             Toast.makeText(this, "Invalid data", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -64,7 +71,7 @@ public class ConfirmAppointment extends AppCompatActivity {
         date = LocalDate.parse(dateString);
 
         setTexts();
-        binds.setBasicEvents(this, patientEmail);
+        binds.setBasicEvents(this, actingUserEmail);
         setEvents();
         BasicBinds.setWindowInsets(this);
     }
@@ -118,5 +125,4 @@ public class ConfirmAppointment extends AppCompatActivity {
         dateView = findViewById(R.id.dateActual);
         purpose = findViewById(R.id.purposeEditText);
     }
-
 }

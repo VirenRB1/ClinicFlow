@@ -100,4 +100,5 @@
     <string name="doc_note_hint">Enter Notes</string>
     <string name="complete">Complete</string>
     <string name="action">Action</string>
+    <string name="cancelApt">Cancel Appointment</string>
 </resources>
