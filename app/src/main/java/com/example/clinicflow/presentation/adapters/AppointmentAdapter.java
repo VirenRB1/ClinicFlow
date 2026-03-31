@@ -19,12 +19,12 @@ import java.util.List;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder> {
     private final RecyclerViewInterface recyclerViewInterface;
-    Context context;
-    List<Appointment> records;
-    List<String> names;
+    private final Context context;
+    private final List<Appointment> records;
+    private final List<String> names;
 
     public AppointmentAdapter(Context context, List<Appointment> records, List<String> names,
-            RecyclerViewInterface recyclerViewInterface) {
+                              RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.records = records;
         this.names = names;
@@ -42,9 +42,22 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentAdapter.MyViewHolder holder, int position) {
+        Appointment appointment = records.get(position);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+        String formattedDate = appointment.getAppointmentDate().format(dateFormatter);
+        String formattedStartTime = appointment.getStartTime().format(timeFormatter);
+        String formattedEndTime = appointment.getEndTime().format(timeFormatter);
+
         holder.name.setText(names.get(position));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        holder.date.setText(records.get(position).getAppointmentDate().format(formatter));
+        holder.date.setText(
+                context.getString(
+                        R.string.appointment_date_time,
+                        formattedDate,
+                        formattedStartTime,
+                        formattedEndTime));
     }
 
     @Override
@@ -54,7 +67,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageview;
-
         TextView name, date;
 
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {

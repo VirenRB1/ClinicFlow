@@ -14,15 +14,14 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.RecyclerViewInterface;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyViewHolder> {
 
     private final RecyclerViewInterface recyclerViewInterface;
-
-    Context context;
-
-    List<TimeSlot> slots;
+    private final Context context;
+    private final List<TimeSlot> slots;
 
     public TimeSlotAdapter(Context context, List<TimeSlot> slots, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
@@ -41,8 +40,19 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull TimeSlotAdapter.MyViewHolder holder, int position) {
-        holder.start.setText(slots.get(position).getStartTime().toString());
-        holder.end.setText(slots.get(position).getEndTime().toString());
+        TimeSlot slot = slots.get(position);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+        String formattedStartTime = slot.getStartTime().format(timeFormatter);
+        String formattedEndTime = slot.getEndTime().format(timeFormatter);
+
+        holder.timeRange.setText(
+                context.getString(
+                        R.string.time_slot_range,
+                        formattedStartTime,
+                        formattedEndTime
+                )
+        );
     }
 
     @Override
@@ -53,15 +63,13 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.MyView
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageview;
-
-        TextView start, end;
+        TextView timeRange;
 
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             imageview = itemView.findViewById(R.id.arrow);
-            start = itemView.findViewById(R.id.startTime);
-            end = itemView.findViewById(R.id.endTime);
+            timeRange = itemView.findViewById(R.id.timeRange);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
