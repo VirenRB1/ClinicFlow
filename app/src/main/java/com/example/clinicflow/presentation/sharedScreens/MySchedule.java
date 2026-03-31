@@ -70,16 +70,20 @@ public class MySchedule extends AppCompatActivity {
     }
 
     private void setDayText(TextView textView, List<DoctorAvailability> availabilities) {
-        StringBuilder text = new StringBuilder();
+        if (availabilities != null) {
+            StringBuilder text = new StringBuilder();
 
-        for (DoctorAvailability availability : availabilities) {
-            text.append(availability.getStartTime())
-                    .append(" - ")
-                    .append(availability.getEndTime())
-                    .append("\n");
+            for (DoctorAvailability availability : availabilities) {
+                text.append(availability.getStartTime())
+                        .append(" - ")
+                        .append(availability.getEndTime())
+                        .append("\n");
+            }
+
+            textView.setText(text.toString().trim());
+        } else {
+            textView.setText(R.string.unavailable);
         }
-
-        textView.setText(text.toString().trim());
     }
 
     private void setViews() {

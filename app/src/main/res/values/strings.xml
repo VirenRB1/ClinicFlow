@@ -113,4 +113,9 @@
     <string name="click">To show this is clickable</string>
     <string name="appointment_date_time">%1$s | %2$s - %3$s</string>
     <string name="time_slot_range">%1$s - %2$s</string>
+    <string name="viewSchedule">View Schedule</string>
+    <string name="search_for_book">Search for Patient to Book Appointment</string>
+    <string name="search_for_cancel">Search for Patient to Cancel Appointment</string>
+    <string name="license_label">License #:</string>
+    <string name="specialization_label">Specialization:</string>
 </resources>
