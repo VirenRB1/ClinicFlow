@@ -110,4 +110,7 @@
     <string name="tuesday">Tuesday</string>
     <string name="monday">Monday</string>
     <string name="time">Availability</string>
+    <string name="click">To show this is clickable</string>
+    <string name="appointment_date_time">%1$s | %2$s - %3$s</string>
+    <string name="time_slot_range">%1$s - %2$s</string>
 </resources>

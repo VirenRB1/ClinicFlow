@@ -9,7 +9,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import android.content.Context;
-import android.os.SystemClock;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -45,8 +44,6 @@ public class LoginTest {
                 .perform(replaceText("admin"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
 
-        SystemClock.sleep(500);
-
         onView(withId(R.id.addDoctorButton)).check(matches(isDisplayed()));
         onView(withId(R.id.addStaffButton)).check(matches(isDisplayed()));
         onView(withId(R.id.addPatientButton)).check(matches(isDisplayed()));
@@ -59,8 +56,6 @@ public class LoginTest {
         onView(withId(R.id.PasswordEditText))
                 .perform(replaceText("pass1"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
-
-        SystemClock.sleep(500);
 
         onView(withId(R.id.myAppointmentButton)).check(matches(isDisplayed()));
         onView(withId(R.id.setAvailabilityButton)).check(matches(isDisplayed()));
@@ -76,8 +71,6 @@ public class LoginTest {
                 .perform(replaceText("pass4"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
 
-        SystemClock.sleep(500);
-
         onView(withId(R.id.myAppointmentsButton)).check(matches(isDisplayed()));
         onView(withId(R.id.bookAppointmentButton)).check(matches(isDisplayed()));
         onView(withId(R.id.myRecordsButton)).check(matches(isDisplayed()));
@@ -90,8 +83,6 @@ public class LoginTest {
         onView(withId(R.id.PasswordEditText))
                 .perform(replaceText("pass7"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
-
-        SystemClock.sleep(500);
 
         onView(withId(R.id.manageAppointmentsButton)).check(matches(isDisplayed()));
         onView(withId(R.id.viewPatientsButton)).check(matches(isDisplayed()));
@@ -106,8 +97,6 @@ public class LoginTest {
                 .perform(replaceText("wrongpassword"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
 
-        SystemClock.sleep(500);
-
         onView(withId(R.id.loginButton)).check(matches(isDisplayed()));
     }
 
@@ -119,8 +108,6 @@ public class LoginTest {
                 .perform(replaceText("pass1"), closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
 
-        SystemClock.sleep(500);
-
         onView(withId(R.id.loginButton)).check(matches(isDisplayed()));
     }
 
@@ -128,16 +115,12 @@ public class LoginTest {
     public void loginWithEmptyFields_staysOnLoginScreen() {
         onView(withId(R.id.loginButton)).perform(click());
 
-        SystemClock.sleep(500);
-
         onView(withId(R.id.loginButton)).check(matches(isDisplayed()));
     }
 
     @Test
     public void clickSignUp_navigatesToUserSignUpAsPatient() {
         onView(withId(R.id.signUpButton)).perform(click());
-
-        SystemClock.sleep(500);
 
         // Common fields always visible
         onView(withId(R.id.FirsNameEditText)).check(matches(isDisplayed()));
