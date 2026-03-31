@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.UserRole;
+import com.example.clinicflow.business.validators.UserSignupValidator;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.fake.FakeUserRepository;
 
@@ -20,7 +21,7 @@ public class ObjectCreationTest {
     @Before
     public void setup() {
         UserRepository repo = new FakeUserRepository();
-        objectCreation = new ObjectCreation(repo);
+        objectCreation = new ObjectCreation(repo, new UserSignupValidator(repo));
     }
 
     @Test

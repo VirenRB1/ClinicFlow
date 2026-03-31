@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
+import com.example.clinicflow.business.validators.AvailabilityValidator;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
@@ -23,7 +24,7 @@ public class DocAvailabilityServiceTest {
     @Before
     public void setUp() {
         mockRepo = mock(DoctorAvailabilityPersistence.class);
-        service = new DocAvailabilityService(mockRepo);
+        service = new DocAvailabilityService(mockRepo, new AvailabilityValidator());
     }
 
     @Test
