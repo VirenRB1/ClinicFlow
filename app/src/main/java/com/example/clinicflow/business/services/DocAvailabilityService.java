@@ -2,7 +2,7 @@ package com.example.clinicflow.business.services;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
-import com.example.clinicflow.persistence.AppointmentPersistence;
+import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 import com.example.clinicflow.business.validators.AvailabilityValidator;
 
 import java.time.LocalTime;
@@ -12,16 +12,16 @@ import java.util.List;
  * Service class for managing doctor work shifts and availability windows.
  */
 public class DocAvailabilityService {
-    private final AppointmentPersistence appointmentPersistence;
+    private final DoctorAvailabilityPersistence availabilityPersistence;
     private final AvailabilityValidator validator;
 
     /**
      * Constructs the service with required dependencies.
-     * 
-     * @param appointmentPersistence The persistence for availability data.
+     *
+     * @param availabilityPersistence The persistence for availability data.
      */
-    public DocAvailabilityService(AppointmentPersistence appointmentPersistence) {
-        this.appointmentPersistence = appointmentPersistence;
+    public DocAvailabilityService(DoctorAvailabilityPersistence availabilityPersistence) {
+        this.availabilityPersistence = availabilityPersistence;
         this.validator = new AvailabilityValidator();
     }
 
@@ -36,7 +36,7 @@ public class DocAvailabilityService {
     public void addDoctorAvailability(DoctorAvailability availability) throws ValidationExceptions.ValidationException {
         validator.validateAvailability(availability);
 
-        List<DoctorAvailability> existingAvailabilities = appointmentPersistence.getDoctorAvailability(
+        List<DoctorAvailability> existingAvailabilities = availabilityPersistence.getDoctorAvailability(
                 availability.getDoctorEmail(),
                 availability.getDayOfWeek());
 
@@ -46,7 +46,7 @@ public class DocAvailabilityService {
             }
         }
 
-        appointmentPersistence.addDoctorAvailability(availability);
+        availabilityPersistence.addDoctorAvailability(availability);
     }
 
     /**
@@ -66,6 +66,6 @@ public class DocAvailabilityService {
     }
 
     public List<DoctorAvailability> getDoctorAvailability(String doctorEmail, int dayOfWeek) {
-        return appointmentPersistence.getDoctorAvailability(doctorEmail, dayOfWeek);
+        return availabilityPersistence.getDoctorAvailability(doctorEmail, dayOfWeek);
     }
 }

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.DoctorAvailability;
-import com.example.clinicflow.persistence.UserRepository;
+import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +18,11 @@ import java.util.Collections;
 
 public class DocAvailabilityServiceTest {
     private DocAvailabilityService service;
-    private UserRepository mockRepo;
+    private DoctorAvailabilityPersistence mockRepo;
 
     @Before
     public void setUp() {
-        mockRepo = mock(UserRepository.class);
+        mockRepo = mock(DoctorAvailabilityPersistence.class);
         service = new DocAvailabilityService(mockRepo);
     }
 
