@@ -8,6 +8,8 @@ import com.example.clinicflow.business.services.DocAvailabilityService;
 import com.example.clinicflow.business.services.TimeSlotService;
 import com.example.clinicflow.business.creation.ObjectCreation;
 import com.example.clinicflow.business.services.LookupService;
+import com.example.clinicflow.business.validators.AvailabilityValidator;
+import com.example.clinicflow.business.validators.UserSignupValidator;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.SqlRepository;
 
@@ -30,9 +32,9 @@ public class ClinicFlowApp extends android.app.Application {
         // userRepository = new FakeUserRepository(); //for testing uncomment this and
         // comment the code above
         authService = new AuthService(userRepository);
-        objectCreation = new ObjectCreation(userRepository);
+        objectCreation = new ObjectCreation(userRepository, new UserSignupValidator(userRepository));
         lookupService = new LookupService(userRepository);
-        doctorAvailabilityService = new DocAvailabilityService(userRepository);
+        doctorAvailabilityService = new DocAvailabilityService(userRepository, new AvailabilityValidator());
         timeSlotService = new TimeSlotService(userRepository, userRepository);
         appointmentService = new AppointmentService(userRepository, userRepository, timeSlotService);
     }
