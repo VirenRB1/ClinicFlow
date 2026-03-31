@@ -31,7 +31,8 @@ public class ClinicFlowApp extends android.app.Application {
         objectCreation = new ObjectCreation(userRepository);
         lookupService = new LookupService(userRepository);
         doctorAvailabilityService = new DocAvailabilityService(userRepository);
-        appointmentService = new AppointmentService(userRepository);
+
+        appointmentService = new AppointmentService(userRepository, userRepository);
     }
 
     public AppointmentService getAppointmentService() {
