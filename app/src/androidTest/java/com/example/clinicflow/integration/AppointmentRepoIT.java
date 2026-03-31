@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.services.AppointmentService;
+import com.example.clinicflow.business.services.TimeSlotService;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
@@ -28,13 +29,15 @@ import java.util.List;
 public class AppointmentRepoIT {
     private UserRepository repo;
     private AppointmentService appointmentService;
+    private TimeSlotService timeSlotService;
 
     @Before
     public void setup() {
         Context context = ApplicationProvider.getApplicationContext();
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
         repo = new SqlRepository(context);
-        appointmentService = new AppointmentService(repo, repo);
+        timeSlotService = new TimeSlotService(repo, repo);
+        appointmentService = new AppointmentService(repo, repo, timeSlotService);
     }
 
     @Test
@@ -68,7 +71,7 @@ public class AppointmentRepoIT {
         assertEquals(1, apptPatient.size());
         assertEquals(AppointmentStatus.CONFIRMED, apptDoctor.get(0).getStatus());
 
-        boolean slotRemoved = appointmentService.getAvailableTimeSlots(doctorEmail, date).stream()
+        boolean slotRemoved = timeSlotService.getAvailableTimeSlots(doctorEmail, date).stream()
                 .noneMatch(s -> s.getStartTime().equals(LocalTime.of(11, 0)) &&
                         s.getEndTime().equals(LocalTime.of(11, 30)));
 
@@ -264,7 +267,7 @@ public class AppointmentRepoIT {
         assertEquals(1, apptPatient.size());
         assertEquals(AppointmentStatus.CONFIRMED, apptDoctor.get(0).getStatus());
 
-        boolean slotRemoved = appointmentService.getAvailableTimeSlots(doctorEmail, date).stream()
+        boolean slotRemoved = timeSlotService.getAvailableTimeSlots(doctorEmail, date).stream()
                 .noneMatch(s -> s.getStartTime().equals(LocalTime.of(11, 0)) &&
                         s.getEndTime().equals(LocalTime.of(11, 30)));
 
@@ -277,7 +280,7 @@ public class AppointmentRepoIT {
         assertEquals(0, upcoming.size());
 
         // Check that slot is available for second patient
-        boolean slotAvailable = appointmentService.getAvailableTimeSlots(doctorEmail, date).stream()
+        boolean slotAvailable = timeSlotService.getAvailableTimeSlots(doctorEmail, date).stream()
                 .anyMatch(s -> s.getStartTime().equals(LocalTime.of(11, 0)) &&
                         s.getEndTime().equals(LocalTime.of(11, 30)));
         assertTrue(slotAvailable);
@@ -302,7 +305,7 @@ public class AppointmentRepoIT {
         assertEquals(1, apptPatientRebook.size());
         assertEquals(AppointmentStatus.CONFIRMED, apptDoctorRebook.get(0).getStatus());
 
-        boolean slotRemovedRebook = appointmentService.getAvailableTimeSlots(doctorEmail, date).stream()
+        boolean slotRemovedRebook = timeSlotService.getAvailableTimeSlots(doctorEmail, date).stream()
                 .noneMatch(s -> s.getStartTime().equals(LocalTime.of(11, 0)) &&
                         s.getEndTime().equals(LocalTime.of(11, 30)));
 
