@@ -14,6 +14,7 @@ public final class NavigationExtras {
     public static final String DOCTOR_VIEW = "doctor_view";
     public static final String SEARCH_MODE = "search_mode";
     public static final String MODE_VIEW_PATIENT = "view_patient";
+    public static final String MODE_VIEW_DOCTOR = "view_doctor";
     public static final String MODE_DELETE_USER = "delete_user";
     public static final String MODE_BOOK_APPOINTMENT = "book_appointment";
     public static final String MODE_CANCEL_APPOINTMENT = "cancel_appointment";

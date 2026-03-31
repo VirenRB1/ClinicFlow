@@ -2,6 +2,7 @@ package com.example.clinicflow.presentation.staffScreens;
 
 import static com.example.clinicflow.presentation.Navigation.navigateToSearchCard;
 import static com.example.clinicflow.presentation.Navigation.navigateWithUserEmail;
+import static com.example.clinicflow.presentation.NavigationExtras.MODE_VIEW_DOCTOR;
 import static com.example.clinicflow.presentation.NavigationExtras.MODE_VIEW_PATIENT;
 
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class StaffScreen extends AppCompatActivity {
     private void setEvents(String email) {
         manage.setOnClickListener(v -> navigateWithUserEmail(this, ManageAppointments.class, email));
         viewPatients.setOnClickListener(v -> navigateToSearchCard(this, email, MODE_VIEW_PATIENT));
-        viewDocs.setOnClickListener(v -> navigateWithUserEmail(this, ViewDoctors.class, email));
+        viewDocs.setOnClickListener(v -> navigateToSearchCard(this, email, MODE_VIEW_DOCTOR));
     }
 
     private void setViews() {
