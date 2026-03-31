@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
-import com.example.clinicflow.business.services.AppointmentService;
+import com.example.clinicflow.business.services.TimeSlotService;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
@@ -77,9 +77,9 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
 
     private void loadSlots() {
         ClinicFlowApp app = (ClinicFlowApp) getApplication();
-        AppointmentService appointmentService = app.getAppointmentService();
+        TimeSlotService timeSlotService = app.getTimeSlotService();
 
-        slots = appointmentService.getAvailableTimeSlots(doctorEmail, actualDate);
+        slots = timeSlotService.getAvailableTimeSlots(doctorEmail, actualDate);
 
         TimeSlotAdapter adapter = new TimeSlotAdapter(this, slots, this);
         recyclerView.setAdapter(adapter);
