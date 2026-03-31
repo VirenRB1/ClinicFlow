@@ -6,6 +6,7 @@ import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.AppointmentPersistence;
+import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,11 +17,13 @@ import java.util.List;
 
 public class AppointmentService {
     private final AppointmentPersistence appointmentPersistence;
+    private final DoctorAvailabilityPersistence availabilityPersistence;
     private final int SLOT_DURATION_MINUTES = 30;
     private final String DEFAULT_NOTES = "";
 
-    public AppointmentService(AppointmentPersistence appointmentPersistence) {
+    public AppointmentService(AppointmentPersistence appointmentPersistence, DoctorAvailabilityPersistence availabilityPersistence) {
         this.appointmentPersistence = appointmentPersistence;
+        this.availabilityPersistence = availabilityPersistence;
     }
 
     //Get all upcoming appointments for a patient
@@ -68,7 +71,7 @@ public class AppointmentService {
     //Get all available time slots for a doctor on a specific date
     public List<TimeSlot> getAvailableTimeSlots(String doctorEmail, LocalDate date) {
         List<Appointment> appointments = appointmentPersistence.getAppointmentsForDoctorOnDate(doctorEmail, date);
-        List<DoctorAvailability> doctorAvailabilities = appointmentPersistence.getDoctorAvailability(
+        List<DoctorAvailability> doctorAvailabilities = availabilityPersistence.getDoctorAvailability(
                 doctorEmail,
                 date.getDayOfWeek().getValue()
         );
@@ -95,7 +98,7 @@ public class AppointmentService {
             throw new ValidationExceptions.InvalidAppointmentDateException();
         }
 
-        List<DoctorAvailability> currentAvailabilities = appointmentPersistence.getDoctorAvailability(
+        List<DoctorAvailability> currentAvailabilities = availabilityPersistence.getDoctorAvailability(
                 appointment.getDoctorEmail(),
                 appointment.getAppointmentDate().getDayOfWeek().getValue()
         );
