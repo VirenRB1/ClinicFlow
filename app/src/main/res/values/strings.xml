@@ -100,4 +100,17 @@
     <string name="doc_note_hint">Enter Notes</string>
     <string name="complete">Complete</string>
     <string name="action">Action</string>
+    <string name="cancelApt">Cancel Appointment</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="sunday">Sunday</string>
+    <string name="saturday">Saturday</string>
+    <string name="friday">Friday</string>
+    <string name="thursday">Thursday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="monday">Monday</string>
+    <string name="time">Availability</string>
+    <string name="click">To show this is clickable</string>
+    <string name="appointment_date_time">%1$s | %2$s - %3$s</string>
+    <string name="time_slot_range">%1$s - %2$s</string>
 </resources>

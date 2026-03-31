@@ -15,6 +15,7 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 import com.example.clinicflow.presentation.sharedScreens.MyAppointments;
+import com.example.clinicflow.presentation.sharedScreens.MySchedule;
 
 public class DoctorScreen extends AppCompatActivity {
 
@@ -22,6 +23,7 @@ public class DoctorScreen extends AppCompatActivity {
     private Button appointments;
     private Button setAvail;
     private Button patientRecs;
+    private Button mySchedule;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,7 @@ public class DoctorScreen extends AppCompatActivity {
         appointments.setOnClickListener(v -> navigateWithDoctorView(email));
         setAvail.setOnClickListener(v -> navigateWithUserEmail(this, SetAvailability.class, email));
         patientRecs.setOnClickListener(v -> navigateToSearchCard(this, email, MODE_VIEW_PATIENT));
+        mySchedule.setOnClickListener(v -> navigateWithUserEmail(this, MySchedule.class, email));
     }
 
     private void navigateWithDoctorView(String email) {
@@ -55,5 +58,6 @@ public class DoctorScreen extends AppCompatActivity {
         appointments = findViewById(R.id.myAppointmentButton);
         setAvail = findViewById(R.id.setAvailabilityButton);
         patientRecs = findViewById(R.id.patientRecordsButton);
+        mySchedule = findViewById(R.id.myScheduleButton);
     }
 }

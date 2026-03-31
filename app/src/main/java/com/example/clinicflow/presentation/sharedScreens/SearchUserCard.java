@@ -21,6 +21,7 @@ import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
+import com.example.clinicflow.presentation.patientScreens.BookAppointment;
 import com.google.android.material.card.MaterialCardView;
 
 public class SearchUserCard extends AppCompatActivity {
@@ -67,11 +68,28 @@ public class SearchUserCard extends AppCompatActivity {
     }
 
     private void onClickAction() {
-        if (searchMode.equals(NavigationExtras.MODE_DELETE_USER)) {
-            delete();
-        } else {
-            viewRecords();
+        switch (searchMode) {
+            case NavigationExtras.MODE_DELETE_USER -> delete();
+            case NavigationExtras.MODE_BOOK_APPOINTMENT -> bookAppointment();
+            case NavigationExtras.MODE_CANCEL_APPOINTMENT -> cancelAppointment();
+            default -> viewRecords();
         }
+    }
+
+    private void cancelAppointment() {
+        Intent intent = new Intent(this, MyAppointments.class);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, userEmail);
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, email.getText().toString());
+        intent.putExtra(NavigationExtras.NOTES, false);   // upcoming, not past
+        intent.putExtra(NavigationExtras.DOCTOR_VIEW, false);
+        startActivity(intent);
+    }
+
+    private void bookAppointment() {
+        Intent intent = new Intent(this, BookAppointment.class);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, userEmail); // staff - for top bar
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, email.getText().toString()); // patient - for booking
+        startActivity(intent);
     }
 
     private void delete() {
@@ -102,7 +120,6 @@ public class SearchUserCard extends AppCompatActivity {
 
         if (searchMode.equals(NavigationExtras.MODE_DELETE_USER)) {
             Users user = lookupService.findUserByEmail(enteredEmail);
-
             if (user == null) {
                 Toast.makeText(this, "No Such Account", Toast.LENGTH_LONG).show();
                 hide();
@@ -111,7 +128,6 @@ public class SearchUserCard extends AppCompatActivity {
             }
         } else {
             Patient patient = lookupService.findPatientByEmail(enteredEmail);
-
             if (patient == null) {
                 Toast.makeText(this, "No Such Patient", Toast.LENGTH_LONG).show();
                 hide();
@@ -163,17 +179,27 @@ public class SearchUserCard extends AppCompatActivity {
         emailAddress = findViewById(R.id.editTextEmailAddress);
 
         TextView searchTitle = findViewById(R.id.searchSectionTitle);
-        if (searchMode.equals(NavigationExtras.MODE_DELETE_USER)) {
-            searchTitle.setText(R.string.search_by_email_user);
-            actionButton.setText(R.string.delete);
-
-            healthCard.setVisibility(View.GONE);
-            phone.setVisibility(View.GONE);
-            findViewById(R.id.healthCard).setVisibility(View.GONE);
-            findViewById(R.id.phone).setVisibility(View.GONE);
-        } else {
-            searchTitle.setText(R.string.search_by_email);
-            actionButton.setText(R.string.view_recs);
+        switch (searchMode) {
+            case NavigationExtras.MODE_DELETE_USER -> {
+                searchTitle.setText(R.string.search_by_email_user);
+                actionButton.setText(R.string.delete);
+                healthCard.setVisibility(View.GONE);
+                phone.setVisibility(View.GONE);
+                findViewById(R.id.healthCard).setVisibility(View.GONE);
+                findViewById(R.id.phone).setVisibility(View.GONE);
+            }
+            case NavigationExtras.MODE_BOOK_APPOINTMENT -> {
+                searchTitle.setText(R.string.search_by_email);
+                actionButton.setText(R.string.book);
+            }
+            case NavigationExtras.MODE_CANCEL_APPOINTMENT -> {
+                searchTitle.setText(R.string.search_by_email);
+                actionButton.setText(R.string.cancelApt);
+            }
+            default -> {
+                searchTitle.setText(R.string.search_by_email);
+                actionButton.setText(R.string.view_recs);
+            }
         }
     }
 }

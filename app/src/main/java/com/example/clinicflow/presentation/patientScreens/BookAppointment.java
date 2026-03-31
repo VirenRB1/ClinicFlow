@@ -30,22 +30,16 @@ public class BookAppointment extends AppCompatActivity {
     private EditText doctorEditText;
     private EditText dateEditText;
     private Button findSlotsButton;
-
     private LocalDate actualDate;
-
-    private String patientEmail;
-
+    private String actingUserEmail;
+    private String bookingPatientEmail;
     private List<Doctor> doctors;
-
     private static final String DOCTOR = "Select Doctor";
     public static final String DATE = "date";
-
     private Doctor selectedDoctor;
-
     private AppointmentValidator validator;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -59,10 +53,15 @@ public class BookAppointment extends AppCompatActivity {
         doctors = lookupService.getDoctors();
         validator = new AppointmentValidator();
 
-        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        actingUserEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        bookingPatientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL);
 
-        if (patientEmail == null) {
-            Toast.makeText(this, "No Patient Email", Toast.LENGTH_SHORT).show();
+        if (bookingPatientEmail == null) {
+            bookingPatientEmail = actingUserEmail;
+        }
+
+        if (actingUserEmail == null) {
+            Toast.makeText(this, "Missing user information", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -72,7 +71,7 @@ public class BookAppointment extends AppCompatActivity {
     }
 
     private void setEvents() {
-        binds.setBasicEvents(this, patientEmail);
+        binds.setBasicEvents(this, actingUserEmail);
         doctorEditText.setOnClickListener(v -> showDoctors());
         dateEditText.setOnClickListener(v -> showDates());
         findSlotsButton.setOnClickListener(v -> findSlots());
@@ -81,11 +80,14 @@ public class BookAppointment extends AppCompatActivity {
     private void findSlots() {
         try {
             validator.validateDoctorAndDate(selectedDoctor, actualDate);
+
             Intent intent = new Intent(this, Slots.class);
-            intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, patientEmail);
+            intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, actingUserEmail);
+            intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, bookingPatientEmail);
             intent.putExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL, selectedDoctor.getEmail());
             intent.putExtra(DATE, actualDate.toString());
             startActivity(intent);
+
         } catch (ValidationExceptions.ValidationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }

@@ -29,6 +29,7 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
     private RecyclerView recyclerView;
     private TextView emptyStateText;
 
+    private String actingUserEmail;
     private String patientEmail;
     private String doctorEmail;
     private LocalDate actualDate;
@@ -45,7 +46,13 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
         Button back = findViewById(R.id.backButton);
         back.setOnClickListener(v -> finish());
 
-        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        actingUserEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
+        patientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL);
+
+        if (patientEmail == null) {
+            patientEmail = actingUserEmail;
+        }
+
         doctorEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL);
         String date = getIntent().getStringExtra(BookAppointment.DATE);
 
@@ -93,7 +100,8 @@ public class Slots extends AppCompatActivity implements RecyclerViewInterface {
         Intent intent = new Intent(Slots.this, ConfirmAppointment.class);
 
         intent.putExtra(NavigationExtras.EXTRA_SLOT, slots.get(position));
-        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, patientEmail);
+        intent.putExtra(NavigationExtras.EXTRA_USER_EMAIL, actingUserEmail);
+        intent.putExtra(NavigationExtras.EXTRA_PATIENT_EMAIL, patientEmail);
         intent.putExtra(NavigationExtras.EXTRA_DOCTOR_EMAIL, doctorEmail);
         intent.putExtra(BookAppointment.DATE, getIntent().getStringExtra(BookAppointment.DATE));
 

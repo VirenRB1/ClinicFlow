@@ -36,5 +36,4 @@ public final class Navigation {
         intent.putExtra(SEARCH_MODE, mode);
         activity.startActivity(intent);
     }
-
 }
