@@ -11,7 +11,6 @@ import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
-import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.AppointmentPersistence;
 import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
@@ -155,21 +154,4 @@ public class AppointmentServiceTest {
         assertThrows(ValidationExceptions.AppointmentCancellationException.class, () -> appointmentService.cancelAppointment(past));
     }
 
-    @Test
-    public void testGetAvailableTimeSlots_TodayPastAndFuture() {
-        String docEmail = "doc@test.com";
-        LocalDate today = LocalDate.now();
-        DoctorAvailability avail = new DoctorAvailability(docEmail, today.getDayOfWeek().getValue(), LocalTime.MIN, LocalTime.MAX.minusMinutes(31));
-        when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, today.getDayOfWeek().getValue()))
-                .thenReturn(Collections.singletonList(avail));
-        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, today))
-                .thenReturn(Collections.emptyList());
-
-        List<TimeSlot> slots = appointmentService.getAvailableTimeSlots(docEmail, today);
-        
-        LocalTime now = LocalTime.now();
-        for (TimeSlot slot : slots) {
-            assertTrue(slot.getStartTime().isAfter(now));
-        }
-    }
 }

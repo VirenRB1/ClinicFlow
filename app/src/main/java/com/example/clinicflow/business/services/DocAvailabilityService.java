@@ -20,9 +20,9 @@ public class DocAvailabilityService {
      *
      * @param availabilityPersistence The persistence for availability data.
      */
-    public DocAvailabilityService(DoctorAvailabilityPersistence availabilityPersistence) {
+    public DocAvailabilityService(DoctorAvailabilityPersistence availabilityPersistence, AvailabilityValidator validator) {
         this.availabilityPersistence = availabilityPersistence;
-        this.validator = new AvailabilityValidator();
+        this.validator = validator;
     }
 
     /**

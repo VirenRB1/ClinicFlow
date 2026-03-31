@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.business.services.DocAvailabilityService;
+import com.example.clinicflow.business.validators.AvailabilityValidator;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.AppDbHelper;
@@ -33,7 +34,7 @@ public class AvailabitlityRepoIT {
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
 
         repo = new SqlRepository(context);
-        service = new DocAvailabilityService(repo);
+        service = new DocAvailabilityService(repo, new AvailabilityValidator());
     }
 
     @Test
