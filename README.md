@@ -19,7 +19,7 @@ ClinicFlow is a clinic management system that supports four user roles: patients
 - **JDK**: 17 (bundled with Android Studio)
 - **Android SDK**: API 34 (compileSdk and targetSdk)
 - **Minimum SDK**: API 34
-- **Gradle**: 8.10.2 (included via wrapper)
+- **Gradle**: 8.8.2 (included via wrapper)
 
 ## Build and Run
 
