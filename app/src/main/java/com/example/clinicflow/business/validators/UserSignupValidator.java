@@ -4,6 +4,7 @@ import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserPersistence;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 /**
@@ -11,14 +12,17 @@ import java.time.LocalDate;
  */
 public class UserSignupValidator {
     private final UserPersistence repo;
+    private final Clock clock;
 
     /**
      * Constructs the validator with a repository to check for existing records.
-     * 
+     *
      * @param repo The user persistence.
+     * @param clock The clock for date operations.
      */
-    public UserSignupValidator(UserPersistence repo) {
+    public UserSignupValidator(UserPersistence repo, Clock clock) {
         this.repo = repo;
+        this.clock = clock;
     }
 
     /**
@@ -210,7 +214,7 @@ public class UserSignupValidator {
             throw new ValidationExceptions.EmptyFieldException("Date of birth");
         }
 
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(clock);
         if (dateOfBirth.isAfter(today)) {
             throw new ValidationExceptions.InvalidDateOfBirthException("Date of birth cannot be in the future.");
         }

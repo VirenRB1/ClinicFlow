@@ -13,6 +13,8 @@ import com.example.clinicflow.business.validators.UserSignupValidator;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.SqlRepository;
 
+import java.time.Clock;
+
 //Startup app
 public class ClinicFlowApp extends android.app.Application {
 
@@ -31,12 +33,13 @@ public class ClinicFlowApp extends android.app.Application {
         userRepository = new SqlRepository(context);
         // userRepository = new FakeUserRepository(); //for testing uncomment this and
         // comment the code above
+        Clock clock = Clock.systemDefaultZone();
         authService = new AuthService(userRepository);
-        objectCreation = new ObjectCreation(userRepository, new UserSignupValidator(userRepository));
+        objectCreation = new ObjectCreation(userRepository, new UserSignupValidator(userRepository, clock));
         lookupService = new LookupService(userRepository);
         doctorAvailabilityService = new DocAvailabilityService(userRepository, userRepository, new AvailabilityValidator());
-        timeSlotService = new TimeSlotService(userRepository, userRepository);
-        appointmentService = new AppointmentService(userRepository, userRepository, timeSlotService);
+        timeSlotService = new TimeSlotService(userRepository, userRepository, clock);
+        appointmentService = new AppointmentService(userRepository, userRepository, timeSlotService, clock);
     }
 
     public AppointmentService getAppointmentService() {

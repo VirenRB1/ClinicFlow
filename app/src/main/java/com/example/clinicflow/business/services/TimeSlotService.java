@@ -7,6 +7,7 @@ import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.AppointmentPersistence;
 import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
+import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,11 +21,13 @@ import java.util.List;
 public class TimeSlotService {
     private final AppointmentPersistence appointmentPersistence;
     private final DoctorAvailabilityPersistence availabilityPersistence;
+    private final Clock clock;
     private final int SLOT_DURATION_MINUTES = 30;
 
-    public TimeSlotService(AppointmentPersistence appointmentPersistence, DoctorAvailabilityPersistence availabilityPersistence) {
+    public TimeSlotService(AppointmentPersistence appointmentPersistence, DoctorAvailabilityPersistence availabilityPersistence, Clock clock) {
         this.appointmentPersistence = appointmentPersistence;
         this.availabilityPersistence = availabilityPersistence;
+        this.clock = clock;
     }
 
     //Get all available time slots for a doctor on a specific date
@@ -53,7 +56,7 @@ public class TimeSlotService {
 
     // Checks if a date falls within the booking window (current week + next week)
     public boolean isWithinBookingWindow(LocalDate date) {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(clock);
         LocalDate endOfNextWeek = today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).plusWeeks(1);
         return !date.isBefore(today) && !date.isAfter(endOfNextWeek);
     }
@@ -83,7 +86,7 @@ public class TimeSlotService {
 
     private List<TimeSlot> generateTimeSlots(List<DoctorAvailability> availabilities, List<Appointment> appointments, LocalDate date) {
         List<TimeSlot> timeSlots = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(clock);
 
         for (DoctorAvailability availability : availabilities) {
             LocalTime currentStart = availability.getStartTime();

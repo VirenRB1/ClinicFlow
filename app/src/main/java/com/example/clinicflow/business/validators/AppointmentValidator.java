@@ -4,9 +4,16 @@ import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.TimeSlot;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 public class AppointmentValidator {
+    private final Clock clock;
+
+    public AppointmentValidator(Clock clock) {
+        this.clock = clock;
+    }
+
     public void validateDoctorAndDate(Doctor doctor, LocalDate date) throws ValidationExceptions.ValidationException {
         if (doctor == null) {
             throw new ValidationExceptions.MissingDoctorException();
@@ -16,7 +23,7 @@ public class AppointmentValidator {
             throw new ValidationExceptions.MissingAppointmentDateException();
         }
 
-        if (date.isBefore(LocalDate.now())) {
+        if (date.isBefore(LocalDate.now(clock))) {
             throw new ValidationExceptions.InvalidAppointmentDateException();
         }
     }
