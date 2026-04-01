@@ -34,7 +34,7 @@ public class AvailabitlityRepoIT {
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
 
         repo = new SqlRepository(context);
-        service = new DocAvailabilityService(repo, new AvailabilityValidator());
+        service = new DocAvailabilityService(repo, repo, new AvailabilityValidator());
     }
 
     @Test
