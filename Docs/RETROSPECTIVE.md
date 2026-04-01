@@ -27,3 +27,4 @@ This allowed testing for specific users and validating through email rather than
 https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/commit/13c9a3d814cd8f9b7072445e1a055960e7bba2ea
 
 https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/commit/c9a1196ae3145fb3180fbfac6661b3297542548f
+
