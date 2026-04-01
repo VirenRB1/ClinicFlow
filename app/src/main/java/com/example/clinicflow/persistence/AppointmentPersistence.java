@@ -9,6 +9,7 @@ public interface AppointmentPersistence {
     void updateAppointment(Appointment appointment);
 
     List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date);
+    List<Appointment> getUpcomingAppointmentsForDoctorOnDay(String doctorEmail, int dayOfWeek);
     List<Appointment> getUpcomingAppointmentsForPatient(String patientEmail);
     List<Appointment> getCompletedAppointmentsForPatient(String patientEmail);
     List<Appointment> getUpcomingAppointmentsForDoctor(String doctorEmail);

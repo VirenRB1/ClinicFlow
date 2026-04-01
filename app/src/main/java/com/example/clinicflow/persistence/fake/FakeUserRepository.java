@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import com.example.clinicflow.models.Users;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
@@ -229,6 +230,11 @@ public class FakeUserRepository implements UserRepository, Serializable {
         doctorAvailabilities.add(availability);
     }
 
+    @Override
+    public void deleteDoctorAvailability(int id) {
+        doctorAvailabilities.removeIf(a -> a.getId() == id);
+    }
+
     /**
      * Retrieves availability slots for a doctor on a specific day of the week.
      * 
@@ -254,6 +260,21 @@ public class FakeUserRepository implements UserRepository, Serializable {
      * @param date        The date to search for.
      * @return A list of matching appointments.
      */
+    @Override
+    public List<Appointment> getUpcomingAppointmentsForDoctorOnDay(String doctorEmail, int dayOfWeek) {
+        List<Appointment> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDoctorEmail().equals(doctorEmail)
+                    && appointment.getAppointmentDate().getDayOfWeek().getValue() == dayOfWeek
+                    && !appointment.getAppointmentDate().isBefore(today)
+                    && AppointmentStatus.CONFIRMED.equals(appointment.getStatus())) {
+                result.add(appointment);
+            }
+        }
+        return result;
+    }
+
     @Override
     public List<Appointment> getAppointmentsForDoctorOnDate(String doctorEmail, LocalDate date) {
         List<Appointment> result = new ArrayList<>();

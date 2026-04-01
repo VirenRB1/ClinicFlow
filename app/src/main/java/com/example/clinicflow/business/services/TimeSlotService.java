@@ -7,10 +7,13 @@ import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.AppointmentPersistence;
 import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,7 +28,12 @@ public class TimeSlotService {
     }
 
     //Get all available time slots for a doctor on a specific date
+    //Only returns slots if the date is within the current or next week
     public List<TimeSlot> getAvailableTimeSlots(String doctorEmail, LocalDate date) {
+        if (!isWithinBookingWindow(date)) {
+            return Collections.emptyList();
+        }
+
         List<Appointment> appointments = appointmentPersistence.getAppointmentsForDoctorOnDate(doctorEmail, date);
         List<DoctorAvailability> doctorAvailabilities = availabilityPersistence.getDoctorAvailability(
                 doctorEmail,
@@ -41,6 +49,13 @@ public class TimeSlotService {
             }
         });
         return availableSlots;
+    }
+
+    // Checks if a date falls within the booking window (current week + next week)
+    public boolean isWithinBookingWindow(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        LocalDate endOfNextWeek = today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).plusWeeks(1);
+        return !date.isBefore(today) && !date.isAfter(endOfNextWeek);
     }
 
     // Check if a time slot is within the doctor's availability

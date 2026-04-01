@@ -68,6 +68,7 @@ public class ValidationExceptions {
         }
     }
 
+
     public static class AppointmentConflictException extends ValidationException {
         public AppointmentConflictException() {
             super("This time slot is no longer available.");

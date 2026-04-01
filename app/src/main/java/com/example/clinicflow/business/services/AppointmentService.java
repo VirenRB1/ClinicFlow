@@ -70,6 +70,10 @@ public class AppointmentService {
             throw new ValidationExceptions.InvalidAppointmentDateException();
         }
 
+        if (!timeSlotService.isWithinBookingWindow(appointment.getAppointmentDate())) {
+            throw new ValidationExceptions.InvalidAppointmentDateException();
+        }
+
         List<DoctorAvailability> currentAvailabilities = availabilityPersistence.getDoctorAvailability(
                 appointment.getDoctorEmail(),
                 appointment.getAppointmentDate().getDayOfWeek().getValue()
