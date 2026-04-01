@@ -12,16 +12,26 @@ import com.example.clinicflow.persistence.fake.FakeUserRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class ObjectCreationTest {
 
     private ObjectCreation objectCreation;
 
+    // Fixed to Wednesday March 25, 2026 at 8:00 AM
+    private static final LocalDate FIXED_TODAY = LocalDate.of(2026, 3, 25);
+
     @Before
     public void setup() {
         UserRepository repo = new FakeUserRepository();
-        objectCreation = new ObjectCreation(repo, new UserSignupValidator(repo));
+        Clock fixedClock = Clock.fixed(
+                ZonedDateTime.of(FIXED_TODAY.atTime(8, 0), ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault()
+        );
+        objectCreation = new ObjectCreation(repo, new UserSignupValidator(repo, fixedClock));
     }
 
     @Test
@@ -98,7 +108,7 @@ public class ObjectCreationTest {
         assertThrows(ValidationExceptions.InvalidDateOfBirthException.class, () ->
                 objectCreation.addPatientToDatabase(
                         "Future", "Kid", "futurekid@gmail.com", "password", "password", "Male",
-                        LocalDate.now().plusDays(1), "123456789", "1234553343"
+                        FIXED_TODAY.plusDays(1), "123456789", "1234553343"
                 )
         );
     }
