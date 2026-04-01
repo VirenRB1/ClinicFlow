@@ -14,9 +14,12 @@ import com.example.clinicflow.R;
 import com.example.clinicflow.application.ClinicFlowApp;
 import com.example.clinicflow.business.services.DocAvailabilityService;
 import com.example.clinicflow.business.exceptions.ValidationExceptions;
+import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.DoctorAvailability;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
+
+import java.util.List;
 
 import java.time.LocalTime;
 import java.util.Locale;
@@ -115,10 +118,36 @@ public class SetAvailability extends AppCompatActivity {
             doctorAvailabilityService.addDoctorAvailability(doctorAvailability);
             Toast.makeText(this, "Availability added successfully", Toast.LENGTH_LONG).show();
         } catch (ValidationExceptions.AvailabilityOverlapException e) {
-            Toast.makeText(this, "Availability overlaps with an existing one", Toast.LENGTH_LONG).show();
+            showReplaceConfirmation(doctorAvailability);
         } catch (ValidationExceptions.ValidationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void showReplaceConfirmation(DoctorAvailability newAvailability) {
+        List<Appointment> affected = doctorAvailabilityService.getAffectedAppointments(
+                newAvailability.getDoctorEmail(), newAvailability.getDayOfWeek());
+
+        String message;
+        if (affected.isEmpty()) {
+            message = "This overlaps with existing availability. Replace it?";
+        } else {
+            message = affected.size() + " appointment(s) will be cancelled. Replace availability?";
+        }
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Replace Availability")
+                .setMessage(message)
+                .setPositiveButton("Replace", (dialog, which) -> {
+                    try {
+                        doctorAvailabilityService.replaceAvailability(newAvailability);
+                        Toast.makeText(this, "Availability replaced successfully", Toast.LENGTH_LONG).show();
+                    } catch (ValidationExceptions.ValidationException e) {
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private void setViews() {
