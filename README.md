@@ -66,5 +66,5 @@ Run it with android studio or via command line:
 ## Documentation
 
 - [Vision Statement](Docs/VISION.md)
-- [Architecture](Docs/Architecture.md)
+- [Architecture](Docs/ArchitectureDiagram.jpg)
 - [Retrospective](Docs/retrospectiveIteration0.md)
