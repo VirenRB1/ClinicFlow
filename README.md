@@ -35,22 +35,19 @@ ClinicFlow is a clinic management system that supports four user roles: patients
 ## Running Tests
 
 ### Unit Tests
-Unit tests are located in `app/src/test/`. Run them from Android Studio
+Unit tests are located in `\a02-g14-booleanhooligans\app\src\test\java\com\example\clinicflow\business`. Run them from Android Studio by right clicking on the folder and selecting run tests with coverage
 
 ### Integration Tests
-Integration tests are located in `app/src/androidTest/java/.../integration/`. These require a connected device or emulator:
-Run it with android studio
+Integration tests are located in `\a02-g14-booleanhooligans\app\src\androidTest\java\com\example\clinicflow\integration`. These require a connected device or emulator:
+Run it with android studio by right clicking on the folder and selecting run tests 
 
 ### End-to-End Tests
-E2E tests are located in `app/src/androidTest/java/.../e2e/`. These also require a connected device or emulator:
-Run it with android studio
+E2E tests are located in `\a02-g14-booleanhooligans\app\src\androidTest\java\com\example\clinicflow\e2e`. These also require a connected device or emulator:
+Run it with android studio by right clicking on the folder and selecting run tests.
 
 ### All Instrumented Tests
 To run all integration and e2e tests together:
 Run it with android studio or via command line:
-```
-./gradlew connectedAndroidTest
-```
 
 ## Documentation
 
