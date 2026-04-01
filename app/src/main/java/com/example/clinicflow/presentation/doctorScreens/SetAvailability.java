@@ -125,8 +125,7 @@ public class SetAvailability extends AppCompatActivity {
     }
 
     private void showReplaceConfirmation(DoctorAvailability newAvailability) {
-        List<Appointment> affected = doctorAvailabilityService.getAffectedAppointments(
-                newAvailability.getDoctorEmail(), newAvailability.getDayOfWeek());
+        List<Appointment> affected = doctorAvailabilityService.getAffectedAppointments(newAvailability);
 
         String message;
         if (affected.isEmpty()) {

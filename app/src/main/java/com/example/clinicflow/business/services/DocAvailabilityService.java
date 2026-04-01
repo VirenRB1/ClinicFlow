@@ -9,6 +9,7 @@ import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 import com.example.clinicflow.business.validators.AvailabilityValidator;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,19 +52,26 @@ public class DocAvailabilityService {
 
     /**
      * Returns the list of upcoming appointments that would be cancelled
-     * if the doctor replaces their availability for this day.
-     * Used by the UI to show a confirmation dialog before proceeding.
+     * if the doctor replaces their availability with the new one.
+     * Only returns appointments that fall outside the new availability window.
      */
-    public List<Appointment> getAffectedAppointments(String doctorEmail, int dayOfWeek) {
-        return appointmentPersistence.getUpcomingAppointmentsForDoctorOnDay(doctorEmail, dayOfWeek);
+    public List<Appointment> getAffectedAppointments(DoctorAvailability newAvailability) {
+        List<Appointment> allAppointments = appointmentPersistence.getUpcomingAppointmentsForDoctorOnDay(
+                newAvailability.getDoctorEmail(), newAvailability.getDayOfWeek());
+
+        List<Appointment> affected = new ArrayList<>();
+        for (Appointment appt : allAppointments) {
+            if (!isWithinWindow(appt, newAvailability)) {
+                affected.add(appt);
+            }
+        }
+        return affected;
     }
 
     /**
      * Replaces all availability for a doctor on a given day-of-week.
-     * Cancels all upcoming appointments on that day and sets a cancellation message.
+     * Only cancels appointments that fall outside the new availability window.
      * Then deletes old availability and adds the new one.
-     *
-     * Should only be called after the doctor confirms via getAffectedAppointments().
      */
     public void replaceAvailability(DoctorAvailability newAvailability) throws ValidationExceptions.ValidationException {
         validator.validateAvailability(newAvailability);
@@ -71,8 +79,8 @@ public class DocAvailabilityService {
         String doctorEmail = newAvailability.getDoctorEmail();
         int dayOfWeek = newAvailability.getDayOfWeek();
 
-        // Cancel all upcoming appointments for this day
-        List<Appointment> affected = appointmentPersistence.getUpcomingAppointmentsForDoctorOnDay(doctorEmail, dayOfWeek);
+        // Only cancel appointments outside the new availability window
+        List<Appointment> affected = getAffectedAppointments(newAvailability);
         for (Appointment appt : affected) {
             appt.setStatus(AppointmentStatus.CANCELLED);
             appt.setDoctorNotes(CANCELLATION_MESSAGE);
@@ -87,6 +95,18 @@ public class DocAvailabilityService {
 
         // Add the new availability
         availabilityPersistence.addDoctorAvailability(newAvailability);
+    }
+
+    /**
+     * Checks if an appointment falls within a given availability window.
+     */
+    private boolean isWithinWindow(Appointment appt, DoctorAvailability availability) {
+        LocalTime apptStart = appt.getStartTime();
+        LocalTime apptEnd = appt.getEndTime();
+        LocalTime availStart = availability.getStartTime();
+        LocalTime availEnd = availability.getEndTime();
+
+        return !apptStart.isBefore(availStart) && !apptEnd.isAfter(availEnd);
     }
 
     /**
