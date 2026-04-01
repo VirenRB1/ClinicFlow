@@ -20,6 +20,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Collections;
 
 public class DocAvailabilityServiceTest {
@@ -185,29 +186,31 @@ public class DocAvailabilityServiceTest {
     }
 
     @Test
-    public void testReplaceAvailability_CancelsAppointmentsAndReplacesAvailability() throws ValidationExceptions.ValidationException {
+    public void testReplaceAvailability_OnlyCancelsOutsideAppointments() throws ValidationExceptions.ValidationException {
+        // New window: 8am-2pm
         DoctorAvailability newAvail = new DoctorAvailability("doc@test.com", TODAY_DAY, LocalTime.of(8, 0), LocalTime.of(14, 0));
-        DoctorAvailability oldAvail1 = new DoctorAvailability(1, "doc@test.com", TODAY_DAY, LocalTime.of(9, 0), LocalTime.of(12, 0));
-        DoctorAvailability oldAvail2 = new DoctorAvailability(2, "doc@test.com", TODAY_DAY, LocalTime.of(13, 0), LocalTime.of(17, 0));
+        DoctorAvailability oldAvail = new DoctorAvailability(1, "doc@test.com", TODAY_DAY, LocalTime.of(9, 0), LocalTime.of(17, 0));
 
-        Appointment appt = new Appointment(1, "doc@test.com", "patient@test.com",
+        // 9:00-9:30 is within new window, 15:00-15:30 is outside
+        Appointment insideAppt = new Appointment(1, "doc@test.com", "p1@test.com",
                 LocalDate.now(), LocalTime.of(9, 0), LocalTime.of(9, 30),
                 AppointmentStatus.CONFIRMED, "Checkup", "");
+        Appointment outsideAppt = new Appointment(2, "doc@test.com", "p2@test.com",
+                LocalDate.now(), LocalTime.of(15, 0), LocalTime.of(15, 30),
+                AppointmentStatus.CONFIRMED, "Follow-up", "");
 
-        when(mockApptRepo.getUpcomingAppointmentsForDoctorOnDay("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(appt));
-        when(mockRepo.getDoctorAvailability("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(oldAvail1, oldAvail2));
+        when(mockApptRepo.getUpcomingAppointmentsForDoctorOnDay("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(insideAppt, outsideAppt));
+        when(mockRepo.getDoctorAvailability("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(oldAvail));
 
         service.replaceAvailability(newAvail);
 
-        // Verify appointment was cancelled with message
-        assertEquals(AppointmentStatus.CANCELLED, appt.getStatus());
-        verify(mockApptRepo).updateAppointment(appt);
+        // Only the outside appointment should be cancelled
+        assertEquals(AppointmentStatus.CONFIRMED, insideAppt.getStatus());
+        assertEquals(AppointmentStatus.CANCELLED, outsideAppt.getStatus());
+        verify(mockApptRepo).updateAppointment(outsideAppt);
 
-        // Verify both old availabilities were deleted
+        // Old availability deleted, new one added
         verify(mockRepo).deleteDoctorAvailability(1);
-        verify(mockRepo).deleteDoctorAvailability(2);
-
-        // Verify new availability was added
         verify(mockRepo).addDoctorAvailability(newAvail);
     }
 
@@ -226,16 +229,22 @@ public class DocAvailabilityServiceTest {
     }
 
     @Test
-    public void testGetAffectedAppointments() {
-        Appointment appt1 = new Appointment(1, "doc@test.com", "p1@test.com",
-                LocalDate.now(), LocalTime.of(9, 0), LocalTime.of(9, 30),
+    public void testGetAffectedAppointments_OnlyReturnsOutsideAppointments() {
+        // New window: 10am-3pm
+        DoctorAvailability newAvail = new DoctorAvailability("doc@test.com", TODAY_DAY, LocalTime.of(10, 0), LocalTime.of(15, 0));
+
+        // 11:00-11:30 is inside, 9:00-9:30 is outside
+        Appointment insideAppt = new Appointment(1, "doc@test.com", "p1@test.com",
+                LocalDate.now(), LocalTime.of(11, 0), LocalTime.of(11, 30),
                 AppointmentStatus.CONFIRMED, "Checkup", "");
-        Appointment appt2 = new Appointment(2, "doc@test.com", "p2@test.com",
-                LocalDate.now().plusDays(7), LocalTime.of(10, 0), LocalTime.of(10, 30),
+        Appointment outsideAppt = new Appointment(2, "doc@test.com", "p2@test.com",
+                LocalDate.now().plusDays(7), LocalTime.of(9, 0), LocalTime.of(9, 30),
                 AppointmentStatus.CONFIRMED, "Follow-up", "");
 
-        when(mockApptRepo.getUpcomingAppointmentsForDoctorOnDay("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(appt1, appt2));
+        when(mockApptRepo.getUpcomingAppointmentsForDoctorOnDay("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(insideAppt, outsideAppt));
 
-        assertEquals(2, service.getAffectedAppointments("doc@test.com", TODAY_DAY).size());
+        List<Appointment> affected = service.getAffectedAppointments(newAvail);
+        assertEquals(1, affected.size());
+        assertEquals(outsideAppt, affected.get(0));
     }
 }
