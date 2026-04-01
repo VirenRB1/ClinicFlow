@@ -14,6 +14,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import androidx.test.espresso.NoMatchingViewException;
+
 import android.widget.DatePicker;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -150,6 +152,14 @@ public class StaffFlowTest {
         onView(withText("12:00")).inRoot(isDialog()).perform(click());
 
         onView(withId(R.id.submitButton)).perform(click());
+
+        // If availability already exists, the Replace dialog will appear — click Replace
+        try {
+            onView(withText("Replace")).inRoot(isDialog()).perform(click());
+        } catch (NoMatchingViewException ignored) {
+            // No overlap dialog — availability was added fresh
+        }
+
         pressBack();
         pressBack();
 

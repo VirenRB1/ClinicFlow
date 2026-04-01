@@ -48,4 +48,5 @@ dependencies {
     testImplementation(libs.mockito)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.espresso.contrib)
 }

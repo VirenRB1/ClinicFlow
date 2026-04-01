@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -37,8 +38,9 @@ public class AppointmentRepoIT {
         // Delete database to start fresh
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
         repo = new SqlRepository(context);
-        timeSlotService = new TimeSlotService(repo, repo);
-        appointmentService = new AppointmentService(repo, repo, timeSlotService);
+        Clock clock = Clock.systemDefaultZone();
+        timeSlotService = new TimeSlotService(repo, repo, clock);
+        appointmentService = new AppointmentService(repo, repo, timeSlotService, clock);
     }
 
     @Test
