@@ -23,6 +23,7 @@ This eliminated cross role duplication, reduced ambiguous lookup behavior from p
 and removed several classes of bugs related to incorrect retrieval and deletion. Additionally, validator reuse is now correct across all user types, improving both maintainability and testability.
 
 Changed the tests to validate all user by email making it meaningful and uniqueness of email system wide.
+This allowed testing for specific users and validating through email rather than just patient. This improved the other tests such as LookupService and DocAvailability.
 https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/commit/13c9a3d814cd8f9b7072445e1a055960e7bba2ea
 
-
+https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/commit/c9a1196ae3145fb3180fbfac6661b3297542548f
