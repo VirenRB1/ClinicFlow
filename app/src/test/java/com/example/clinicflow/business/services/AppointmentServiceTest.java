@@ -17,8 +17,11 @@ import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,18 +31,27 @@ public class AppointmentServiceTest {
     private AppointmentService appointmentService;
     private AppointmentPersistence mockPersistence;
     private DoctorAvailabilityPersistence mockAvailabilityPersistence;
+    private Clock fixedClock;
+
+    // Fixed to Wednesday March 25, 2026 at 8:00 AM
+    private static final LocalDate FIXED_TODAY = LocalDate.of(2026, 3, 25);
 
     @Before
     public void setUp() {
         mockPersistence = mock(AppointmentPersistence.class);
         mockAvailabilityPersistence = mock(DoctorAvailabilityPersistence.class);
-        appointmentService = new AppointmentService(mockPersistence, mockAvailabilityPersistence);
+        fixedClock = Clock.fixed(
+                ZonedDateTime.of(FIXED_TODAY.atTime(8, 0), ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault()
+        );
+        TimeSlotService timeSlotService = new TimeSlotService(mockPersistence, mockAvailabilityPersistence, fixedClock);
+        appointmentService = new AppointmentService(mockPersistence, mockAvailabilityPersistence, timeSlotService, fixedClock);
     }
 
     @Test
     public void testGetUpcomingAppointmentsForPatient_Sorting() {
         String patientEmail = "patient@test.com";
-        LocalDate today = LocalDate.now();
+        LocalDate today = FIXED_TODAY;
         LocalDate tomorrow = today.plusDays(1);
         LocalDate nextWeek = today.plusWeeks(1);
 
@@ -61,7 +73,7 @@ public class AppointmentServiceTest {
     @Test
     public void testGetPastAppointmentsForPatient() {
         String patientEmail = "patient@test.com";
-        LocalDate pastDate = LocalDate.now().minusDays(1);
+        LocalDate pastDate = FIXED_TODAY.minusDays(1);
         Appointment appt = new Appointment("doc@test.com", patientEmail, pastDate, LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.COMPLETED, "", "");
         
         when(mockPersistence.getCompletedAppointmentsForPatient(patientEmail))
@@ -82,7 +94,7 @@ public class AppointmentServiceTest {
 
     @Test
     public void testCompleteAppointment() {
-        Appointment appt = new Appointment("doc@test.com", "p@test.com", LocalDate.now(), LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "Checkup", "");
+        Appointment appt = new Appointment("doc@test.com", "p@test.com", FIXED_TODAY, LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "Checkup", "");
         appointmentService.completeAppointment(appt, "Note");
         assertEquals(AppointmentStatus.COMPLETED, appt.getStatus());
         assertEquals("Note", appt.getDoctorNotes());
@@ -91,13 +103,13 @@ public class AppointmentServiceTest {
 
     @Test
     public void testBookAppointment_PastDate_ThrowsException() {
-        Appointment appt = new Appointment("d", "p", LocalDate.now().minusDays(1), LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "", "");
+        Appointment appt = new Appointment("d", "p", FIXED_TODAY.minusDays(1), LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "", "");
         assertThrows(ValidationExceptions.InvalidAppointmentDateException.class, () -> appointmentService.bookAppointment(appt));
     }
 
     @Test
     public void testBookAppointment_OutsideAvailability_ThrowsException() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         Appointment appt = new Appointment("doc@test.com", "p", future, LocalTime.of(8, 0), LocalTime.of(8, 30), AppointmentStatus.CONFIRMED, "", "");
         
         DoctorAvailability avail = new DoctorAvailability("doc@test.com", future.getDayOfWeek().getValue(), LocalTime.of(9, 0), LocalTime.of(10, 0));
@@ -109,7 +121,7 @@ public class AppointmentServiceTest {
 
     @Test
     public void testBookAppointment_ConflictWithExisting_ThrowsException() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         Appointment appt = new Appointment("doc@test.com", "p2", future, LocalTime.of(9, 15), LocalTime.of(9, 45), AppointmentStatus.CONFIRMED, "", "");
         
         DoctorAvailability avail = new DoctorAvailability("doc@test.com", future.getDayOfWeek().getValue(), LocalTime.of(9, 0), LocalTime.of(10, 0));
@@ -125,7 +137,7 @@ public class AppointmentServiceTest {
 
     @Test
     public void testBookAppointment_OverlapWithCancelled_Success() throws ValidationExceptions.ValidationException {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         Appointment appt = new Appointment("doc@test.com", "p2", future, LocalTime.of(9, 0), LocalTime.of(9, 30), AppointmentStatus.CONFIRMED, "", "");
         
         DoctorAvailability avail = new DoctorAvailability("doc@test.com", future.getDayOfWeek().getValue(), LocalTime.of(9, 0), LocalTime.of(10, 0));
@@ -142,7 +154,7 @@ public class AppointmentServiceTest {
 
     @Test
     public void testCancelAppointment_Failures() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         
         Appointment cancelled = new Appointment("d", "p", future, LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CANCELLED, "", "");
         assertThrows(ValidationExceptions.AppointmentCancellationException.class, () -> appointmentService.cancelAppointment(cancelled));
@@ -150,7 +162,7 @@ public class AppointmentServiceTest {
         Appointment completed = new Appointment("d", "p", future, LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.COMPLETED, "", "");
         assertThrows(ValidationExceptions.AppointmentCancellationException.class, () -> appointmentService.cancelAppointment(completed));
 
-        Appointment past = new Appointment("d", "p", LocalDate.now().minusDays(1), LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "", "");
+        Appointment past = new Appointment("d", "p", FIXED_TODAY.minusDays(1), LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "", "");
         assertThrows(ValidationExceptions.AppointmentCancellationException.class, () -> appointmentService.cancelAppointment(past));
     }
 

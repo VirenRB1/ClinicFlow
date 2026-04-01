@@ -13,8 +13,11 @@ import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,19 +27,27 @@ public class TimeSlotServiceTest {
     private TimeSlotService timeSlotService;
     private AppointmentPersistence mockPersistence;
     private DoctorAvailabilityPersistence mockAvailabilityPersistence;
+    private Clock fixedClock;
 
     private final String docEmail = "doctor@test.com";
+
+    // Fixed to Wednesday March 25, 2026 at 8:00 AM
+    private static final LocalDate FIXED_TODAY = LocalDate.of(2026, 3, 25);
 
     @Before
     public void setUp() {
         mockPersistence = mock(AppointmentPersistence.class);
         mockAvailabilityPersistence = mock(DoctorAvailabilityPersistence.class);
-        timeSlotService = new TimeSlotService(mockPersistence, mockAvailabilityPersistence);
+        fixedClock = Clock.fixed(
+                ZonedDateTime.of(FIXED_TODAY.atTime(8, 0), ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault()
+        );
+        timeSlotService = new TimeSlotService(mockPersistence, mockAvailabilityPersistence, fixedClock);
     }
 
     @Test
     public void testGetAvailableTimeSlots_FutureDate() {
-        LocalDate futureDate = LocalDate.now().plusDays(5);
+        LocalDate futureDate = FIXED_TODAY.plusDays(5);
         LocalTime start = LocalTime.of(9, 0);
         LocalTime end = LocalTime.of(10, 0); // 2 slots of 30 mins
 
@@ -57,20 +68,19 @@ public class TimeSlotServiceTest {
 
     @Test
     public void testGetAvailableTimeSlots_TodayPastAndFuture() {
-        LocalDate today = LocalDate.now();
-        // Shift covers whole day to ensure we hit both past and future slots relative to 'now'
-        DoctorAvailability avail = new DoctorAvailability(docEmail, today.getDayOfWeek().getValue(), LocalTime.MIN, LocalTime.MAX.minusMinutes(31));
-        when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, today.getDayOfWeek().getValue()))
+        // Clock is fixed at 8:00 AM, so slots before 8:00 should be excluded
+        DoctorAvailability avail = new DoctorAvailability(docEmail, FIXED_TODAY.getDayOfWeek().getValue(), LocalTime.MIN, LocalTime.MAX.minusMinutes(31));
+        when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, FIXED_TODAY.getDayOfWeek().getValue()))
                 .thenReturn(Collections.singletonList(avail));
-        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, today))
+        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, FIXED_TODAY))
                 .thenReturn(Collections.emptyList());
 
-        List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, today);
+        List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, FIXED_TODAY);
 
-        LocalTime now = LocalTime.now();
+        LocalTime fixedNow = LocalTime.of(8, 0);
         for (TimeSlot slot : slots) {
-            assertTrue("Slot start time " + slot.getStartTime() + " should be after now " + now, 
-                    slot.getStartTime().isAfter(now));
+            assertTrue("Slot start time " + slot.getStartTime() + " should be after 8:00 AM",
+                    slot.getStartTime().isAfter(fixedNow));
         }
     }
 
@@ -102,10 +112,10 @@ public class TimeSlotServiceTest {
         LocalTime slotStart = LocalTime.of(10, 0);
         LocalTime slotEnd = LocalTime.of(10, 30);
         
-        Appointment activeAppt = new Appointment(docEmail, "p@t.com", LocalDate.now(), 
+        Appointment activeAppt = new Appointment(docEmail, "p@t.com", FIXED_TODAY,
                 LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CONFIRMED, "Checkup", "");
-        
-        Appointment cancelledAppt = new Appointment(docEmail, "p2@t.com", LocalDate.now(), 
+
+        Appointment cancelledAppt = new Appointment(docEmail, "p2@t.com", FIXED_TODAY,
                 LocalTime.of(10, 0), LocalTime.of(10, 30), AppointmentStatus.CANCELLED, "Checkup", "");
 
         // Case 1: No appointments
@@ -118,7 +128,7 @@ public class TimeSlotServiceTest {
         assertTrue(timeSlotService.isSlotFree(Collections.singletonList(cancelledAppt), slotStart, slotEnd));
 
         // Case 4: Partial overlap (ends after start)
-        Appointment partial = new Appointment(docEmail, "p@t.com", LocalDate.now(), 
+        Appointment partial = new Appointment(docEmail, "p@t.com", FIXED_TODAY,
                 LocalTime.of(9, 45), LocalTime.of(10, 15), AppointmentStatus.CONFIRMED, "Checkup", "");
         assertFalse(timeSlotService.isSlotFree(Collections.singletonList(partial), slotStart, slotEnd));
     }
@@ -134,40 +144,40 @@ public class TimeSlotServiceTest {
         when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, 1))
                 .thenReturn(Collections.singletonList(nullAvail));
         
-        List<TimeSlot> result = timeSlotService.getAvailableTimeSlots(docEmail, LocalDate.now().plusDays(1));
+        List<TimeSlot> result = timeSlotService.getAvailableTimeSlots(docEmail, FIXED_TODAY.plusDays(1));
         assertTrue(result.isEmpty());
     }
 
     @Test
     public void testIsWithinBookingWindow_Today() {
-        assertTrue(timeSlotService.isWithinBookingWindow(LocalDate.now()));
+        assertTrue(timeSlotService.isWithinBookingWindow(FIXED_TODAY));
     }
 
     @Test
     public void testIsWithinBookingWindow_Tomorrow() {
-        assertTrue(timeSlotService.isWithinBookingWindow(LocalDate.now().plusDays(1)));
+        assertTrue(timeSlotService.isWithinBookingWindow(FIXED_TODAY.plusDays(1)));
     }
 
     @Test
     public void testIsWithinBookingWindow_PastDate() {
-        assertFalse(timeSlotService.isWithinBookingWindow(LocalDate.now().minusDays(1)));
+        assertFalse(timeSlotService.isWithinBookingWindow(FIXED_TODAY.minusDays(1)));
     }
 
     @Test
     public void testIsWithinBookingWindow_BeyondNextWeek() {
-        assertFalse(timeSlotService.isWithinBookingWindow(LocalDate.now().plusWeeks(3)));
+        assertFalse(timeSlotService.isWithinBookingWindow(FIXED_TODAY.plusWeeks(3)));
     }
 
     @Test
     public void testGetAvailableTimeSlots_OutsideBookingWindow_ReturnsEmpty() {
-        LocalDate farFuture = LocalDate.now().plusWeeks(5);
+        LocalDate farFuture = FIXED_TODAY.plusWeeks(5);
         List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, farFuture);
         assertTrue(slots.isEmpty());
     }
 
     @Test
     public void testGetAvailableTimeSlots_NoAvailability_ReturnsEmpty() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, future.getDayOfWeek().getValue()))
                 .thenReturn(Collections.emptyList());
         when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, future))
@@ -179,7 +189,7 @@ public class TimeSlotServiceTest {
 
     @Test
     public void testGetAvailableTimeSlots_OccupiedSlotSkipped() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         DoctorAvailability avail = new DoctorAvailability(docEmail, future.getDayOfWeek().getValue(),
                 LocalTime.of(9, 0), LocalTime.of(10, 0));
 
@@ -200,7 +210,7 @@ public class TimeSlotServiceTest {
 
     @Test
     public void testIsSlotFree_NonOverlappingConfirmedAppointment() {
-        Appointment appt = new Appointment(docEmail, "p@t.com", LocalDate.now(),
+        Appointment appt = new Appointment(docEmail, "p@t.com", FIXED_TODAY,
                 LocalTime.of(11, 0), LocalTime.of(11, 30), AppointmentStatus.CONFIRMED, "Checkup", "");
 
         // Slot is 9:00-9:30, appointment is 11:00-11:30 — no overlap
@@ -230,7 +240,7 @@ public class TimeSlotServiceTest {
 
     @Test
     public void testGetAvailableTimeSlots_AvailabilityTooShortForSlot() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         // Only 15 minutes — not enough for a 30-min slot
         DoctorAvailability avail = new DoctorAvailability(docEmail, future.getDayOfWeek().getValue(),
                 LocalTime.of(9, 0), LocalTime.of(9, 15));
@@ -246,7 +256,7 @@ public class TimeSlotServiceTest {
 
     @Test
     public void testGetAvailableTimeSlots_Sorting() {
-        LocalDate future = LocalDate.now().plusDays(1);
+        LocalDate future = FIXED_TODAY.plusDays(1);
         // Add two separate availability windows in reverse order of time
         DoctorAvailability morning = new DoctorAvailability(docEmail, future.getDayOfWeek().getValue(), LocalTime.of(8, 0), LocalTime.of(8, 30));
         DoctorAvailability afternoon = new DoctorAvailability(docEmail, future.getDayOfWeek().getValue(), LocalTime.of(14, 0), LocalTime.of(14, 30));

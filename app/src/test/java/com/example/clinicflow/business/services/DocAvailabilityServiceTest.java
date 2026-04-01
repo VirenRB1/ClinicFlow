@@ -28,8 +28,9 @@ public class DocAvailabilityServiceTest {
     private DoctorAvailabilityPersistence mockRepo;
     private AppointmentPersistence mockApptRepo;
 
-    // Use today's day-of-week so clearPastAvailability doesn't interfere
-    private final int TODAY_DAY = LocalDate.now().getDayOfWeek().getValue();
+    // Fixed to Wednesday March 25, 2026
+    private static final LocalDate FIXED_TODAY = LocalDate.of(2026, 3, 25);
+    private final int TODAY_DAY = FIXED_TODAY.getDayOfWeek().getValue();
 
     @Before
     public void setUp() {
@@ -193,10 +194,10 @@ public class DocAvailabilityServiceTest {
 
         // 9:00-9:30 is within new window, 15:00-15:30 is outside
         Appointment insideAppt = new Appointment(1, "doc@test.com", "p1@test.com",
-                LocalDate.now(), LocalTime.of(9, 0), LocalTime.of(9, 30),
+                FIXED_TODAY, LocalTime.of(9, 0), LocalTime.of(9, 30),
                 AppointmentStatus.CONFIRMED, "Checkup", "");
         Appointment outsideAppt = new Appointment(2, "doc@test.com", "p2@test.com",
-                LocalDate.now(), LocalTime.of(15, 0), LocalTime.of(15, 30),
+                FIXED_TODAY, LocalTime.of(15, 0), LocalTime.of(15, 30),
                 AppointmentStatus.CONFIRMED, "Follow-up", "");
 
         when(mockApptRepo.getUpcomingAppointmentsForDoctorOnDay("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(insideAppt, outsideAppt));
@@ -235,10 +236,10 @@ public class DocAvailabilityServiceTest {
 
         // 11:00-11:30 is inside, 9:00-9:30 is outside
         Appointment insideAppt = new Appointment(1, "doc@test.com", "p1@test.com",
-                LocalDate.now(), LocalTime.of(11, 0), LocalTime.of(11, 30),
+                FIXED_TODAY, LocalTime.of(11, 0), LocalTime.of(11, 30),
                 AppointmentStatus.CONFIRMED, "Checkup", "");
         Appointment outsideAppt = new Appointment(2, "doc@test.com", "p2@test.com",
-                LocalDate.now().plusDays(7), LocalTime.of(9, 0), LocalTime.of(9, 30),
+                FIXED_TODAY.plusDays(7), LocalTime.of(9, 0), LocalTime.of(9, 30),
                 AppointmentStatus.CONFIRMED, "Follow-up", "");
 
         when(mockApptRepo.getUpcomingAppointmentsForDoctorOnDay("doc@test.com", TODAY_DAY)).thenReturn(Arrays.asList(insideAppt, outsideAppt));

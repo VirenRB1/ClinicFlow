@@ -8,6 +8,7 @@ import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.AppointmentPersistence;
 import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -17,18 +18,14 @@ public class AppointmentService {
     private final AppointmentPersistence appointmentPersistence;
     private final DoctorAvailabilityPersistence availabilityPersistence;
     private final TimeSlotService timeSlotService;
+    private final Clock clock;
     private final String DEFAULT_NOTES = "";
 
-    public AppointmentService(AppointmentPersistence appointmentPersistence, DoctorAvailabilityPersistence availabilityPersistence) {
-        this.appointmentPersistence = appointmentPersistence;
-        this.availabilityPersistence = availabilityPersistence;
-        this.timeSlotService = new TimeSlotService(appointmentPersistence, availabilityPersistence);
-    }
-
-    public AppointmentService(AppointmentPersistence appointmentPersistence, DoctorAvailabilityPersistence availabilityPersistence, TimeSlotService timeSlotService) {
+    public AppointmentService(AppointmentPersistence appointmentPersistence, DoctorAvailabilityPersistence availabilityPersistence, TimeSlotService timeSlotService, Clock clock) {
         this.appointmentPersistence = appointmentPersistence;
         this.availabilityPersistence = availabilityPersistence;
         this.timeSlotService = timeSlotService;
+        this.clock = clock;
     }
 
     //Get all upcoming appointments for a patient
@@ -66,7 +63,7 @@ public class AppointmentService {
 
     //Book an appointment for a patient
     public void bookAppointment(Appointment appointment) throws ValidationExceptions.ValidationException {
-        if (appointment.getAppointmentDate().isBefore(LocalDate.now())) {
+        if (appointment.getAppointmentDate().isBefore(LocalDate.now(clock))) {
             throw new ValidationExceptions.InvalidAppointmentDateException();
         }
 
@@ -98,8 +95,8 @@ public class AppointmentService {
 
     public void cancelAppointment(Appointment appointment) throws ValidationExceptions.ValidationException {
 
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now(clock);
+        LocalTime now = LocalTime.now(clock);
 
         if(AppointmentStatus.CANCELLED.equals(appointment.getStatus())){
             throw new ValidationExceptions.AppointmentCancellationException();

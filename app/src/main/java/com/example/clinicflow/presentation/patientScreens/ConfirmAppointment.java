@@ -20,6 +20,7 @@ import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 public class ConfirmAppointment extends AppCompatActivity {
@@ -48,7 +49,7 @@ public class ConfirmAppointment extends AppCompatActivity {
         setContentView(R.layout.confirm_appointment);
 
         app = (ClinicFlowApp) getApplication();
-        validator = new AppointmentValidator();
+        validator = new AppointmentValidator(Clock.systemDefaultZone());
 
         setViews();
 

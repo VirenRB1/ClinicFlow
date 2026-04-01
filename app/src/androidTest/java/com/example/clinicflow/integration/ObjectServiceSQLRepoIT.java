@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 @RunWith(AndroidJUnit4.class)
@@ -37,7 +38,7 @@ public class ObjectServiceSQLRepoIT {
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
 
         repo = new SqlRepository(context);
-        object = new ObjectCreation(repo, new UserSignupValidator(repo));
+        object = new ObjectCreation(repo, new UserSignupValidator(repo, Clock.systemDefaultZone()));
     }
 
     @Test

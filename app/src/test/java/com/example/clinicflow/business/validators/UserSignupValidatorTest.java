@@ -4,7 +4,11 @@ import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Patient;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.persistence.UserRepository;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertThrows;
@@ -16,10 +20,17 @@ public class UserSignupValidatorTest {
     private UserRepository repo;
     private UserSignupValidator validator;
 
+    // Fixed to Wednesday March 25, 2026 at 8:00 AM
+    private static final LocalDate FIXED_TODAY = LocalDate.of(2026, 3, 25);
+
     @Before
     public void setUp() {
         repo = mock(UserRepository.class);
-        validator = new UserSignupValidator(repo);
+        Clock fixedClock = Clock.fixed(
+                ZonedDateTime.of(FIXED_TODAY.atTime(8, 0), ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault()
+        );
+        validator = new UserSignupValidator(repo, fixedClock);
     }
 
     // -------------------------------------------------
@@ -27,7 +38,7 @@ public class UserSignupValidatorTest {
     // -------------------------------------------------
 
     private LocalDate validDob() {
-        return LocalDate.now().minusYears(25);
+        return FIXED_TODAY.minusYears(25);
     }
 
     // -------------------------------------------------
@@ -248,7 +259,7 @@ public class UserSignupValidatorTest {
                     "john@example.com",
                     "secret123",
                     "Male",
-                    LocalDate.now().plusDays(1)
+                    FIXED_TODAY.plusDays(1)
             );
         });
     }
@@ -263,7 +274,7 @@ public class UserSignupValidatorTest {
                     "john@example.com",
                     "secret123",
                     "Male",
-                    LocalDate.now().minusYears(121)
+                    FIXED_TODAY.minusYears(121)
             );
         });
     }

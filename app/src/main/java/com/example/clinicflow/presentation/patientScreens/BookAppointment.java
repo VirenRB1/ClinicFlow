@@ -21,6 +21,7 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.presentation.BasicBinds;
 import com.example.clinicflow.presentation.NavigationExtras;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class BookAppointment extends AppCompatActivity {
         LookupService lookupService = app.getLookupService();
 
         doctors = lookupService.getDoctors();
-        validator = new AppointmentValidator();
+        validator = new AppointmentValidator(Clock.systemDefaultZone());
 
         actingUserEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_USER_EMAIL);
         bookingPatientEmail = getIntent().getStringExtra(NavigationExtras.EXTRA_PATIENT_EMAIL);
