@@ -34,6 +34,7 @@ public class AppointmentRepoIT {
     @Before
     public void setup() {
         Context context = ApplicationProvider.getApplicationContext();
+        // Delete database to start fresh
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
         repo = new SqlRepository(context);
         timeSlotService = new TimeSlotService(repo, repo);
@@ -43,8 +44,8 @@ public class AppointmentRepoIT {
     @Test
     public void bookAppointment() throws ValidationExceptions.ValidationException {
         LocalDate date = LocalDate.now().plusDays(1);
-        String doctorEmail = "doctor1@gmail.com";
-        String patientEmail = "patient11@gmail.com";
+        String doctorEmail = "doctorBook@gmail.com";
+        String patientEmail = "patientBook@gmail.com";
 
         repo.addDoctorAvailability(new DoctorAvailability(
                 doctorEmail,
@@ -238,7 +239,7 @@ public class AppointmentRepoIT {
     @Test
     public void rebookAppointmentWithDifferentPatient() throws ValidationExceptions.ValidationException {
         LocalDate date = LocalDate.now().plusDays(1);
-        String doctorEmail = "doctor1@gmail.com";
+        String doctorEmail = "doctorRebook@gmail.com";
         String patientEmail = "patient11@gmail.com";
         String secondPatientEmail = "patient12@gmail.com";
 

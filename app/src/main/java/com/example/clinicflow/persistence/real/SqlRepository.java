@@ -508,17 +508,7 @@ public class SqlRepository implements UserRepository {
                 appointments.add(mapUpcoming(cursor));
             }
         }
-        
-        try (Cursor cursor = db.query(
-                DbContract.CompletedAppointmentEntry.TABLE_NAME,
-                null, selection, selectionArgs, null, null,
-                DbContract.CompletedAppointmentEntry.COLUMN_START_TIME + " ASC")) {
 
-            while (cursor.moveToNext()) {
-                appointments.add(mapCompleted(cursor));
-            }
-        }
-        
         return appointments;
     }
 
