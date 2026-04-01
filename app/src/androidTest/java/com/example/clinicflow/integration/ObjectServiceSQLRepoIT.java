@@ -13,6 +13,7 @@ import com.example.clinicflow.models.Doctor;
 import com.example.clinicflow.models.Specialization;
 import com.example.clinicflow.models.Staff;
 import com.example.clinicflow.models.Users;
+import com.example.clinicflow.business.validators.UserSignupValidator;
 import com.example.clinicflow.persistence.UserRepository;
 import com.example.clinicflow.persistence.real.AppDbHelper;
 import com.example.clinicflow.persistence.real.SqlRepository;
@@ -36,7 +37,7 @@ public class ObjectServiceSQLRepoIT {
         context.deleteDatabase(AppDbHelper.DATABASE_NAME);
 
         repo = new SqlRepository(context);
-        object = new ObjectCreation(repo);
+        object = new ObjectCreation(repo, new UserSignupValidator(repo));
     }
 
     @Test

@@ -26,9 +26,9 @@ public class ObjectCreation {
      * 
      * @param userPersistence The persistence used for user data.
      */
-    public ObjectCreation(UserPersistence userPersistence) {
+    public ObjectCreation(UserPersistence userPersistence, UserSignupValidator validator) {
         this.DATABASE = userPersistence;
-        this.VALIDATOR = new UserSignupValidator(userPersistence);
+        this.VALIDATOR = validator;
     }
 
     public boolean addUserToDatabase(UserRole role, String firstName, String lastName, String email, String password, String confirmPw, String gender,
