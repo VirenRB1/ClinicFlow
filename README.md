@@ -1,7 +1,7 @@
-# GROUP 14 PROJECT - Physician's Office app
+# ClinicFlow - Physician's Office System
 
-Please find our group work agreement at the link below
-[Group-Work-Agreement.md](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/tree/main/Docs)
+A role-based Android application for managing appointments, physician availability, and patient records in a physician's office.
+
 ## Group Members
 1. Viren Ravji Bhanderi - 7976692
 2. Najma Mohamed - 7934223
@@ -9,20 +9,62 @@ Please find our group work agreement at the link below
 4. Hoang Phuc - 7900499
 5. Israel Ijiekhuamen - 7909801
 
-## Project Information
-Project Summary: This project delivers a secure, role-based Physician's Office app that manages patient records, appointments, and clinic workflows for physicians, office staff, and patients.
+## Project Overview
 
-This app keeps accurate, current records of physicians' schedules, patient data, staff information, and clinical visits. This helps office staff and physicians manage their work more efficiently and leads to a more organized approach to scheduling and data management.
+ClinicFlow is a clinic management system that supports four user roles: patients, physicians, office staff, and administrators. Patients can self-register, book and cancel appointments, and view their appointment history with doctor notes. Physicians can set their weekly availability, manage appointments, and add clinical notes after completing visits. Office staff can book and cancel appointments on behalf of patients and look up patient and doctor records. Administrators manage user accounts for physicians and staff.
 
-This app is designed for physicians, patients, and office staff, and it allows the office to go paperless in its approach to storing data and handling its day-to-day activity. Physicians use the app to set and manage their weekly availability, view their upcoming appointments, mark appointments as completed, and add clinical notes for completed visits. Office staff use the app to book and cancel appointments on behalf of patients, and to look up patient and doctor records. Patients can create their own accounts, book appointments with available doctors by choosing from open time slots, view their upcoming and past appointments along with any clinical notes from the doctor, and cancel appointments they no longer need.
+## Requirements
 
-The app maintains patient records that include personal information, appointment history, and clinical notes from completed visits. It supports appointment scheduling while preventing conflicts in physician availability. The app automatically generates available time slots based on each doctor's weekly schedule and prevents double-booking, booking outside availability windows, and booking beyond a two-week window. When a doctor updates their availability and it overlaps with existing hours, the app detects the conflict and allows the doctor to replace the old availability, automatically cancelling any affected appointments. Access to information is controlled through role-based security, ensuring that data is only accessible to authorized users. This role-based access is given at the start via login and authentication. Patients can create an account freely, but only the admin can add physician and office staff accounts to the app. This app does not provide diagnostic or treatment decision support. Its focus is on improving workflow efficiency within a physician's office rather than supporting complex hospital environments.
+- **Android Studio**: Ladybug (2024.2.1) or newer
+- **JDK**: 17 (bundled with Android Studio)
+- **Android SDK**: API 34 (compileSdk and targetSdk)
+- **Minimum SDK**: API 34
+- **Gradle**: 8.10.2 (included via wrapper)
 
-The value this app adds is to reduce administrative overhead, minimize scheduling errors, and improve access to accurate patient information by centralizing all clinic operations in a secure digital platform. Physicians spend less time on paperwork and can manage their own availability directly, office staff can manage appointments on behalf of patients more reliably, and patients experience faster scheduling and better continuity of care through access to their appointment history and doctor notes.
+## Build and Run
 
-This project will be considered successful if:
-1. Office staff can schedule or cancel patient appointments in under one minute.
-2. The app prevents double-booking of physicians 100% of the time.
-3. Physicians can view their upcoming appointments and add clinical notes within five clicks after logging in.
-4. Patients can book appointments and view appointment details without staff intervention.
-5. Access to app features and data is restricted by user role, and unauthorized users cannot view or edit protected information.
+1. Clone the repository:
+   ```
+   git clone https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans.git
+   ```
+2. Open the project in Android Studio.
+3. Let Gradle sync complete (Android Studio will download dependencies automatically).
+4. Select a device or emulator running API 34+.
+5. Click **Run** (Shift+F10) to build and launch the app.
+
+## Running Tests
+
+### Unit Tests
+Unit tests are located in `app/src/test/`. Run them from Android Studio or via command line:
+```
+./gradlew test
+```
+
+### Integration Tests
+Integration tests are located in `app/src/androidTest/java/.../integration/`. These require a connected device or emulator:
+Run it with android studio or via command line:
+```
+./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.integration.AppointmentRepoIT
+./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.integration.ObjectServiceSQLRepoIT
+```
+
+### End-to-End Tests
+E2E tests are located in `app/src/androidTest/java/.../e2e/`. These also require a connected device or emulator:
+Run it with android studio or via command line:
+```
+./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.e2e.PatientFlowTest
+./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.e2e.StaffFlowTest
+```
+
+### All Instrumented Tests
+To run all integration and e2e tests together:
+Run it with android studio or via command line:
+```
+./gradlew connectedAndroidTest
+```
+
+## Documentation
+
+- [Vision Statement](Docs/VISION.md)
+- [Architecture](Docs/Architecture.md)
+- [Retrospective](Docs/retrospectiveIteration0.md)
