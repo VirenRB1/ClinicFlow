@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -137,6 +136,112 @@ public class TimeSlotServiceTest {
         
         List<TimeSlot> result = timeSlotService.getAvailableTimeSlots(docEmail, LocalDate.now().plusDays(1));
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testIsWithinBookingWindow_Today() {
+        assertTrue(timeSlotService.isWithinBookingWindow(LocalDate.now()));
+    }
+
+    @Test
+    public void testIsWithinBookingWindow_Tomorrow() {
+        assertTrue(timeSlotService.isWithinBookingWindow(LocalDate.now().plusDays(1)));
+    }
+
+    @Test
+    public void testIsWithinBookingWindow_PastDate() {
+        assertFalse(timeSlotService.isWithinBookingWindow(LocalDate.now().minusDays(1)));
+    }
+
+    @Test
+    public void testIsWithinBookingWindow_BeyondNextWeek() {
+        assertFalse(timeSlotService.isWithinBookingWindow(LocalDate.now().plusWeeks(3)));
+    }
+
+    @Test
+    public void testGetAvailableTimeSlots_OutsideBookingWindow_ReturnsEmpty() {
+        LocalDate farFuture = LocalDate.now().plusWeeks(5);
+        List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, farFuture);
+        assertTrue(slots.isEmpty());
+    }
+
+    @Test
+    public void testGetAvailableTimeSlots_NoAvailability_ReturnsEmpty() {
+        LocalDate future = LocalDate.now().plusDays(1);
+        when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, future.getDayOfWeek().getValue()))
+                .thenReturn(Collections.emptyList());
+        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, future))
+                .thenReturn(Collections.emptyList());
+
+        List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, future);
+        assertTrue(slots.isEmpty());
+    }
+
+    @Test
+    public void testGetAvailableTimeSlots_OccupiedSlotSkipped() {
+        LocalDate future = LocalDate.now().plusDays(1);
+        DoctorAvailability avail = new DoctorAvailability(docEmail, future.getDayOfWeek().getValue(),
+                LocalTime.of(9, 0), LocalTime.of(10, 0));
+
+        Appointment booked = new Appointment(docEmail, "p@t.com", future,
+                LocalTime.of(9, 0), LocalTime.of(9, 30), AppointmentStatus.CONFIRMED, "Checkup", "");
+
+        when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, future.getDayOfWeek().getValue()))
+                .thenReturn(Collections.singletonList(avail));
+        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, future))
+                .thenReturn(Collections.singletonList(booked));
+
+        List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, future);
+
+        // Only the 9:30-10:00 slot should be available
+        assertEquals(1, slots.size());
+        assertEquals(LocalTime.of(9, 30), slots.get(0).getStartTime());
+    }
+
+    @Test
+    public void testIsSlotFree_NonOverlappingConfirmedAppointment() {
+        Appointment appt = new Appointment(docEmail, "p@t.com", LocalDate.now(),
+                LocalTime.of(11, 0), LocalTime.of(11, 30), AppointmentStatus.CONFIRMED, "Checkup", "");
+
+        // Slot is 9:00-9:30, appointment is 11:00-11:30 — no overlap
+        assertTrue(timeSlotService.isSlotFree(Collections.singletonList(appt),
+                LocalTime.of(9, 0), LocalTime.of(9, 30)));
+    }
+
+    @Test
+    public void testIsWithinAvailability_MultipleWindows_SecondMatches() {
+        DoctorAvailability morning = new DoctorAvailability(docEmail, 1, LocalTime.of(8, 0), LocalTime.of(12, 0));
+        DoctorAvailability afternoon = new DoctorAvailability(docEmail, 1, LocalTime.of(14, 0), LocalTime.of(18, 0));
+        List<DoctorAvailability> avails = Arrays.asList(morning, afternoon);
+
+        // 15:00-16:00 fits in afternoon window, not morning
+        assertTrue(timeSlotService.isWithinAvailability(avails, LocalTime.of(15, 0), LocalTime.of(16, 0)));
+    }
+
+    @Test
+    public void testIsWithinAvailability_SpansBothWindows_ReturnsFalse() {
+        DoctorAvailability morning = new DoctorAvailability(docEmail, 1, LocalTime.of(8, 0), LocalTime.of(12, 0));
+        DoctorAvailability afternoon = new DoctorAvailability(docEmail, 1, LocalTime.of(14, 0), LocalTime.of(18, 0));
+        List<DoctorAvailability> avails = Arrays.asList(morning, afternoon);
+
+        // 11:00-15:00 spans the gap — doesn't fit in either window
+        assertFalse(timeSlotService.isWithinAvailability(avails, LocalTime.of(11, 0), LocalTime.of(15, 0)));
+    }
+
+    @Test
+    public void testGetAvailableTimeSlots_AvailabilityTooShortForSlot() {
+        LocalDate future = LocalDate.now().plusDays(1);
+        // Only 15 minutes — not enough for a 30-min slot
+        DoctorAvailability avail = new DoctorAvailability(docEmail, future.getDayOfWeek().getValue(),
+                LocalTime.of(9, 0), LocalTime.of(9, 15));
+
+        when(mockAvailabilityPersistence.getDoctorAvailability(docEmail, future.getDayOfWeek().getValue()))
+                .thenReturn(Collections.singletonList(avail));
+        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, future))
+                .thenReturn(Collections.emptyList());
+
+        List<TimeSlot> slots = timeSlotService.getAvailableTimeSlots(docEmail, future);
+        assertTrue(slots.isEmpty());
     }
 
     @Test
