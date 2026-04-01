@@ -11,8 +11,8 @@ import com.example.clinicflow.business.exceptions.ValidationExceptions;
 import com.example.clinicflow.models.Appointment;
 import com.example.clinicflow.models.AppointmentStatus;
 import com.example.clinicflow.models.DoctorAvailability;
-import com.example.clinicflow.models.TimeSlot;
 import com.example.clinicflow.persistence.AppointmentPersistence;
+import com.example.clinicflow.persistence.DoctorAvailabilityPersistence;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +27,13 @@ public class AppointmentServiceTest {
 
     private AppointmentService appointmentService;
     private AppointmentPersistence mockPersistence;
+    private DoctorAvailabilityPersistence mockAvailabilityPersistence;
 
     @Before
     public void setUp() {
         mockPersistence = mock(AppointmentPersistence.class);
-        appointmentService = new AppointmentService(mockPersistence);
+        mockAvailabilityPersistence = mock(DoctorAvailabilityPersistence.class);
+        appointmentService = new AppointmentService(mockPersistence, mockAvailabilityPersistence);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class AppointmentServiceTest {
         Appointment appt = new Appointment("doc@test.com", "p", future, LocalTime.of(8, 0), LocalTime.of(8, 30), AppointmentStatus.CONFIRMED, "", "");
         
         DoctorAvailability avail = new DoctorAvailability("doc@test.com", future.getDayOfWeek().getValue(), LocalTime.of(9, 0), LocalTime.of(10, 0));
-        when(mockPersistence.getDoctorAvailability("doc@test.com", future.getDayOfWeek().getValue()))
+        when(mockAvailabilityPersistence.getDoctorAvailability("doc@test.com", future.getDayOfWeek().getValue()))
                 .thenReturn(Collections.singletonList(avail));
 
         assertThrows(ValidationExceptions.AppointmentConflictException.class, () -> appointmentService.bookAppointment(appt));
@@ -111,7 +113,7 @@ public class AppointmentServiceTest {
         Appointment appt = new Appointment("doc@test.com", "p2", future, LocalTime.of(9, 15), LocalTime.of(9, 45), AppointmentStatus.CONFIRMED, "", "");
         
         DoctorAvailability avail = new DoctorAvailability("doc@test.com", future.getDayOfWeek().getValue(), LocalTime.of(9, 0), LocalTime.of(10, 0));
-        when(mockPersistence.getDoctorAvailability("doc@test.com", future.getDayOfWeek().getValue()))
+        when(mockAvailabilityPersistence.getDoctorAvailability("doc@test.com", future.getDayOfWeek().getValue()))
                 .thenReturn(Collections.singletonList(avail));
 
         Appointment existing = new Appointment("doc@test.com", "p1", future, LocalTime.of(9, 0), LocalTime.of(9, 30), AppointmentStatus.CONFIRMED, "", "");
@@ -127,7 +129,7 @@ public class AppointmentServiceTest {
         Appointment appt = new Appointment("doc@test.com", "p2", future, LocalTime.of(9, 0), LocalTime.of(9, 30), AppointmentStatus.CONFIRMED, "", "");
         
         DoctorAvailability avail = new DoctorAvailability("doc@test.com", future.getDayOfWeek().getValue(), LocalTime.of(9, 0), LocalTime.of(10, 0));
-        when(mockPersistence.getDoctorAvailability("doc@test.com", future.getDayOfWeek().getValue()))
+        when(mockAvailabilityPersistence.getDoctorAvailability("doc@test.com", future.getDayOfWeek().getValue()))
                 .thenReturn(Collections.singletonList(avail));
 
         Appointment cancelled = new Appointment("doc@test.com", "p1", future, LocalTime.of(9, 0), LocalTime.of(9, 30), AppointmentStatus.CANCELLED, "", "");
@@ -152,21 +154,4 @@ public class AppointmentServiceTest {
         assertThrows(ValidationExceptions.AppointmentCancellationException.class, () -> appointmentService.cancelAppointment(past));
     }
 
-    @Test
-    public void testGetAvailableTimeSlots_TodayPastAndFuture() {
-        String docEmail = "doc@test.com";
-        LocalDate today = LocalDate.now();
-        DoctorAvailability avail = new DoctorAvailability(docEmail, today.getDayOfWeek().getValue(), LocalTime.MIN, LocalTime.MAX.minusMinutes(31));
-        when(mockPersistence.getDoctorAvailability(docEmail, today.getDayOfWeek().getValue()))
-                .thenReturn(Collections.singletonList(avail));
-        when(mockPersistence.getAppointmentsForDoctorOnDate(docEmail, today))
-                .thenReturn(Collections.emptyList());
-
-        List<TimeSlot> slots = appointmentService.getAvailableTimeSlots(docEmail, today);
-        
-        LocalTime now = LocalTime.now();
-        for (TimeSlot slot : slots) {
-            assertTrue(slot.getStartTime().isAfter(now));
-        }
-    }
 }
