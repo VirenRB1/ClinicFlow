@@ -467,9 +467,23 @@ public class SqlRepository implements UserRepository {
         }
     }
 
+    @Override
+    public void deleteDoctorAvailability(int id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.delete(DbContract.DoctorAvailabilityEntry.TABLE_NAME,
+                    DbContract.DoctorAvailabilityEntry._ID + " = ?",
+                    new String[]{String.valueOf(id)});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     /**
      * Retrieves appointments for a doctor on a specific date.
-     * 
+     *
      * @param doctorEmail The doctor's email.
      * @param date        The date.
      * @return List of appointments.
@@ -593,6 +607,28 @@ public class SqlRepository implements UserRepository {
 
     @Override
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<Appointment> getUpcomingAppointmentsForDoctorOnDay(String doctorEmail, int dayOfWeek) {
+        List<Appointment> appointments = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        LocalDate today = LocalDate.now();
+
+        String selection = DbContract.UpcomingAppointmentEntry.COLUMN_DOCTOR_EMAIL + " = ? AND " +
+                DbContract.UpcomingAppointmentEntry.COLUMN_APPOINTMENT_DATE + " >= ?";
+        String[] selectionArgs = { doctorEmail, today.toString() };
+
+        try (Cursor cursor = db.query(DbContract.UpcomingAppointmentEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)) {
+            while (cursor.moveToNext()) {
+                Appointment appt = mapUpcoming(cursor);
+                if (appt.getAppointmentDate().getDayOfWeek().getValue() == dayOfWeek) {
+                    appointments.add(appt);
+                }
+            }
+        }
+        return appointments;
+    }
+
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Appointment> getCompletedAppointmentsForDoctor(String doctorEmail) {
         List<Appointment> appointments = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -627,9 +663,19 @@ public class SqlRepository implements UserRepository {
                 values.put(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
                 db.insert(DbContract.CompletedAppointmentEntry.TABLE_NAME, null, values);
             } else if (AppointmentStatus.CANCELLED.equals(appointment.getStatus())) {
-                db.delete(DbContract.UpcomingAppointmentEntry.TABLE_NAME, 
-                        DbContract.UpcomingAppointmentEntry._ID + " = ?", 
+                db.delete(DbContract.UpcomingAppointmentEntry.TABLE_NAME,
+                        DbContract.UpcomingAppointmentEntry._ID + " = ?",
                         new String[]{String.valueOf(appointment.getId())});
+
+                ContentValues cancelValues = new ContentValues();
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_EMAIL, appointment.getDoctorEmail());
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_EMAIL, appointment.getPatientEmail());
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_APPOINTMENT_DATE, appointment.getAppointmentDate().toString());
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_START_TIME, appointment.getStartTime().toString());
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_END_TIME, appointment.getEndTime().toString());
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_PATIENT_PURPOSE, appointment.getPatientPurpose());
+                cancelValues.put(DbContract.CompletedAppointmentEntry.COLUMN_DOCTOR_NOTES, appointment.getDoctorNotes());
+                db.insert(DbContract.CompletedAppointmentEntry.TABLE_NAME, null, cancelValues);
             }
             db.setTransactionSuccessful();
         } finally {
