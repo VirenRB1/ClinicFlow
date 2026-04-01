@@ -1,12 +1,8 @@
 # ClinicFlow Architecture
-
-## Major Packages and Source Code Components
 ## Architecture Diagram
-
 ![ClinicFlow Architecture](ArchitectureDiagram.jpg)
-### `com.example.clinicflow`
-
-**Application / Composition Root**
+## Major Packages and Source Code Components
+### `Application`
 
 * **`ClinicFlowApp`**
 
@@ -16,7 +12,7 @@
 
 ### `Presentation`
 
-**Responsibility:** Presentation-layer classes and navigation-related helpers.
+**Responsibility:** Handles navigation between screens. Handles what to display and for whom.
 
 **Subpackages**
 
@@ -81,11 +77,12 @@
 * `NavigationExtras`
 * **Interface:** `RecyclerViewInterface`
 
+**How it works** - Any Activity that needs can retrieve any shared service from ClinicFlowApp that they need. - When an Activity needs to use business logic, it calls the necessary method through that shared service it retrieved from ClinicFlowApp - Navigation assists in navigation from one activity to another - NavigationExtras houses the Intent extra keys used for passing data between activities - BasicBinds binds the logout, back, and profile buttons to their respective IDs and then sets the onClickListeners for them.
 ---
 
 ### `Business`
 
-**Responsibility:** Business-layer classes.
+**Responsibility:** Implements application use-cases and rules using the persistence interfaces.
 
 **Subpackages**
 
@@ -119,7 +116,7 @@
 
 ### `Persistence`
 
-**Responsibility:** Persistence-layer classes and interfaces.
+**Responsibility:** Stores different users, appointments (past and future), and availabilities.
 
 **Interfaces**
 
