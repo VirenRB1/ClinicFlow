@@ -28,3 +28,4 @@ https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/comm
 
 https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g14-booleanhooligans/-/commit/c9a1196ae3145fb3180fbfac6661b3297542548f
 
+![Velocity Chart](VelocityChart.jpg)
