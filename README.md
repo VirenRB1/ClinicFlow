@@ -35,26 +35,15 @@ ClinicFlow is a clinic management system that supports four user roles: patients
 ## Running Tests
 
 ### Unit Tests
-Unit tests are located in `app/src/test/`. Run them from Android Studio or via command line:
-```
-./gradlew test
-```
+Unit tests are located in `app/src/test/`. Run them from Android Studio
 
 ### Integration Tests
 Integration tests are located in `app/src/androidTest/java/.../integration/`. These require a connected device or emulator:
-Run it with android studio or via command line:
-```
-./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.integration.AppointmentRepoIT
-./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.integration.ObjectServiceSQLRepoIT
-```
+Run it with android studio
 
 ### End-to-End Tests
 E2E tests are located in `app/src/androidTest/java/.../e2e/`. These also require a connected device or emulator:
-Run it with android studio or via command line:
-```
-./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.e2e.PatientFlowTest
-./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.clinicflow.e2e.StaffFlowTest
-```
+Run it with android studio
 
 ### All Instrumented Tests
 To run all integration and e2e tests together:
@@ -66,5 +55,5 @@ Run it with android studio or via command line:
 ## Documentation
 
 - [Vision Statement](Docs/VISION.md)
-- [Architecture](Docs/ArchitectureDiagram.jpg)
-- [Retrospective](Docs/retrospectiveIteration0.md)
+- [Architecture](Docs/ARCHITECTURE.md)
+- [Retrospective](Docs/RETROSPECTIVE.md)
