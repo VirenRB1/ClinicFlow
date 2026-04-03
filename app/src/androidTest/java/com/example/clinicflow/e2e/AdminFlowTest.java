@@ -39,8 +39,7 @@ public class AdminFlowTest {
 
     @Test
     public void adminAddDoctorTest() {
-        String suffix = String.valueOf(System.currentTimeMillis());
-        String doctorEmail = "sarah" + suffix + "@clinicdoc.com";
+        String doctorEmail = "sarah@clinicdoc.com";
 
         login("admin@clinic.com", "admin");
 
@@ -69,7 +68,7 @@ public class AdminFlowTest {
         onView(withId(R.id.specializationEditText))
                 .perform(replaceText("CARDIOLOGY"), closeSoftKeyboard());
         onView(withId(R.id.licenseNumberEditText))
-                .perform(replaceText("LIC" + suffix), closeSoftKeyboard());
+                .perform(replaceText("LIC6767"), closeSoftKeyboard());
 
         onView(withId(R.id.signUpButton)).perform(click());
         pressBack();
@@ -79,8 +78,7 @@ public class AdminFlowTest {
 
     @Test
     public void adminAddStaffTest() {
-        String suffix = String.valueOf(System.currentTimeMillis());
-        String staffEmail = "tom" + suffix + "@clinicstaff.com";
+        String staffEmail = "tom@clinicstaff.com";
 
         login("admin@clinic.com", "admin");
 
@@ -116,8 +114,7 @@ public class AdminFlowTest {
 
     @Test
     public void adminAddPatientTest() {
-        String suffix = String.valueOf(System.currentTimeMillis());
-        String patientEmail = "jane" + suffix + "@gmail.com";
+        String patientEmail = "jane@gmail.com";
 
         login("admin@clinic.com", "admin");
 
@@ -156,8 +153,7 @@ public class AdminFlowTest {
 
     @Test
     public void adminDeleteDoctorTest() {
-        String suffix = String.valueOf(System.currentTimeMillis());
-        String doctorEmail = "delete" + suffix + "@clinicdoc.com";
+        String doctorEmail = "delete@clinicdoc.com";
 
         login("admin@clinic.com", "admin");
 
@@ -183,7 +179,7 @@ public class AdminFlowTest {
         onView(withId(R.id.specializationEditText))
                 .perform(replaceText("CARDIOLOGY"), closeSoftKeyboard());
         onView(withId(R.id.licenseNumberEditText))
-                .perform(replaceText("LICDEL" + suffix), closeSoftKeyboard());
+                .perform(replaceText("LICDEL6767"), closeSoftKeyboard());
 
         onView(withId(R.id.signUpButton)).perform(click());
         pressBack();
