@@ -44,12 +44,30 @@
             <div class="vision-box">
                 <h3>Vision Statement</h3>
                 <p>
-                    ClinicFlow is a secure, role-based Android application that manages patient records,
-                    appointments, and clinic workflows for physicians, office staff, and patients. The app
-                    enables the office to go paperless, reducing administrative overhead, minimizing scheduling
-                    errors, and improving access to accurate patient information by centralizing all clinic
-                    operations in a secure digital platform.
+                    This project delivers a secure, role-based Physician's Office app that manages patient records, appointments, and clinic workflows for physicians, office staff, and patients.
                 </p>
+                <p>
+                    This app keeps accurate, current records of physicians' schedules, patient data, staff information, and clinical visits. This helps office staff and physicians manage their work more efficiently and leads to a more organized approach to scheduling and data management.
+                </p>
+                <p>
+                    This app is designed for physicians, patients, and office staff, and it allows the office to go paperless in its approach to storing data and handling its day-to-day activity. Physicians use the app to set and manage their weekly availability, view their upcoming appointments, mark appointments as completed, and add clinical notes for completed visits. Office staff use the app to book and cancel appointments on behalf of patients, and to look up patient and doctor records. Patients can create their own accounts, book appointments with available doctors by choosing from open time slots, view their upcoming and past appointments along with any clinical notes from the doctor, and cancel appointments they no longer need.
+                </p>
+                <p>
+                    The app maintains patient records that include personal information, appointment history, and clinical notes from completed visits. It supports appointment scheduling while preventing conflicts in physician availability. The app automatically generates available time slots based on each doctor's weekly schedule and prevents double-booking, booking outside availability windows, and booking beyond a two-week window. When a doctor updates their availability and it overlaps with existing hours, the app detects the conflict and allows the doctor to replace the old availability, automatically cancelling any affected appointments. Access to information is controlled through role-based security, ensuring that data is only accessible to authorized users. This role-based access is given at the start via login and authentication. Patients can create an account freely, but only the admin can add physician and office staff accounts to the app. This app does not provide diagnostic or treatment decision support. Its focus is on improving workflow efficiency within a physician's office rather than supporting complex hospital environments.
+                </p>
+                <p>
+                    The value this app adds is to reduce administrative overhead, minimize scheduling errors, and improve access to accurate patient information by centralizing all clinic operations in a secure digital platform. Physicians spend less time on paperwork and can manage their own availability directly, office staff can manage appointments on behalf of patients more reliably, and patients experience faster scheduling and better continuity of care through access to their appointment history and doctor notes.
+                </p>
+                <p>
+                    This project will be considered successful if:
+                </p>
+                <ol class="vision-criteria">
+                    <li>Office staff can schedule or cancel patient appointments in under one minute.</li>
+                    <li>The app prevents double-booking of physicians 100% of the time.</li>
+                    <li>Physicians can view their upcoming appointments and add clinical notes within five clicks after logging in.</li>
+                    <li>Patients can book appointments and view appointment details without staff intervention.</li>
+                    <li>Access to app features and data is restricted by user role, and unauthorized users cannot view or edit protected information.</li>
+                </ol>
             </div>
 
             <div class="users-section">
@@ -130,36 +148,36 @@
                 <div class="team-card">
                     <h4>Viren Ravji Bhanderi</h4>
                     <p class="team-role">Backend &amp; Persistence Lead</p>
-                    <p class="team-contributions"><strong>Contributions:</strong> Designed and implemented the persistence layer (SQLite database, SqlRepository, helper classes), business services (AppointmentService, DocAvailabilityService, TimeSlotService), ISP refactoring of UserRepository into sub-interfaces, AppointmentStatus enum, Clock injection for testability, unit tests.</p>
-                    <p class="team-skills"><strong>Skills Gained:</strong> Database design with SQLite, SOLID principles (especially ISP), dependency injection, writing testable code with Clock abstraction, integration testing.</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Designed and built the database layer and core business services. Led backend and persistence refactoring for SOLID compliance. Wrote unit tests and managed GitLab issues and milestones.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Database design, SOLID principles, dependency injection, testable code design, integration testing, GitLab workflow, technical documentation.</p>
                 </div>
 
                 <div class="team-card">
                     <h4>Gurwinder Khandal</h4>
                     <p class="team-role">Frontend &amp; Presentation Lead</p>
-                    <p class="team-contributions"><strong>Contributions:</strong> Built all UI screens and navigation, large-scale presentation refactoring (BasicBinds, SearchUserCard Strategy pattern decomposition), appointment booking flow, doctor schedule view, staff functionality, Espresso E2E tests.</p>
-                    <p class="team-skills"><strong>Skills Gained:</strong> Android UI development, design patterns (Strategy, Factory, Template Method), Espresso testing, refactoring large codebases for SOLID compliance.</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Built all UI screens and navigation flows. Led presentation layer refactoring using design patterns. Wrote E2E tests. Managed GitLab issue tracking and task delegation.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Android UI development, design patterns, Espresso testing, SOLID refactoring, GitLab project management, documentation.</p>
                 </div>
 
                 <div class="team-card">
                     <h4>Najma Mohamed</h4>
                     <p class="team-role">Testing &amp; Business Logic</p>
-                    <p class="team-contributions"><strong>Contributions:</strong> Integration tests, appointment cancellation logic, business layer refactoring (ObjectCreation, MedicalHistory), architecture documentation, retrospective, Espresso tests.</p>
-                    <p class="team-skills"><strong>Skills Gained:</strong> Integration testing with real databases, JUnit and Mockito, code smell identification, collaborative development workflows.</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Wrote integration and E2E tests. Refactored business layer classes. Created architecture documentation and retrospective.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Integration testing, JUnit and Mockito, code smell identification, GitLab branching and merge requests, technical writing.</p>
                 </div>
 
                 <div class="team-card">
                     <h4>Hoang Phuc</h4>
                     <p class="team-role">Models &amp; Persistence</p>
-                    <p class="team-contributions"><strong>Contributions:</strong> Created Appointment, DoctorAvailability, and TimeSlot models, persistence tables, AuthService SOLID refactoring, input validation fixes, time slot filtering for past dates.</p>
-                    <p class="team-skills"><strong>Skills Gained:</strong> Domain modeling, database schema design, SOLID principle application, validation logic, Android development.</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Created domain models and database tables. Refactored authentication for SOLID compliance. Fixed validation logic. Wrote E2E tests.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Domain modeling, database schema design, SOLID principles, Espresso testing, GitLab version control, documentation.</p>
                 </div>
 
                 <div class="team-card">
                     <h4>Israel Ijiekhuamen</h4>
                     <p class="team-role">Testing &amp; Models</p>
-                    <p class="team-contributions"><strong>Contributions:</strong> Unit tests for MedicalHistory and business classes, Doctor model fixes (Specialization enum), age calculation from DOB, unit test coverage improvements.</p>
-                    <p class="team-skills"><strong>Skills Gained:</strong> Unit testing with JUnit, enum-based domain modeling, test-driven bug fixing, working in a layered architecture.</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Wrote unit tests across business layer classes. Fixed domain model issues and improved test coverage.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Unit testing with JUnit, domain modeling, test-driven development, GitLab issue tracking, working in a layered architecture.</p>
                 </div>
 
             </div>
@@ -171,11 +189,12 @@
         <div class="container">
             <h2 class="section-title">Product Demonstration</h2>
             <div class="demo-container">
-                <iframe width="100%" height="600"
-                        src="https://www.youtube.com/embed/SCjo2imlrC4"
-                        frameborder="0"
-                        allowfullscreen>
-                </iframe>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/SCjo2imlrC4"
+                            frameborder="0"
+                            allowfullscreen>
+                    </iframe>
+                </div>
             </div>
         </div>
     </section>

@@ -267,6 +267,23 @@ img {
 .vision-box p {
     color: #444;
     font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.vision-box p:last-of-type {
+    margin-bottom: 8px;
+}
+
+.vision-criteria {
+    padding-left: 24px;
+    list-style: decimal;
+    color: #444;
+    font-size: 1.1rem;
+}
+
+.vision-criteria li {
+    margin-bottom: 8px;
+    line-height: 1.6;
 }
 
 /* ===== User Cards ===== */
@@ -428,9 +445,29 @@ img {
 
 /* ===== Demo ===== */
 .demo-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     text-align: center;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(26, 39, 68, 0.18), 0 0 0 1px rgba(26, 39, 68, 0.06);
+    background: #1a2744;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 20px;
 }
 
 .demo-placeholder {
@@ -441,11 +478,6 @@ img {
     font-size: 1.1rem;
     border: 2px dashed rgba(211, 47, 47, 0.3);
     box-shadow: 0 2px 12px rgba(26, 39, 68, 0.04);
-}
-
-.demo-container video {
-    border-radius: 16px;
-    box-shadow: 0 16px 56px rgba(26, 39, 68, 0.15);
 }
 
 /* ===== Postmortem ===== */
