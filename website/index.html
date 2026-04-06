@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinicFlow - Boolean Hooligans</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="logo.png" alt="ClinicFlow Logo" class="nav-logo-img">
+                ClinicFlow
+            </a>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#postmortem">Postmortem</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <img src="logo.png" alt="ClinicFlow Logo" class="hero-logo">
+            <h1>ClinicFlow</h1>
+            <p class="hero-subtitle">Physician's Office Management System</p>
+            <p class="hero-team">Built by <strong>Boolean Hooligans</strong> &mdash; COMP 3350 Winter 2026</p>
+            <a href="#overview" class="hero-btn">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+
+            <div class="vision-box">
+                <h3>Vision Statement</h3>
+                <p>
+                    ClinicFlow is a secure, role-based Android application that manages patient records,
+                    appointments, and clinic workflows for physicians, office staff, and patients. The app
+                    enables the office to go paperless, reducing administrative overhead, minimizing scheduling
+                    errors, and improving access to accurate patient information by centralizing all clinic
+                    operations in a secure digital platform.
+                </p>
+            </div>
+
+            <div class="users-section">
+                <h3>Intended Users</h3>
+                <div class="user-cards">
+                    <div class="user-card">
+                        <div class="user-icon">&#128100;</div>
+                        <h4>Patients</h4>
+                        <p>Self-register, book and cancel appointments, view appointment history and clinical notes.</p>
+                    </div>
+                    <div class="user-card">
+                        <div class="user-icon">&#9877;</div>
+                        <h4>Physicians</h4>
+                        <p>Set weekly availability, manage appointments, complete visits and add clinical notes.</p>
+                    </div>
+                    <div class="user-card">
+                        <div class="user-icon">&#128196;</div>
+                        <h4>Office Staff</h4>
+                        <p>Book and cancel appointments on behalf of patients, look up patient and doctor records.</p>
+                    </div>
+                    <div class="user-card">
+                        <div class="user-icon">&#128272;</div>
+                        <h4>Administrators</h4>
+                        <p>Manage user accounts for physicians and staff. Control who has access to the system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Major Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>User Authentication</h4>
+                    <p>Secure login with role-based access control. Patients, doctors, staff, and admins each see role-appropriate interfaces.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Appointment Scheduling</h4>
+                    <p>Book appointments from auto-generated 30-minute time slots. Prevents double-booking, past-date booking, and out-of-availability scheduling.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Doctor Availability</h4>
+                    <p>Physicians set weekly availability by day. Schedule changes automatically detect and cancel conflicting appointments.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Patient Records</h4>
+                    <p>View appointment history with clinical notes. Doctors complete visits by adding notes that become part of the patient's record.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Visit Notes &amp; Diagnosis</h4>
+                    <p>Physicians record visit notes and diagnoses after completing appointments. Notes are stored permanently in patient records.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Search &amp; Lookup</h4>
+                    <p>Doctors and staff can search for patients by email. Staff can view all doctors and their availabilities.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Staff Appointment Management</h4>
+                    <p>Office staff can book and cancel appointments on behalf of any patient, streamlining front-desk operations.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Admin User Management</h4>
+                    <p>Admins add and remove doctor and staff accounts. Patients self-register but clinical staff require admin approval.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="section">
+        <div class="container">
+            <h2 class="section-title">Team Members</h2>
+            <div class="team-grid">
+
+                <div class="team-card">
+                    <h4>Viren Ravji Bhanderi</h4>
+                    <p class="team-role">Backend &amp; Persistence Lead</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Designed and implemented the persistence layer (SQLite database, SqlRepository, helper classes), business services (AppointmentService, DocAvailabilityService, TimeSlotService), ISP refactoring of UserRepository into sub-interfaces, AppointmentStatus enum, Clock injection for testability, unit tests.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Database design with SQLite, SOLID principles (especially ISP), dependency injection, writing testable code with Clock abstraction, integration testing.</p>
+                </div>
+
+                <div class="team-card">
+                    <h4>Gurwinder Khandal</h4>
+                    <p class="team-role">Frontend &amp; Presentation Lead</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Built all UI screens and navigation, large-scale presentation refactoring (BasicBinds, SearchUserCard Strategy pattern decomposition), appointment booking flow, doctor schedule view, staff functionality, Espresso E2E tests.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Android UI development, design patterns (Strategy, Factory, Template Method), Espresso testing, refactoring large codebases for SOLID compliance.</p>
+                </div>
+
+                <div class="team-card">
+                    <h4>Najma Mohamed</h4>
+                    <p class="team-role">Testing &amp; Business Logic</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Integration tests, appointment cancellation logic, business layer refactoring (ObjectCreation, MedicalHistory), architecture documentation, retrospective, Espresso tests.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Integration testing with real databases, JUnit and Mockito, code smell identification, collaborative development workflows.</p>
+                </div>
+
+                <div class="team-card">
+                    <h4>Hoang Phuc</h4>
+                    <p class="team-role">Models &amp; Persistence</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Created Appointment, DoctorAvailability, and TimeSlot models, persistence tables, AuthService SOLID refactoring, input validation fixes, time slot filtering for past dates.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Domain modeling, database schema design, SOLID principle application, validation logic, Android development.</p>
+                </div>
+
+                <div class="team-card">
+                    <h4>Israel Ijiekhuamen</h4>
+                    <p class="team-role">Testing &amp; Models</p>
+                    <p class="team-contributions"><strong>Contributions:</strong> Unit tests for MedicalHistory and business classes, Doctor model fixes (Specialization enum), age calculation from DOB, unit test coverage improvements.</p>
+                    <p class="team-skills"><strong>Skills Gained:</strong> Unit testing with JUnit, enum-based domain modeling, test-driven bug fixing, working in a layered architecture.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Product Demonstration</h2>
+            <div class="demo-container">
+                <p class="demo-placeholder">Screen recording coming soon &mdash; will demonstrate the primary user flows for patients, doctors, staff, and admins.</p>
+                <!-- Replace the placeholder above with:
+                <video controls width="100%">
+                    <source src="demo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Postmortem Section -->
+    <section id="postmortem" class="section">
+        <div class="container">
+            <h2 class="section-title">Development Postmortem</h2>
+
+            <div class="postmortem-block">
+                <h3>Iteration 2 Improvement Area</h3>
+                <p><strong>Problem:</strong> Email was treated as a system-wide identity but was only validated as unique for patients. The same validator was reused for doctor and staff creation, yet duplicate checking only called <code>getPatientByEmail</code>. This meant a person could theoretically have multiple accounts with the same email across different roles.</p>
+                <p><strong>What Changed:</strong> We refactored <code>UserSignupValidator</code> to validate by <code>getUserByEmail</code> instead of role-specific lookups. Duplicate checks now apply to every user type. We also updated the repository to support cross-role lookup and ensured all user creation paths call the same unified validator.</p>
+                <p><strong>Evidence of Improvement:</strong> The system now enforces global email uniqueness. This eliminated cross-role duplication, reduced ambiguous lookup behavior to a single deterministic result, and removed several classes of bugs related to incorrect retrieval and deletion. Tests were updated to validate all users by email system-wide.</p>
+            </div>
+
+            <div class="postmortem-block">
+                <h3>Architecture</h3>
+                <p>ClinicFlow follows a 3-tier architecture: Presentation, Business, and Persistence, with a shared Models layer. The business layer contains services (AuthService, AppointmentService, DocAvailabilityService, TimeSlotService, LookupService), validators, and exception classes. The persistence layer uses segregated interfaces (UserPersistence, AppointmentPersistence, DoctorAvailabilityPersistence) implemented by SqlRepository with three focused helper classes. The presentation layer uses Strategy and Factory patterns for shared screens.</p>
+            </div>
+
+            <div class="postmortem-block">
+                <h3>What Went Well</h3>
+                <ul>
+                    <li>Clean separation of concerns made refactoring straightforward in Iteration 3</li>
+                    <li>Comprehensive test coverage across unit, integration, and E2E levels caught real bugs during refactoring</li>
+                    <li>Clock injection made time-dependent logic fully testable and deterministic</li>
+                    <li>The team improved at estimation &mdash; actual vs. estimated time gap narrowed each iteration</li>
+                </ul>
+            </div>
+
+            <div class="postmortem-block">
+                <h3>What Went Wrong</h3>
+                <ul>
+                    <li>Build configuration issues were flagged externally and required urgent fixes in Iteration 3</li>
+                    <li>Presentation layer accumulated significant tech debt from Iterations 1-2 due to different team members solving similar UI problems independently</li>
+                    <li>Inconsistent time tracking led to estimation inaccuracies, particularly when tasks expanded into larger problems</li>
+                </ul>
+            </div>
+
+            <div class="postmortem-block">
+                <h3>Outstanding Technical Debt</h3>
+                <ul>
+                    <li>Appointment cancellation by patient or staff shows cancelled appointments in medical records without doctor notes (Issue #143)</li>
+                    <li>Profile editing not implemented &mdash; users can view but not update their information (Issue #96)</li>
+                    <li>Doctor/staff age verification missing at signup (Issue #145)</li>
+                    <li>Some incorrect UI titles throughout different flows (Issue #146)</li>
+                </ul>
+            </div>
+
+            <div class="postmortem-block">
+                <h3>Velocity</h3>
+                <p>Our estimation accuracy improved across iterations. In Iteration 1, actual time spent exceeded estimates significantly. By Iterations 2 and 3, the gap narrowed to approximately 10%. The biggest factor in estimation errors was inconsistent time tracking and tasks expanding into larger problems for which we failed to create separate issues.</p>
+                <img src="../Docs/VelocityChart.jpg" alt="Velocity Chart" class="postmortem-img">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>ClinicFlow &mdash; Boolean Hooligans &mdash; COMP 3350 Winter 2026 &mdash; University of Manitoba</p>
+        </div>
+    </footer>
+
+</body>
+</html>
